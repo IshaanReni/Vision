@@ -8,38 +8,53 @@
 #include "stb_image.h"
 
 
+float wrapparound(float f){
+    if (f < 0){
+        f += 360;
+    }
+    return f; 
+}
 
-void rgb_to_hsv(unsigned char* redpointer, unsigned char* greenpointer, unsigned char* bluepointer)
+int rgb_to_hsv(unsigned char* redpointer, unsigned char* greenpointer, unsigned char* bluepointer)
 {
     //casting into int 
     int r,g,b; 
     r = (int) *redpointer;
     g = (int) *greenpointer;
     b = (int) *bluepointer;
-    int max = fmax(fmax(r,g), b);
-    int min = fmin(fmin(r,g),b);
-    int delta = abs(max-min); 
-    float h,s,v; 
+    float max = fmax(fmax(r,g), b);
+    float min = fmin(fmin(r,g),b);
+    float delta = abs(max-min); 
+    float h,s,v,c; 
     //calculating H
     
-    if (delta == 0) delta = 1;
-    if (max == r){
-        h = 60.0*(abs(g-b)/delta); 
-        //printf("r max the value of h is %f, %i, %i\n", h, max, delta);
-        
+    if (delta != 0){
+        if (max == r){
+           
+            h = 60.0*wrapparound(((float)(g-b))/delta); 
+            printf ("r, g,b are %d, %d, %d \n", r,g,b);
+            printf("r max the value of h is %f\n", h);
+            printf("\n");
+
+        }
+        else if (max == g){
+            h = 60.0*wrapparound(((float)(b-r))/delta); 
+            // h = abs(60*((b-r)/delta + 2.0));
+            printf("%f \n", h);
+            // printf("g max the value of h is %f, %i, %i\n", h, max, delta);
+        }
+        else if (max == b){
+            h = 60.0*wrapparound(((float)(r-g))/delta); 
+            // h = 1.0*(abs(r-g)/delta + 4.0); 
+            // printf("b max the value of h is %f, %i, %i\n", h, max, delta);
+        }
+        else{
+            printf("zeroed\n");
+            h=0;
+        } 
+         
     }
-    else if (max == g){
-        h = 60.0*(abs(b-r)/delta + 2.0);
-        printf("g max the value of h is %f, %i, %i\n", h, max, delta);
-    }
-    else if (max == b){
-        h = 60.0*(abs(r-g)/delta + 4.0); 
-        printf("b max the value of h is %f, %i, %i\n", h, max, delta);
-    }
-    else{
-        printf("zeroed\n");
-        h=0;
-    } 
+    
     //calculating staturation
     if (max == 0){
         s = 0; 
@@ -47,11 +62,14 @@ void rgb_to_hsv(unsigned char* redpointer, unsigned char* greenpointer, unsigned
     else s = delta/max; 
     // v is just value
     v = max; 
+    return (int) (256*h/360);
 }
 
 void threshold(unsigned char* redpointer, unsigned char* greenpointer, unsigned char* bluepointer)
 {
     rgb_to_hsv(redpointer, greenpointer, bluepointer);
+    //printf("printing h %f", h);
+
     if(*redpointer <= 128){
         *redpointer = 0;
         //printf("max red \n");
