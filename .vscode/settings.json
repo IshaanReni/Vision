@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"cstdlib": "cpp",
+		"*.flex": "lex",
+		"kernel_operations.h": "c"
+	}
+}

@@ -119,9 +119,11 @@ int main()
 {
 
 	int x, y, n;
-	unsigned char *data = stbi_load("alien3.png", &x, &y, &n, 0); // pointer to pixel data
-
-	u8 *new_data = kernel_smooth(data, x, y, n, 4);
+	unsigned char *data = stbi_load("alien3.png", &x, &y, &n, 1); // pointer to pixel data
+	n = 1;
+	// kernel_operation(data, x, y, n, GaussianBlur);
+	kernel_operation(data, x, y, n, Sobel);
+	// kernel_operation(data, x, y, n, Hough);
 
 	/*
 	unsigned char *redpointer = data;
@@ -137,5 +139,5 @@ int main()
 	}
 	*/
 
-	stbi_write_png("result2.png", x, y, n, new_data, x * n * sizeof(uint8_t));
+	stbi_write_png("result2.png", x, y, n, data, x * n * sizeof(uint8_t));
 }

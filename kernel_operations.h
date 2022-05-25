@@ -5,5 +5,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-u8 *kernel_smooth(u8 *data_in, i32 x, i32 y, i32 n, i32 k_halfwidth);
+#define _USE_MATH_DEFINES // for C
+#include <math.h>
+#include <cstring>
+
+typedef enum
+{
+	BoxBlur,
+	GaussianBlur,
+	Sobel,
+	Hough,
+} KernelOperation;
+
+void kernel_operation(u8 *data, i32 x, i32 y, i32 n, KernelOperation op);
 #endif
