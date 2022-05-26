@@ -168,17 +168,20 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
     struct section new_section; //instantiate
     int candidate_index = 0;
 
-    int counter = 0; //keeps track of how many of the same element we have found
+    int counter = 1; //keeps track of how many of the same element we have found
 
     for (int i=0; i < length-1; i++){ //length -1 to prevent us from accessing too far in hue_array[i+1]
-        if (counter >= 3){ 
-            counter = 0; //if the object is too wide we ignore it
+        if (counter >= 3){
+			printf("if 1 \n"); 
+            counter = 1; //if the object is too wide we ignore it
         }
 
         else if(hue_array[i] == hue_array[i+1]){ //if we have found consecutive identical hues on pixels
-            counter += 1;
+            printf("if 2 with hue_array[%d] = %d and hue_array %d +1 = %d \n", i, hue_array[i], i, hue_array[i+1]);
+			counter += 1;
         }
         else if(counter >= min_bound){ //min bound of recognition
+			printf("if 3 \n");
 			(foundcandidates+candidate_index)->end_coord = i;
 			counter = 0; 
 	 		candidate_index += 1;
@@ -186,6 +189,7 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
 
         }
         if (counter == min_bound){ //object is large enough to be considered
+			printf("if 4 \n");
             struct section new_section;
             new_section.hue = hue_array[i];
             new_section.start_coord = i-min_bound;
@@ -216,7 +220,12 @@ int main()
 	int i = 0; 
 	while((i<7)){ 	
 			
-			printf("%d", (found_candidates + i)->hue);
+			printf("hue = %d \n", (found_candidates + i)->hue);
+			printf("start_coord = %d \n", (found_candidates + i)->hue);
+			printf("end_coord = %d \n", (found_candidates + i)->start_coord);
+			printf("y = %d \n", (found_candidates + i)->y);
+			printf("\n"); 
+
 			//printhue = f("he = %d, start = %d, e->d = %d", found_candidates[i].hue, found_candidates[i].start_coord, found_candidates[i].end_coord);
 			//	printf("\n");
 			i++;
