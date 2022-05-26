@@ -221,14 +221,14 @@ int main()
 	//code to test find candidates
 	int line_size = 36;
 	
-	int line[36] = {1,1,2,3,3,3,4,4,4,4,4,4,4,5,5,6,6,6,6,7,8,8,123,123,3,4,5,2,1,2,3,4,44,44,44,44};
+	int line[36] = {1,1,2,3,3,3,4,4,4,4,4,4,4,5,5,6,6,6,6,7,8,8,123,123,3,4,5,2,1,2,3,4,44,44,44,45};
 	
 	struct section *found_candidates;
 	
 	found_candidates = (struct section*) malloc ( (line_size) * sizeof(struct section));
-	find_candidates_in_array(found_candidates, line, 7, 0, 0, 0);
+	find_candidates_in_array(found_candidates, line, line_size, 0, 0, 0);
 	int i = 0; 
-	while((i<line_size)){ 	
+	while((i<line_size && (found_candidates + i)->hue!=-1)){ 	
 			
 			printf("hue = %d \n", (found_candidates + i)->hue);
 			printf("start_coord = %d \n", (found_candidates + i)->start_coord);
