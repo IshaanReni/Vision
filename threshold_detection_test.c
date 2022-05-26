@@ -9,7 +9,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-struct section{
+typedef struct section{
     int hue;
     int start_coord;
     int end_coord;
@@ -162,9 +162,9 @@ int threshold(unsigned char *redpointer, unsigned char *greenpointer, unsigned c
 }
 
 
-struct section* find_candidates_in_array( int hue_array[], int length, int bottom_hue, int top_hue, int y){
+void find_candidates_in_array(struct section* foundcandidates, int hue_array[], int length, int bottom_hue, int top_hue, int y){
 	int min_bound = 2;
-    struct section candidates[length]; //end symbol will be a NULL (don't have dynamic arrays)
+    //struct section candidates[length]; //end symbol will be a NULL (don't have dynamic arrays)
     struct section new_section; //instantiate
     int candidate_index = 0;
 
@@ -179,9 +179,9 @@ struct section* find_candidates_in_array( int hue_array[], int length, int botto
             counter += 1;
         }
         else if(counter >= min_bound){ //min bound of recognition
+			(foundcandidates+candidate_index)->end_coord = i;
 			counter = 0; 
 	 		candidate_index += 1;
-			new_section.end_coord = i; 
             //if object is large enough to be considered and we encounter a new hue; we add it to the list (increment candidate index)
 
         }
@@ -190,7 +190,7 @@ struct section* find_candidates_in_array( int hue_array[], int length, int botto
             new_section.hue = hue_array[i];
             new_section.start_coord = i-min_bound;
 
-            candidates[candidate_index] = new_section; //found relevant section - add it to the list
+            *(foundcandidates+candidate_index) = new_section; //found relevant section - add it to the list
         } 
     }  
 	struct section end_candidates_marker; //just something to mark end of candidates array (we are using array of maximal size but won't necessaraly fill it up)
@@ -198,7 +198,10 @@ struct section* find_candidates_in_array( int hue_array[], int length, int botto
 	end_candidates_marker.start_coord = -1;
 	end_candidates_marker.hue = -1;
 	end_candidates_marker.y = -1;
-	return candidates;
+
+	*(foundcandidates+candidate_index) = end_candidates_marker; //adding final element to array
+
+
 }
 int main()
 {
@@ -207,11 +210,13 @@ int main()
 	int line[7] = {1,1,2,3,3,3,4};
 
 	struct section *found_candidates;
-	found_candidates = find_candidates_in_array(line, 7, 0, 0, 0);
-
-	int i =0; 
-	while((i<7)){ 	// printf("hello %d", i);
-			printf("d", (found_candidates + i)->hue);
+	
+	found_candidates = (struct section*) malloc ( (7) * sizeof(struct section));
+	find_candidates_in_array(found_candidates, line, 7, 0, 0, 0);
+	int i = 0; 
+	while((i<7)){ 	
+			
+			printf("%d", (found_candidates + i)->hue);
 			//printhue = f("he = %d, start = %d, e->d = %d", found_candidates[i].hue, found_candidates[i].start_coord, found_candidates[i].end_coord);
 			//	printf("\n");
 			i++;
