@@ -188,6 +188,11 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
         else if(hue_array[i] == hue_array[i+1]){ //if we have found consecutive identical hues on pixels
             printf("if 2 with hue_array[%d] = %d and hue_array %d +1 = %d \n", i, hue_array[i], i, hue_array[i+1]);
 			counter += 1;
+			if ((i == length-2) && (counter >= min_bound) && (counter < max_bound)){// we are on second to last pixel
+				candidate_index += 1; 
+				counter  = 1;
+
+			}
         }
         else if(counter >= min_bound){ //min bound of recognition
 			
@@ -221,7 +226,7 @@ int main()
 	//code to test find candidates
 	int line_size = 36;
 	
-	int line[36] = {1,1,2,3,3,3,4,4,4,4,4,4,4,5,5,6,6,6,6,7,8,8,123,123,3,4,5,2,1,2,3,4,44,44,44,45};
+	int line[36] = {1,1,2,3,3,3,4,4,4,4,4,4,4,5,5,6,6,6,6,7,8,8,123,123,3,4,5,2,1,2,3,4,44,44,44,44};
 	
 	struct section *found_candidates;
 	
