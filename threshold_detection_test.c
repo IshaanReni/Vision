@@ -163,7 +163,8 @@ int threshold(unsigned char *redpointer, unsigned char *greenpointer, unsigned c
 
 
 void find_candidates_in_array(struct section* foundcandidates, int hue_array[], int length, int bottom_hue, int top_hue, int y){
-	int min_bound = 2;
+	int min_bound = 3;
+	int max_bound = 5;
     //struct section candidates[length]; //end symbol will be a NULL (don't have dynamic arrays)
     struct section new_section; //instantiate
     int candidate_index = 0;
@@ -175,28 +176,35 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
 			printf("if 4  with i = %d \n", i);
             struct section new_section;
             new_section.hue = hue_array[i];
-            new_section.start_coord = (i-min_bound+1);
+            new_section.start_coord = (i-min_bound+1);//+1 to correct starting from 0 earlier
 
             *(foundcandidates+candidate_index) = new_section; //found relevant section - add it to the list
         } 
 
-		if (counter >= 3){
+		if (counter >= max_bound){
 			printf("if 1 \n"); 
             counter = 1; //if the object is too wide we ignore it
         }
-
         else if(hue_array[i] == hue_array[i+1]){ //if we have found consecutive identical hues on pixels
             printf("if 2 with hue_array[%d] = %d and hue_array %d +1 = %d \n", i, hue_array[i], i, hue_array[i+1]);
 			counter += 1;
         }
         else if(counter >= min_bound){ //min bound of recognition
+			
 			printf("if 3 \n");
 			(foundcandidates+candidate_index)->end_coord = i;
-			counter = 0; 
-	 		candidate_index += 1;
+		
+			//if (counter < max_bound){
+				candidate_index += 1; //if we are above the maximum bound we don't want to increment the candidate index as we want that location to be overwritten
+			//}
+			counter = 1; 
+	 		
             //if object is large enough to be considered and we encounter a new hue; we add it to the list (increment candidate index)
-
-        }
+        }		
+		else {
+			counter = 1; 
+			printf("resetting counter \n ");
+		}
     }  
 	struct section end_candidates_marker; //just something to mark end of candidates array (we are using array of maximal size but won't necessaraly fill it up)
 	end_candidates_marker.end_coord = -1; //we use -1 (impossible coordiante and hue to mark end)
@@ -211,15 +219,16 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
 int main()
 {
 	//code to test find candidates
+	int line_size = 36;
 	
-	int line[7] = {1,1,2,3,3,3,4};
-
+	int line[36] = {1,1,2,3,3,3,4,4,4,4,4,4,4,5,5,6,6,6,6,7,8,8,123,123,3,4,5,2,1,2,3,4,44,44,44,44};
+	
 	struct section *found_candidates;
 	
-	found_candidates = (struct section*) malloc ( (7) * sizeof(struct section));
+	found_candidates = (struct section*) malloc ( (line_size) * sizeof(struct section));
 	find_candidates_in_array(found_candidates, line, 7, 0, 0, 0);
 	int i = 0; 
-	while((i<7)){ 	
+	while((i<line_size)){ 	
 			
 			printf("hue = %d \n", (found_candidates + i)->hue);
 			printf("start_coord = %d \n", (found_candidates + i)->start_coord);
