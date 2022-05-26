@@ -171,7 +171,16 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
     int counter = 1; //keeps track of how many of the same element we have found
 
     for (int i=0; i < length-1; i++){ //length -1 to prevent us from accessing too far in hue_array[i+1]
-        if (counter >= 3){
+        if (counter == min_bound){ //object is large enough to be considered - add to array (first time we go over)
+			printf("if 4  with i = %d \n", i);
+            struct section new_section;
+            new_section.hue = hue_array[i];
+            new_section.start_coord = (i-min_bound+1);
+
+            *(foundcandidates+candidate_index) = new_section; //found relevant section - add it to the list
+        } 
+
+		if (counter >= 3){
 			printf("if 1 \n"); 
             counter = 1; //if the object is too wide we ignore it
         }
@@ -188,14 +197,6 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
             //if object is large enough to be considered and we encounter a new hue; we add it to the list (increment candidate index)
 
         }
-        if (counter == min_bound){ //object is large enough to be considered
-			printf("if 4 \n");
-            struct section new_section;
-            new_section.hue = hue_array[i];
-            new_section.start_coord = i-min_bound;
-
-            *(foundcandidates+candidate_index) = new_section; //found relevant section - add it to the list
-        } 
     }  
 	struct section end_candidates_marker; //just something to mark end of candidates array (we are using array of maximal size but won't necessaraly fill it up)
 	end_candidates_marker.end_coord = -1; //we use -1 (impossible coordiante and hue to mark end)
@@ -221,8 +222,8 @@ int main()
 	while((i<7)){ 	
 			
 			printf("hue = %d \n", (found_candidates + i)->hue);
-			printf("start_coord = %d \n", (found_candidates + i)->hue);
-			printf("end_coord = %d \n", (found_candidates + i)->start_coord);
+			printf("start_coord = %d \n", (found_candidates + i)->start_coord);
+			printf("end_coord = %d \n", (found_candidates + i)->end_coord);
 			printf("y = %d \n", (found_candidates + i)->y);
 			printf("\n"); 
 
