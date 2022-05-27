@@ -15,6 +15,7 @@ typedef enum
 	GaussianBlur,
 	Sobel,
 	Hough,
+	Solid,
 } KernelOperation;
 
 void kernel_operation(u8 *data, i32 x, i32 y, i32 n, KernelOperation op);
