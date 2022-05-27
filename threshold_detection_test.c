@@ -13,8 +13,15 @@ typedef struct section{
     int hue;
     int start_coord;
     int end_coord;
-    int y;
+    int other_axis_coord;
 };
+
+typedef struct pair{
+	int x; 
+	int y;
+};
+
+
 
 
 float wrapparound(float f)
@@ -161,8 +168,7 @@ int threshold(unsigned char *redpointer, unsigned char *greenpointer, unsigned c
     return hue;
 }
 
-
-void find_candidates_in_array(struct section* foundcandidates, int hue_array[], int length, int bottom_hue, int top_hue, int y){
+void find_candidates_in_array(struct section* foundcandidates, int hue_array[], int length, int bottom_hue, int top_hue, int other_axis_coord){
 	int min_bound = 3;
 	int max_bound = 5;
     //struct section candidates[length]; //end symbol will be a NULL (don't have dynamic arrays)
@@ -177,6 +183,7 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
             struct section new_section;
             new_section.hue = hue_array[i];
             new_section.start_coord = (i-min_bound+1);//+1 to correct starting from 0 earlier
+			new_section.other_axis_coord = other_axis_coord;
 
             *(foundcandidates+candidate_index) = new_section; //found relevant section - add it to the list
         } 
@@ -215,31 +222,68 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
 	end_candidates_marker.end_coord = -1; //we use -1 (impossible coordiante and hue to mark end)
 	end_candidates_marker.start_coord = -1;
 	end_candidates_marker.hue = -1;
-	end_candidates_marker.y = -1;
+	end_candidates_marker.other_axis_coord = -1;
 
 	*(foundcandidates+candidate_index) = end_candidates_marker; //adding final element to array
+}
 
+void find_intersecting_sections(struct pair* matches, int* matches_index, struct section* all_x_candidates, int all_x_candidates_size, struct section* all_y_candidates, int all_y_candidates_size)
+{
+	*matches_index = 0; //NB : this also acts as a size marker for matches at the end
+	
+	matches = (struct pair*) malloc ( (fmax(all_x_candidates_size, all_y_candidates_size)) * sizeof(struct pair));
+
+	for(int i=0; i<all_x_candidates_size; i++){
+		for(int j=0; j<all_y_candidates_size; j++){
+			if(((all_x_candidates+i)->other_axis_coord >= (all_y_candidates+j)->start_coord) && ((all_x_candidates+i)->other_axis_coord <= (all_y_candidates+j)->end_coord)){
+				if(((all_y_candidates+j)->other_axis_coord >= (all_x_candidates+i)->start_coord) && ((all_y_candidates+j)->other_axis_coord <= (all_x_candidates+i)->end_coord)){
+					if( ((all_x_candidates+i)->hue == (all_y_candidates+j)->hue) && ((all_x_candidates+i)->hue != -1)){
+						//if sections line up and are not end markers- we have a point that we want to add to the return array
+						struct pair new_match;
+						new_match.x = all_y_candidates->other_axis_coord;
+						new_match.y = all_x_candidates->other_axis_coord;
+						*(matches + *matches_index) = new_match; 
+						*matches_index += 1;
+					} 
+				}
+			}
+		}
+	}
+	//add an end marker 
+	struct pair end_marker; 
+	end_marker.x = -1; 
+	end_marker.y = -1;
+	*(matches + *matches_index) = end_marker; 
 
 }
+
+
+
 int main()
 {
-	//code to test find candidates
-	int line_size = 36;
+	//x axis work
+	int x_line_size = 15;
+	int x_line[15] = {1,1,1,3,3,3,4,4,4,4,4,4,4,5,5};
+	struct section *found_candidates_x;
+	found_candidates_x = (struct section*) malloc ( (x_line_size) * sizeof(struct section));
+	find_candidates_in_array(found_candidates_x, x_line, x_line_size, 0, 0, 0);
+
+	int y_line_size = 12;
+	int y_line[12] = {1,1,1,0,1,2,2,2,3,2,1,1};
+	struct section *found_candidates_y;
+	found_candidates_y = (struct section*) malloc ( (y_line_size) * sizeof(struct section));
+	find_candidates_in_array(found_candidates_y, y_line, y_line_size, 0, 0, 0);
 	
-	int line[36] = {1,1,2,3,3,3,4,4,4,4,4,4,4,5,5,6,6,6,6,7,8,8,123,123,3,4,5,2,1,2,3,4,44,44,44,44};
+	struct pair* matches; 
+	int* result_size_ptr; 
+	find_intersecting_sections(matches,result_size_ptr,found_candidates_x, x_line_size, found_candidates_y, y_line_size);
+
+
 	
-	struct section *found_candidates;
-	
-	found_candidates = (struct section*) malloc ( (line_size) * sizeof(struct section));
-	find_candidates_in_array(found_candidates, line, line_size, 0, 0, 0);
 	int i = 0; 
-	while((i<line_size && (found_candidates + i)->hue!=-1)){ 	
-			
-			printf("hue = %d \n", (found_candidates + i)->hue);
-			printf("start_coord = %d \n", (found_candidates + i)->start_coord);
-			printf("end_coord = %d \n", (found_candidates + i)->end_coord);
-			printf("y = %d \n", (found_candidates + i)->y);
-			printf("\n"); 
+	while((i<*result_size_ptr && (matches + i)->x!=-1)){ 
+
+			printf("matche at : (%d, %d) ", (matches+i)->x, (matches+i)->y);
 
 			//printhue = f("he = %d, start = %d, e->d = %d", found_candidates[i].hue, found_candidates[i].start_coord, found_candidates[i].end_coord);
 			//	printf("\n");
