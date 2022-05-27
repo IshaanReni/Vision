@@ -168,7 +168,7 @@ int threshold(unsigned char *redpointer, unsigned char *greenpointer, unsigned c
     return hue;
 }
 
-void find_candidates_in_array(struct section* foundcandidates, int hue_array[], int length, int bottom_hue, int top_hue, int other_axis_coord){
+int find_candidates_in_array(struct section* foundcandidates, int hue_array[], int length, int bottom_hue, int top_hue, int other_axis_coord){
 	int min_bound = 3;
 	int max_bound = 5;
     //struct section candidates[length]; //end symbol will be a NULL (don't have dynamic arrays)
@@ -225,6 +225,63 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
 	end_candidates_marker.other_axis_coord = -1;
 
 	*(foundcandidates+candidate_index) = end_candidates_marker; //adding final element to array
+	return candidate_index; //return number of candidtates found
+}
+
+void gridify(int width, int height, int* hue_array,  struct section* found_candidates_x, struct section* found_candidates_y ){
+	/*
+	input = image width, image height, input array(from jox) 
+	output = output all candidates in a single array, 
+	split input array into rows or scan row by row and run the find candidates function on them. 
+	then store the candidates as you go row by row.
+	do the same for the y coords
+	send 2 arrays back to scott
+	*/
+	
+	int x_line[width];
+	found_candidates_x = (struct section*) malloc ( (width) * sizeof(struct section));
+
+	int old_numb_cand_found = 0;
+	for (int row = 0; row < height; row++){ //iterating by row
+		for (int column=0; column < width; column++){ //iterating through each element one by one and adding each element to x_line
+			x_line[column] = *(hue_array+row*width+column);
+		}
+		//we now have a complete row to operate on
+		struct section *candidatesforx; //internal array of candidates for this y (row)
+		candidatesforx = (struct section*) malloc ( (width) * sizeof(struct section));
+		int numb_new_cand_found = find_candidates_in_array(candidatesforx, x_line, width, 0, 0, row);
+
+		int i = 0;
+		while(i<width && (candidatesforx + i)->hue!=-1 && (i < numb_new_cand_found) ){ //checks that we are not counting the end_candidate as an actual candidate
+			*(found_candidates_x + old_numb_cand_found + i) = *(candidatesforx + i); //add a found x candidate from found_candidates to the array found_candidates_x as long as it isn't the end_candidate
+			i++;
+		}
+		old_numb_cand_found += numb_new_cand_found;
+	}
+	
+
+	int y_line[height];
+	found_candidates_y = (struct section*) malloc ( (height) * sizeof(struct section));
+
+	old_numb_cand_found = 0;
+	for (int column = 0; column < width; column++){ //iterating by row
+		for (int row=0; row < height; row++){ //iterating through each element one by one and adding each element to x_line
+			y_line[row] = *(hue_array+row*width+column);
+		}
+		//we now have a complete row to operate on
+		struct section *candidatesfory; //internal array of candidates for this y (row)
+		candidatesfory = (struct section*) malloc ( (height) * sizeof(struct section));
+		int numb_new_cand_found = find_candidates_in_array(candidatesfory, x_line, width, 0, 0, height);
+
+		int i = 0;
+		while(i<width && (candidatesfory + i)->hue!=-1 && (i < numb_new_cand_found) ){ //checks that we are not counting the end_candidate as an actual candidate
+			*(found_candidates_y + old_numb_cand_found + i) = *(candidatesfory + i); //add a found x candidate from found_candidates to the array found_candidates_x as long as it isn't the end_candidate
+			i++;
+		}
+		old_numb_cand_found += numb_new_cand_found;
+	}
+	
+
 }
 
 void find_intersecting_sections(struct pair* matches, int* matches_index_ptr, struct section* all_x_candidates, int all_x_candidates_size, struct section* all_y_candidates, int all_y_candidates_size)
@@ -266,30 +323,35 @@ void find_intersecting_sections(struct pair* matches, int* matches_index_ptr, st
 int main()
 {
 	//x axis work
-	int x_line_size = 15;
-	int x_line[15] = {1,1,1,3,3,3,4,4,4,4,4,4,4,5,5};
+	// int x_line_size = 15;
+	// int x_line[15] = {1,1,1,3,3,3,4,4,4,4,4,4,4,5,5};
 	struct section *found_candidates_x;
-	found_candidates_x = (struct section*) malloc ( (x_line_size) * sizeof(struct section));
-	find_candidates_in_array(found_candidates_x, x_line, x_line_size, 0, 0, 0);
+	// found_candidates_x = (struct section*) malloc ( (x_line_size) * sizeof(struct section));
+	// find_candidates_in_array(found_candidates_x, x_line, x_line_size, 0, 0, 0);
 
 	
 
-	int y_line_size = 12;
-	int y_line[12] = {1,1,1,0,1,2,2,2,3,2,1,1};
+	// int y_line_size = 12;
+	// int y_line[12] = {1,1,1,0,1,2,2,2,3,2,1,1};
 	struct section *found_candidates_y;
-	found_candidates_y = (struct section*) malloc ( (y_line_size) * sizeof(struct section));
-	find_candidates_in_array(found_candidates_y, y_line, y_line_size, 0, 0, 0);
+	// found_candidates_y = (struct section*) malloc ( (y_line_size) * sizeof(struct section));
+	// find_candidates_in_array(found_candidates_y, y_line, y_line_size, 0, 0, 0);
+
+	
+	
+	int arrayy[16] = {1,1,2,3,4,5,6,6,6,7,8,9,10,10,10,10}; 
+
+	gridify(4, 4, arrayy, found_candidates_x, found_candidates_y);
 
 	printf(" done with finding candidates \n \n");
-	
-	
+
 	struct pair* matches; 
 	int* result_size_ptr;
-
+	printf("\n break1");
 	result_size_ptr = (int*) malloc(sizeof(int));
-
-	find_intersecting_sections(matches,result_size_ptr,found_candidates_x, x_line_size, found_candidates_y, y_line_size);
-	
+	printf("\n break2");
+	find_intersecting_sections(matches,result_size_ptr,found_candidates_x, 4, found_candidates_y, 4);
+	printf("\n break3");
 	printf(" DEBUG ----- GOT HERE \n");
 	printf("DEBUG %d \n", *result_size_ptr);
 	/*
