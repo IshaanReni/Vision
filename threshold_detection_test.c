@@ -9,7 +9,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-/*
+
 typedef struct section
 {
 	int hue;
@@ -172,39 +172,101 @@ int *find_candidates_in_array(int *hue_array, int length, int bottom_hue, int to
 {
 	struct section candidates[length]; // end symbol will be an X (don't have dynamic arrays)
 
-	int candidate_index = 0;
-
-	int counter = 0; // keeps track of how many of the same element we have found
-
-	for (int i = 0; i < length; i++)
+	void find_candidates_in_array(struct section * foundcandidates, int hue_array[], int length, int bottom_hue, int top_hue, int y)
 	{
-		if (counter == 100)
-		{
-			counter = 0; // if the object is too wide we ignore it
-		}
+		int min_bound = 3;
+		int max_bound = 5;
+		// struct section candidates[length]; //end symbol will be a NULL (don't have dynamic arrays)
+		struct section new_section; // instantiate
+		int candidate_index = 0;
 
-		if (hue_array[i] == hue_array[i + 1])
-		{ // if we have found consecutive identical hues on pixels
-			counter += 1;
-		}
-		else if (counter >= 30)
-		{
-			// if object is large enough to be considered and we encounter a new hue; we add it to the list (incrmeentne candidate index)
-		}
-		if (counter == 30)
-		{ // object is large enough to be considered
-			struct section new_section;
-			new_section.hue = hue_array[i];
-			new_section.start_coord = i;
+		int counter = 1; // keeps track of how many of the same element we have found
 
-			candidate_found_at[candidate_found_index] = i;
+		for (int i = 0; i < length - 1; i++)
+		{ // length -1 to prevent us from accessing too far in hue_array[i+1]
+			if (counter == min_bound)
+			{ // object is large enough to be considered - add to array (first time we go over)
+				printf("if 4  with i = %d \n", i);
+				struct section new_section;
+				new_section.hue = hue_array[i];
+				new_section.start_coord = (i - min_bound + 1); //+1 to correct starting from 0 earlier
+
+				*(foundcandidates + candidate_index) = new_section; // found relevant section - add it to the list
+			}
+
+			if (counter >= max_bound)
+			{
+				printf("if 1 \n");
+				counter = 1; // if the object is too wide we ignore it
+			}
+			else if (hue_array[i] == hue_array[i + 1])
+			{ // if we have found consecutive identical hues on pixels
+				printf("if 2 with hue_array[%d] = %d and hue_array %d +1 = %d \n", i, hue_array[i], i, hue_array[i + 1]);
+				counter += 1;
+				if ((i == length - 2) && (counter >= min_bound) && (counter < max_bound))
+				{ // we are on second to last pixel
+					candidate_index += 1;
+					counter = 1;
+				}
+			}
+			else if (counter >= min_bound)
+			{ // min bound of recognition
+
+				printf("if 3 \n");
+				(foundcandidates + candidate_index)->end_coord = i;
+
+				// if (counter < max_bound){
+				candidate_index += 1; // if we are above the maximum bound we don't want to increment the candidate index as we want that location to be overwritten
+				//}
+				counter = 1;
+
+				// if object is large enough to be considered and we encounter a new hue; we add it to the list (increment candidate index)
+			}
+			else
+			{
+				counter = 1;
+				printf("resetting counter \n ");
+			}
 		}
+		struct section end_candidates_marker; // just something to mark end of candidates array (we are using array of maximal size but won't necessaraly fill it up)
+		end_candidates_marker.end_coord = -1; // we use -1 (impossible coordiante and hue to mark end)
+		end_candidates_marker.start_coord = -1;
+		end_candidates_marker.hue = -1;
+		end_candidates_marker.y = -1;
+
+		*(foundcandidates + candidate_index) = end_candidates_marker; // adding final element to array
+
+		candidate_found_at[candidate_found_index] = i;
 	}
 }
-*/
+}
 int main()
 {
+	// code to test find candidates
+	int line_size = 36;
 
+	int line[36] = {1, 1, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 6, 6, 6, 6, 7, 8, 8, 123, 123, 3, 4, 5, 2, 1, 2, 3, 4, 44, 44, 44, 44};
+
+	struct section *found_candidates;
+
+	found_candidates = (struct section *)malloc((line_size) * sizeof(struct section));
+	find_candidates_in_array(found_candidates, line, line_size, 0, 0, 0);
+	int i = 0;
+	while ((i < line_size && (found_candidates + i)->hue != -1))
+	{
+
+		printf("hue = %d \n", (found_candidates + i)->hue);
+		printf("start_coord = %d \n", (found_candidates + i)->start_coord);
+		printf("end_coord = %d \n", (found_candidates + i)->end_coord);
+		printf("y = %d \n", (found_candidates + i)->y);
+		printf("\n");
+
+		// printhue = f("he = %d, start = %d, e->d = %d", found_candidates[i].hue, found_candidates[i].start_coord, found_candidates[i].end_coord);
+		//	printf("\n");
+		i++;
+	}
+
+	/*
 	int x, y, n;
 	unsigned char *data = stbi_load("images/alien3.png", &x, &y, &n, 0); // pointer to pixel data
 	i32 bin_count = 15;
@@ -280,6 +342,18 @@ int main()
 		// printf("r = %d, g = %d, b = %d \n", *redpointer,*greenpointer,*bluepointer);
 		// printf("\n ");
 	}
+	//expected result
+	 1, 0, 1
+	 -1, -1, -1
+	 Unallocated
+	 ...
+
+
+
+
+
+	stbi_write_png("result2.png", x, y, n, new_data, x * n * sizeof(uint8_t));
 	*/
-	stbi_write_png("images/result2.png", x, y, n, data, x * n * sizeof(uint8_t));
+
+	// int[]
 }
