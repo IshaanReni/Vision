@@ -289,9 +289,7 @@ void find_intersecting_sections(struct pair* matches, int* matches_index_ptr, st
 	*matches_index_ptr = 0; //NB : this also acts as a size marker for matches at the end
 
 	matches = (struct pair*) malloc ( (fmax(all_x_candidates_size, all_y_candidates_size)) * sizeof(struct pair));
-
-	//printf(" DEBUG ----- GOT HERE \n \n");
-	
+	printf(" DEBUG ----- GOT HERE \n \n");
 	for(int i=0; i<all_x_candidates_size; i++){
 		while ((all_x_candidates+i)->hue != -1){
 			for(int j=0; j<all_y_candidates_size; j++){
@@ -304,7 +302,11 @@ void find_intersecting_sections(struct pair* matches, int* matches_index_ptr, st
 							new_match.y = all_x_candidates->other_axis_coord;
 							*(matches + *matches_index_ptr) = new_match; 
 							*matches_index_ptr += 1;
-							printf("DEBUG new_match->x = %d new_match->y = %d \n \n", new_match.x, new_match.y);
+							if(new_match.x != 0){
+								printf("DEBUG new_match->x = %d new_match->y = %d \n \n", new_match.x, new_match.y);
+
+							}
+							
 						} 
 					}
 				}
@@ -323,18 +325,18 @@ void find_intersecting_sections(struct pair* matches, int* matches_index_ptr, st
 int main()
 {
 	//x axis work
-	// int x_line_size = 15;
+	 int x_line_size = 4;
 	// int x_line[15] = {1,1,1,3,3,3,4,4,4,4,4,4,4,5,5};
 	struct section *found_candidates_x;
-	// found_candidates_x = (struct section*) malloc ( (x_line_size) * sizeof(struct section));
+	found_candidates_x = (struct section*) malloc ( (x_line_size) * sizeof(struct section));
 	// find_candidates_in_array(found_candidates_x, x_line, x_line_size, 0, 0, 0);
 
 	
 
-	// int y_line_size = 12;
+	int y_line_size = 4;
 	// int y_line[12] = {1,1,1,0,1,2,2,2,3,2,1,1};
 	struct section *found_candidates_y;
-	// found_candidates_y = (struct section*) malloc ( (y_line_size) * sizeof(struct section));
+	found_candidates_y = (struct section*) malloc ( (y_line_size) * sizeof(struct section));
 	// find_candidates_in_array(found_candidates_y, y_line, y_line_size, 0, 0, 0);
 
 	
@@ -345,25 +347,20 @@ int main()
 
 	printf(" done with finding candidates \n \n");
 
+	
 	struct pair* matches; 
 	int* result_size_ptr;
-	printf("\n break1");
+	printf("break1 \n");
 	result_size_ptr = (int*) malloc(sizeof(int));
-	printf("\n break2");
-	find_intersecting_sections(matches,result_size_ptr,found_candidates_x, 4, found_candidates_y, 4);
-	printf("\n break3");
-	printf(" DEBUG ----- GOT HERE \n");
-	printf("DEBUG %d \n", *result_size_ptr);
-	/*
-	int i = 0; 
-	while((i<*result_size_ptr && (matches + i)->x !=-1)){ 
-		//printf("matche at : (%d, %d) ", (matches+i)->x, (matches+i)->y);
-		//printhue = f("he = %d, start = %d, e->d = %d", found_candidates[i].hue, found_candidates[i].start_coord, found_candidates[i].end_coord);
-		//	printf("\n");
-		i++;
-	}
 
-	*/  
+	printf("break2 \n");
+
+	printf("DEBUG : found_candidates_x->hue = %d \n", found_candidates_x->hue);
+	
+	find_intersecting_sections(matches,result_size_ptr,found_candidates_x, 4, found_candidates_y, 4);
+	
+	printf("break3 \n");
+	  
 
 
 
