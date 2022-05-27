@@ -227,24 +227,29 @@ void find_candidates_in_array(struct section* foundcandidates, int hue_array[], 
 	*(foundcandidates+candidate_index) = end_candidates_marker; //adding final element to array
 }
 
-void find_intersecting_sections(struct pair* matches, int* matches_index, struct section* all_x_candidates, int all_x_candidates_size, struct section* all_y_candidates, int all_y_candidates_size)
+void find_intersecting_sections(struct pair* matches, int* matches_index_ptr, struct section* all_x_candidates, int all_x_candidates_size, struct section* all_y_candidates, int all_y_candidates_size)
 {
-	*matches_index = 0; //NB : this also acts as a size marker for matches at the end
-	
+	*matches_index_ptr = 0; //NB : this also acts as a size marker for matches at the end
+
 	matches = (struct pair*) malloc ( (fmax(all_x_candidates_size, all_y_candidates_size)) * sizeof(struct pair));
 
+	//printf(" DEBUG ----- GOT HERE \n \n");
+	
 	for(int i=0; i<all_x_candidates_size; i++){
-		for(int j=0; j<all_y_candidates_size; j++){
-			if(((all_x_candidates+i)->other_axis_coord >= (all_y_candidates+j)->start_coord) && ((all_x_candidates+i)->other_axis_coord <= (all_y_candidates+j)->end_coord)){
-				if(((all_y_candidates+j)->other_axis_coord >= (all_x_candidates+i)->start_coord) && ((all_y_candidates+j)->other_axis_coord <= (all_x_candidates+i)->end_coord)){
-					if( ((all_x_candidates+i)->hue == (all_y_candidates+j)->hue) && ((all_x_candidates+i)->hue != -1)){
-						//if sections line up and are not end markers- we have a point that we want to add to the return array
-						struct pair new_match;
-						new_match.x = all_y_candidates->other_axis_coord;
-						new_match.y = all_x_candidates->other_axis_coord;
-						*(matches + *matches_index) = new_match; 
-						*matches_index += 1;
-					} 
+		while ((all_x_candidates+i)->hue != -1){
+			for(int j=0; j<all_y_candidates_size; j++){
+				if(((all_x_candidates+i)->other_axis_coord >= (all_y_candidates+j)->start_coord) && ((all_x_candidates+i)->other_axis_coord <= (all_y_candidates+j)->end_coord)){
+					if(((all_y_candidates+j)->other_axis_coord >= (all_x_candidates+i)->start_coord) && ((all_y_candidates+j)->other_axis_coord <= (all_x_candidates+i)->end_coord)){
+						if( ((all_x_candidates+i)->hue == (all_y_candidates+j)->hue)){
+							//if sections line up and are not end markers- we have a point that we want to add to the return array
+							struct pair new_match;
+							new_match.x = all_y_candidates->other_axis_coord;
+							new_match.y = all_x_candidates->other_axis_coord;
+							*(matches + *matches_index_ptr) = new_match; 
+							*matches_index_ptr += 1;
+							printf("DEBUG new_match->x = %d new_match->y = %d \n \n", new_match.x, new_match.y);
+						} 
+					}
 				}
 			}
 		}
@@ -253,8 +258,7 @@ void find_intersecting_sections(struct pair* matches, int* matches_index, struct
 	struct pair end_marker; 
 	end_marker.x = -1; 
 	end_marker.y = -1;
-	*(matches + *matches_index) = end_marker; 
-
+	*(matches + *matches_index_ptr) = end_marker; 
 }
 
 
@@ -268,27 +272,42 @@ int main()
 	found_candidates_x = (struct section*) malloc ( (x_line_size) * sizeof(struct section));
 	find_candidates_in_array(found_candidates_x, x_line, x_line_size, 0, 0, 0);
 
+	
+
 	int y_line_size = 12;
 	int y_line[12] = {1,1,1,0,1,2,2,2,3,2,1,1};
 	struct section *found_candidates_y;
 	found_candidates_y = (struct section*) malloc ( (y_line_size) * sizeof(struct section));
 	find_candidates_in_array(found_candidates_y, y_line, y_line_size, 0, 0, 0);
+
+	printf(" done with finding candidates \n \n");
+	
 	
 	struct pair* matches; 
-	int* result_size_ptr; 
+	int* result_size_ptr;
+
+	result_size_ptr = (int*) malloc(sizeof(int));
+
 	find_intersecting_sections(matches,result_size_ptr,found_candidates_x, x_line_size, found_candidates_y, y_line_size);
-
-
 	
+	printf(" DEBUG ----- GOT HERE \n");
+	printf("DEBUG %d \n", *result_size_ptr);
+	/*
 	int i = 0; 
-	while((i<*result_size_ptr && (matches + i)->x!=-1)){ 
+	while((i<*result_size_ptr && (matches + i)->x !=-1)){ 
+		//printf("matche at : (%d, %d) ", (matches+i)->x, (matches+i)->y);
+		//printhue = f("he = %d, start = %d, e->d = %d", found_candidates[i].hue, found_candidates[i].start_coord, found_candidates[i].end_coord);
+		//	printf("\n");
+		i++;
+	}
 
-			printf("matche at : (%d, %d) ", (matches+i)->x, (matches+i)->y);
+	*/  
 
-			//printhue = f("he = %d, start = %d, e->d = %d", found_candidates[i].hue, found_candidates[i].start_coord, found_candidates[i].end_coord);
-			//	printf("\n");
-			i++;
-		}
+
+
+
+
+	//test codes for thresholding
 
 	/*
 	int x, y, n;
