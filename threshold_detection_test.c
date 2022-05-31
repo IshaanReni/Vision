@@ -10,6 +10,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+/*
 typedef struct section
 {
 	int hue;
@@ -240,9 +241,54 @@ int *find_candidates_in_array(int *hue_array, int length, int bottom_hue, int to
 	}
 }
 }
+
+*/
 int main()
 {
+
+	int x, y, n;
+	unsigned char *data = stbi_load("images/p.png", &x, &y, &n, 0); // pointer to pixel data
+	i32 bin_count = 15;
+	u8 *hue_pixels = rgb_to_hue(data, x, y, n, bin_count);
+
+	u8 hue_counts[bin_count] = {0};
+	for (i32 i = 0; i < x * y; i++)
+	{
+		hue_counts[hue_pixels[i]] += 1;
+	}
+
+	for (i32 h = 0; h < bin_count; h++)
+	{
+		printf("%i %i\n", h, hue_counts[h]);
+		if (hue_counts[h] < 50)
+		{
+			continue;
+		}
+
+		u8 *hue_blob = (u8 *)malloc(x * y * sizeof(u8));
+		memset(hue_blob, 0, x * y * sizeof(u8));
+
+		for (i32 p = 0; p < x * y; p++)
+		{
+			if (hue_pixels[p] == h)
+			{
+				hue_blob[p] = 120;
+				// printf("%i ", p);
+			}
+		}
+		kernel_operation(hue_blob, x, y, 1, GaussianBlur);
+		kernel_operation(hue_blob, x, y, 1, Solid);
+		// kernel_operation(hue_blob, x, y, 1, Sobel);
+		// kernel_operation(hue_blob, x, y, 1, Hough);
+
+		char buf[100];
+		snprintf(buf, 100, "images/results/hue_blob%i.png", h);
+
+		stbi_write_png(buf, x, y, 1, hue_blob, x * sizeof(u8));
+	}
+
 	// code to test find candidates
+	/*
 	int line_size = 36;
 
 	int line[36] = {1, 1, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 6, 6, 6, 6, 7, 8, 8, 123, 123, 3, 4, 5, 2, 1, 2, 3, 4, 44, 44, 44, 44};
@@ -265,6 +311,7 @@ int main()
 		//	printf("\n");
 		i++;
 	}
+	*/
 
 	/*
 	int x, y, n;

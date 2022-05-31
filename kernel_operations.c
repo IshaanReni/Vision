@@ -49,8 +49,8 @@ void circle_hough_transform(u8 **in_img, u8 **out_img, i32 x, i32 y)
 				}
 			}
 		}
-		printf("max: %i, r: %i, c: %i \n", max_pixel_val, max_r, max_c);
-		out_img[max_r][max_c] += 100;
+		// printf("max: %i, r: %i, c: %i \n", max_pixel_val, max_r, max_c);
+		out_img[max_r][max_c] += max_pixel_val;
 	}
 	free(t_img);
 	free(t_img_arr);
@@ -68,7 +68,7 @@ void solid_kernel(u8 **in_img, u8 **out_img, i32 x, i32 y)
 	};
 	*/
 
-	i32 k_halfwidth = 15;
+	i32 k_halfwidth = 4;
 	i32 k_tot_size = (2 * k_halfwidth + 1) * (2 * k_halfwidth + 1);
 
 	for (i32 r = 0; r < y; r++)
