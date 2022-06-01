@@ -120,32 +120,50 @@ end
 
 //PERSO ADDITION
 //A delay line needed for kernel operations
-//need to store 2*640+2 pixels of 8 bits each
+//need to store 2*k_halfwidth*640+2 pixels of 8 bits each
 
+int k_halfwidth = 4; 
+
+int delay_line_size = 2*k_halfwidth*640+2; 
 //red delay line
-logic [1281:0][7:0] r_delayline;
+logic [delay_line_size-1:0][7:0] hsv_delayline;
+
 always@(posedge clk) begin
-	r_delayline[0] <= red;
-	for (int i=0; i<1281; i++) begin
-		r_delayline[i+1]<=r_delayline[i];
+	hsv_delayline[0] <= red; //input here will be result of HSV conversion (TODO : replace)
+	for (int i=0; i< delay_line_size-1; i++) begin
+		hsv_delayline[i+1]<=hsv_delayline[i];
 	end
+end
 
-	//green daly line
-	logic [1281:0][7:0] g_delayline;
-	always@(posedge clk) begin
 
-		g_delayline[0] <= green;
-		for (int i=0; i<1281; i++) begin
-			g_delayline[i+1]<=g_delayline[i];
-		end
-	end
 
-	//blue delay line
-	logic [1281:0][7:0] b_delayline;
-	always@(posedge clk) begin
-		b_delayline[0] <= blue;
-		for (int i=0; i<1281; i++) begin
-			b_delayline[i+1]<=b_delayline[i];
+
+//PERSO Addition
+//Solid Kernel relying on delay line
+
+int k_tot_size = (2 * k_halfwidth + 1)*(2*k_halfwidth + 1);  //this is 9x9 kernel
+
+
+//NB : coordinates are [y][x] in JLS code
+// to read from buffer (from 3D coordinates):
+// we use x,y coordinate already calculated (end of buffer and bottom right of kernel)
+
+//attempt to rewrite:
+
+for (int i=0; i< IMAGE_W; i++) begin
+	for (int j=0; j< IMAGE_H; j++) begin
+		if( (x>(2*k_halfwidth+1)) && (y>(2*k_halfwidth+1)) ) begin //check we are not out of bounds
+
+			for (int m=0; m<(2*k_halfwidth+1)) begin 
+				for(int n=0<(2*k_halfwidth+1)) begin
+					p+= hsv_delayline[j+i*(2*k_halfwidth+1)];
+				end
+			end
+
+			p /= k_tot_size - 10; 
+			
+			
+			hsv_delayline[k_halfwidth] = p; //middle of the kernel
 		end
 	end
 end
