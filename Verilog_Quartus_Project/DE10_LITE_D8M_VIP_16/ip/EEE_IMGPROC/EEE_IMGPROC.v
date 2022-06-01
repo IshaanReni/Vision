@@ -122,18 +122,25 @@ end
 //A delay line needed for kernel operations
 //need to store 2*k_halfwidth*640+2 pixels of 8 bits each
 
-int k_halfwidth = 4; 
+localparam k_halfwidth = 4; 
 
-int delay_line_size = 2*k_halfwidth*640+2; 
+localparam delay_line_size = 2*k_halfwidth*640+2; 
 //red delay line
-logic [delay_line_size-1:0][7:0] hsv_delayline;
+reg [7:0]hsv_delayline [delay_line_size-1:0];
 
 always@(posedge clk) begin
 	hsv_delayline[0] <= red; //input here will be result of HSV conversion (TODO : replace)
-	for (int i=0; i< delay_line_size-1; i++) begin
-		hsv_delayline[i+1]<=hsv_delayline[i];
-	end
 end
+
+generate
+	genvar i;
+	for (integer i=0; i< delay_line_size-1; i = i + 1) begin: gendel1
+		always@(posedge clk) begin
+			hsv_delayline[i+1]<=hsv_delayline[i];
+		end
+	end	
+endgenerate
+
 
 
 
@@ -141,7 +148,7 @@ end
 //PERSO Addition
 //Solid Kernel relying on delay line
 
-int k_tot_size = (2 * k_halfwidth + 1)*(2*k_halfwidth + 1);  //this is 9x9 kernel
+integer k_tot_size = (2 * k_halfwidth + 1)*(2*k_halfwidth + 1);  //this is 9x9 kernel
 
 
 //NB : coordinates are [y][x] in JLS code
@@ -149,13 +156,16 @@ int k_tot_size = (2 * k_halfwidth + 1)*(2*k_halfwidth + 1);  //this is 9x9 kerne
 // we use x,y coordinate already calculated (end of buffer and bottom right of kernel)
 
 //attempt to rewrite:
-
-for (int i=0; i< IMAGE_W; i++) begin
-	for (int j=0; j< IMAGE_H; j++) begin
+/*
+generate
+genvar i;
+for (i=0; i< IMAGE_W; i = i + 1) begin
+	genvar j;
+	for (j=0; j< IMAGE_H; j = j + 1) begin
 		if( (x>(2*k_halfwidth+1)) && (y>(2*k_halfwidth+1)) ) begin //check we are not out of bounds
 
-			for (int m=0; m<(2*k_halfwidth+1)) begin 
-				for(int n=0<(2*k_halfwidth+1)) begin
+			for (integer m=0; m<(2*k_halfwidth+1)) begin 
+				for(integer n=0<(2*k_halfwidth+1)) begin
 					p+= hsv_delayline[j+i*(2*k_halfwidth+1)];
 				end
 			end
@@ -167,7 +177,8 @@ for (int i=0; i< IMAGE_W; i++) begin
 		end
 	end
 end
-
+endgenerate
+*/
 
 //Find first and last red pixels
 reg [10:0] x_min, y_min, x_max, y_max;
