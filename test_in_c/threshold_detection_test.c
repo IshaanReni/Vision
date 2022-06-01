@@ -10,6 +10,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+<<<<<<< HEAD:threshold_detection_test.c
 /*
 typedef struct section
 {
@@ -19,6 +20,23 @@ typedef struct section
 	int y;
 };
 
+=======
+typedef struct section{
+    int hue;
+    int start_coord;
+    int end_coord;
+    int other_axis_coord;
+};
+
+typedef struct pair{
+	int x; 
+	int y;
+};
+
+
+
+
+>>>>>>> main:test_in_c/threshold_detection_test.c
 float wrapparound(float f)
 {
 	while (f < 0)
@@ -169,6 +187,7 @@ int threshold(unsigned char *redpointer, unsigned char *greenpointer, unsigned c
 	return hue;
 }
 
+<<<<<<< HEAD:threshold_detection_test.c
 int *find_candidates_in_array(int *hue_array, int length, int bottom_hue, int top_hue, int y)
 {
 	struct section candidates[length]; // end symbol will be an X (don't have dynamic arrays)
@@ -180,9 +199,18 @@ int *find_candidates_in_array(int *hue_array, int length, int bottom_hue, int to
 		// struct section candidates[length]; //end symbol will be a NULL (don't have dynamic arrays)
 		struct section new_section; // instantiate
 		int candidate_index = 0;
+=======
+int find_candidates_in_array(struct section* foundcandidates, int hue_array[], int length, int bottom_hue, int top_hue, int other_axis_coord){
+	int min_bound = 3;
+	int max_bound = 5;
+    //struct section candidates[length]; //end symbol will be a NULL (don't have dynamic arrays)
+    struct section new_section; //instantiate
+    int candidate_index = 0;
+>>>>>>> main:test_in_c/threshold_detection_test.c
 
 		int counter = 1; // keeps track of how many of the same element we have found
 
+<<<<<<< HEAD:threshold_detection_test.c
 		for (int i = 0; i < length - 1; i++)
 		{ // length -1 to prevent us from accessing too far in hue_array[i+1]
 			if (counter == min_bound)
@@ -191,6 +219,29 @@ int *find_candidates_in_array(int *hue_array, int length, int bottom_hue, int to
 				struct section new_section;
 				new_section.hue = hue_array[i];
 				new_section.start_coord = (i - min_bound + 1); //+1 to correct starting from 0 earlier
+=======
+    for (int i=0; i < length-1; i++){ //length -1 to prevent us from accessing too far in hue_array[i+1]
+        if (counter == min_bound){ //object is large enough to be considered - add to array (first time we go over)
+			printf("if 4  with i = %d \n", i);
+            struct section new_section;
+            new_section.hue = hue_array[i];
+            new_section.start_coord = (i-min_bound+1);//+1 to correct starting from 0 earlier
+			new_section.other_axis_coord = other_axis_coord;
+
+            *(foundcandidates+candidate_index) = new_section; //found relevant section - add it to the list
+        } 
+
+		if (counter >= max_bound){
+			printf("if 1 \n"); 
+            counter = 1; //if the object is too wide we ignore it
+        }
+        else if(hue_array[i] == hue_array[i+1]){ //if we have found consecutive identical hues on pixels
+            printf("if 2 with hue_array[%d] = %d and hue_array %d +1 = %d \n", i, hue_array[i], i, hue_array[i+1]);
+			counter += 1;
+			if ((i == length-2) && (counter >= min_bound) && (counter < max_bound)){// we are on second to last pixel
+				candidate_index += 1; 
+				counter  = 1;
+>>>>>>> main:test_in_c/threshold_detection_test.c
 
 				*(foundcandidates + candidate_index) = new_section; // found relevant section - add it to the list
 			}
@@ -229,6 +280,7 @@ int *find_candidates_in_array(int *hue_array, int length, int bottom_hue, int to
 				printf("resetting counter \n ");
 			}
 		}
+<<<<<<< HEAD:threshold_detection_test.c
 		struct section end_candidates_marker; // just something to mark end of candidates array (we are using array of maximal size but won't necessaraly fill it up)
 		end_candidates_marker.end_coord = -1; // we use -1 (impossible coordiante and hue to mark end)
 		end_candidates_marker.start_coord = -1;
@@ -263,7 +315,158 @@ int main()
 		if (hue_counts[h] < 50)
 		{
 			continue;
+=======
+    }  
+	struct section end_candidates_marker; //just something to mark end of candidates array (we are using array of maximal size but won't necessaraly fill it up)
+	end_candidates_marker.end_coord = -1; //we use -1 (impossible coordiante and hue to mark end)
+	end_candidates_marker.start_coord = -1;
+	end_candidates_marker.hue = -1;
+	end_candidates_marker.other_axis_coord = -1;
+
+	*(foundcandidates+candidate_index) = end_candidates_marker; //adding final element to array
+	return candidate_index; //return number of candidtates found
+}
+
+void gridify(int width, int height, int* hue_array,  struct section* found_candidates_x, struct section* found_candidates_y ){
+	/*
+	input = image width, image height, input array(from jox) 
+	output = output all candidates in a single array, 
+	split input array into rows or scan row by row and run the find candidates function on them. 
+	then store the candidates as you go row by row.
+	do the same for the y coords
+	send 2 arrays back to scott
+	*/
+	
+	int x_line[width];
+	found_candidates_x = (struct section*) malloc ( (width) * sizeof(struct section));
+
+	int old_numb_cand_found = 0;
+	for (int row = 0; row < height; row++){ //iterating by row
+		for (int column=0; column < width; column++){ //iterating through each element one by one and adding each element to x_line
+			x_line[column] = *(hue_array+row*width+column);
 		}
+		//we now have a complete row to operate on
+		struct section *candidatesforx; //internal array of candidates for this y (row)
+		candidatesforx = (struct section*) malloc ( (width) * sizeof(struct section));
+		int numb_new_cand_found = find_candidates_in_array(candidatesforx, x_line, width, 0, 0, row);
+
+		int i = 0;
+		while(i<width && (candidatesforx + i)->hue!=-1 && (i < numb_new_cand_found) ){ //checks that we are not counting the end_candidate as an actual candidate
+			*(found_candidates_x + old_numb_cand_found + i) = *(candidatesforx + i); //add a found x candidate from found_candidates to the array found_candidates_x as long as it isn't the end_candidate
+			i++;
+>>>>>>> main:test_in_c/threshold_detection_test.c
+		}
+		old_numb_cand_found += numb_new_cand_found;
+	}
+	
+
+	int y_line[height];
+	found_candidates_y = (struct section*) malloc ( (height) * sizeof(struct section));
+
+	old_numb_cand_found = 0;
+	for (int column = 0; column < width; column++){ //iterating by row
+		for (int row=0; row < height; row++){ //iterating through each element one by one and adding each element to x_line
+			y_line[row] = *(hue_array+row*width+column);
+		}
+		//we now have a complete row to operate on
+		struct section *candidatesfory; //internal array of candidates for this y (row)
+		candidatesfory = (struct section*) malloc ( (height) * sizeof(struct section));
+		int numb_new_cand_found = find_candidates_in_array(candidatesfory, x_line, width, 0, 0, height);
+
+		int i = 0;
+		while(i<width && (candidatesfory + i)->hue!=-1 && (i < numb_new_cand_found) ){ //checks that we are not counting the end_candidate as an actual candidate
+			*(found_candidates_y + old_numb_cand_found + i) = *(candidatesfory + i); //add a found x candidate from found_candidates to the array found_candidates_x as long as it isn't the end_candidate
+			i++;
+		}
+		old_numb_cand_found += numb_new_cand_found;
+	}
+	
+
+}
+
+void find_intersecting_sections(struct pair* matches, int* matches_index_ptr, struct section* all_x_candidates, int all_x_candidates_size, struct section* all_y_candidates, int all_y_candidates_size)
+{
+	*matches_index_ptr = 0; //NB : this also acts as a size marker for matches at the end
+
+	matches = (struct pair*) malloc ( (fmax(all_x_candidates_size, all_y_candidates_size)) * sizeof(struct pair));
+	printf(" DEBUG ----- GOT HERE \n \n");
+	for(int i=0; i<all_x_candidates_size; i++){
+		while ((all_x_candidates+i)->hue != -1){
+			for(int j=0; j<all_y_candidates_size; j++){
+				if(((all_x_candidates+i)->other_axis_coord >= (all_y_candidates+j)->start_coord) && ((all_x_candidates+i)->other_axis_coord <= (all_y_candidates+j)->end_coord)){
+					if(((all_y_candidates+j)->other_axis_coord >= (all_x_candidates+i)->start_coord) && ((all_y_candidates+j)->other_axis_coord <= (all_x_candidates+i)->end_coord)){
+						if( ((all_x_candidates+i)->hue == (all_y_candidates+j)->hue)){
+							//if sections line up and are not end markers- we have a point that we want to add to the return array
+							struct pair new_match;
+							new_match.x = all_y_candidates->other_axis_coord;
+							new_match.y = all_x_candidates->other_axis_coord;
+							*(matches + *matches_index_ptr) = new_match; 
+							*matches_index_ptr += 1;
+							if(new_match.x != 0){
+								printf("DEBUG new_match->x = %d new_match->y = %d \n \n", new_match.x, new_match.y);
+
+							}
+							
+						} 
+					}
+				}
+			}
+		}
+	}
+	//add an end marker 
+	struct pair end_marker; 
+	end_marker.x = -1; 
+	end_marker.y = -1;
+	*(matches + *matches_index_ptr) = end_marker; 
+}
+
+
+
+int main()
+{
+	//x axis work
+	 int x_line_size = 4;
+	// int x_line[15] = {1,1,1,3,3,3,4,4,4,4,4,4,4,5,5};
+	struct section *found_candidates_x;
+	found_candidates_x = (struct section*) malloc ( (x_line_size) * sizeof(struct section));
+	// find_candidates_in_array(found_candidates_x, x_line, x_line_size, 0, 0, 0);
+
+	
+
+	int y_line_size = 4;
+	// int y_line[12] = {1,1,1,0,1,2,2,2,3,2,1,1};
+	struct section *found_candidates_y;
+	found_candidates_y = (struct section*) malloc ( (y_line_size) * sizeof(struct section));
+	// find_candidates_in_array(found_candidates_y, y_line, y_line_size, 0, 0, 0);
+
+	
+	
+	int arrayy[16] = {1,1,2,3,4,5,6,6,6,7,8,9,10,10,10,10}; 
+
+	gridify(4, 4, arrayy, found_candidates_x, found_candidates_y);
+
+	printf(" done with finding candidates \n \n");
+
+	
+	struct pair* matches; 
+	int* result_size_ptr;
+	printf("break1 \n");
+	result_size_ptr = (int*) malloc(sizeof(int));
+
+	printf("break2 \n");
+
+	printf("DEBUG : found_candidates_x->hue = %d \n", found_candidates_x->hue);
+	
+	find_intersecting_sections(matches,result_size_ptr,found_candidates_x, 4, found_candidates_y, 4);
+	
+	printf("break3 \n");
+	  
+
+
+
+
+
+	//test codes for thresholding
 
 		u8 *hue_blob = (u8 *)malloc(x * y * sizeof(u8));
 		memset(hue_blob, 0, x * y * sizeof(u8));
