@@ -1,5 +1,5 @@
 Flow report for DE10_LITE_D8M_VIP
-Wed Jun  1 12:09:36 2022
+Thu Jun  2 19:15:05 2022
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -40,7 +40,7 @@ refer to the applicable agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Flow Failed - Wed Jun  1 12:09:36 2022      ;
+; Flow Status                        ; Successful - Thu Jun  2 19:15:05 2022       ;
 ; Quartus Prime Version              ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                      ; DE10_LITE_D8M_VIP                           ;
 ; Top-level Entity Name              ; DE10_LITE_D8M_VIP                           ;
@@ -66,7 +66,7 @@ refer to the applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 06/01/2022 12:08:09 ;
+; Start date & time ; 06/02/2022 19:13:26 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; DE10_LITE_D8M_VIP   ;
 +-------------------+---------------------+
@@ -77,7 +77,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 164987828805654.165408168923407        ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 222268193510022.165419360649645        ; --            ; --          ; --         ;
 ; ENABLE_SIGNALTAP                    ; Off                                    ; --            ; --          ; --         ;
 ; FITTER_EFFORT                       ; Standard Fit                           ; Auto Fit      ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --            ; --          ; --         ;
@@ -99,8 +99,8 @@ refer to the applicable agreement for further details.
 +------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name            ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Elaboration ; 00:01:26     ; 1.0                     ; 1292 MB             ; 00:02:47                           ;
-; Total                  ; 00:01:26     ; --                      ; --                  ; 00:02:47                           ;
+; Analysis & Elaboration ; 00:01:39     ; 1.0                     ; 1655 MB             ; 00:03:04                           ;
+; Total                  ; 00:01:39     ; --                      ; --                  ; 00:03:04                           ;
 +------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
