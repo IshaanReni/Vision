@@ -1,4 +1,7 @@
 module RING_BUFFER( //pls 4give moi if this doesn't work:(
+	//Parameters
+	capacity_in
+	data_width_in
 	// global clock & reset
 	clk,
 	reset_n,
@@ -13,8 +16,8 @@ module RING_BUFFER( //pls 4give moi if this doesn't work:(
 	the value at the head pointer and we read the value at the tail pointer.*/
 
 	// Parameter Declaration(s)
-	parameter CAPACITY = 640; // to hold a whole row of pixels
-	parameter DATA_WIDTH = 24; // to hold {r,g,b}
+	parameter CAPACITY = capacity_in; // to hold a whole row of pixels
+	parameter DATA_WIDTH = data_width_in; // to hold {r,g,b}
 
 	// Input Port(s)
 	input [DATA_WIDTH-1:0] data_in;
