@@ -1,4 +1,53 @@
 // synthesis VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
+
+module RING_BUFFER #(
+    parameter DATA_WIDTH = 26,
+    parameter CAPACITY   = 640
+) (
+    input logic clk,
+    input logic rst_n,
+    input logic ready_in,
+    input logic valid_in,
+    input logic [DATA_WIDTH-1:0] data_in,
+    output logic ready_out,
+    output logic valid_out,
+    output logic [DATA_WIDTH-1:0] data_out
+);
+  logic data_valid, ready_in_d;
+
+  always_ff @(posedge clk) begin
+    if (~rst_n) begin
+      data_out   <= 1'b0;
+      data_valid <= 1'b0;
+      ready_in_d <= 1'b0;
+    end else begin
+      ready_in_d <= ready_in;
+      // If the stream register is 
+      //	a. recieving valid input AND (
+      // 	b. is not currently holding any valid data that must be passed on OR
+      // 	c.the sreaming register after this is ready to recieve)
+      // then accept new data. If the next streaming register is ready to recieve,
+      // then we can clock out the current contents of this register to it
+      // and simultaneously (on the same posedge) clock in the input data.
+      if (valid_in & (~data_valid | ready_in_d)) begin
+        data_out   <= data_in;
+        data_valid <= 1;
+      end else if (ready_in_d) begin
+        data_valid <= 0;
+      end
+    end
+  end
+
+  // 
+  assign ready_out = (~data_valid & ~valid_in) | ready_in; // indicates if the streaming reg is ready to recieve any data. 
+  assign valid_out = ready_in_d & data_valid;
+
+
+endmodule
+
+
+
+/*
 module RING_BUFFER #(
     parameter DATA_WIDTH = 27,
     parameter CAPACITY   = 640
@@ -36,11 +85,6 @@ module RING_BUFFER #(
       tail_d = CAPACITY - 1;
       //count_d = 32'b0;
       //ring_valid_out = 1'b0;
-      /*	    
-			for(i= 0; i < CAPACITY; i = i + 1) begin
-				buffer_array[i] <= {DATA_WIDTH{1'b0}};
-			end
-		  */
       buffer_array_d[head_d] = {DATA_WIDTH{1'b0}};
 
       //Assuming above is ok, if reset=1 then try the following:
@@ -98,3 +142,6 @@ module RING_BUFFER #(
 
 
 endmodule
+*/
+
+

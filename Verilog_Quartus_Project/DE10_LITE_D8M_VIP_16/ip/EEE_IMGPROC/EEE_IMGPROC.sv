@@ -1,22 +1,17 @@
 // synthesis VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
 
 extern module RING_BUFFER #(
-    parameter DATA_WIDTH = 26,
+    parameter DATA_WIDTH = 27,
     parameter CAPACITY   = 640
 ) (
-    input logic clk,
+	  input logic clk,
     input logic rst_n,
-
-    // data flow
-    input logic data_in,
-    input logic data_new_in, // Gonna be high if there is a valid pixel ready to be put into the ring buffer
-
-    // 32 bits should suit our needs regardless of capacity.. 
-    output logic [31:0] head_out,
-    output logic [31:0] tail_out,
-    output logic [DATA_WIDTH - 1:0] buffer_array_out[CAPACITY - 1:0],
-
-    output logic ring_valid_out  // Is going to be high if the buffer is full and is ready to be read
+    input logic ready_in,
+    input logic valid_in,
+    input logic [DATA_WIDTH-1:0] data_in,
+    output logic ready_out,
+    output logic valid_out,
+    output logic [DATA_WIDTH-1:0] data_out
 );
 
 
@@ -91,7 +86,7 @@ module EEE_IMGPROC #(
   //Count valid pixels to tget the image coordinates. Reset and detect packet type on Start of Packet.
   logic [10:0] x, y;
 
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (sop) begin  //if we have the start of packet header - we set x and y coordinates to 0
       x <= 11'h0;
       y <= 11'h0;
@@ -143,7 +138,7 @@ endgenerate
 
   //Find first and last red pixels
   logic [10:0] x_min, y_min, x_max, y_max;
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (red_detect & in_valid) begin  //Update bounds when the pixel is red
       if (x < x_min) x_min <= x;
       if (x > x_max) x_max <= x;
@@ -162,7 +157,7 @@ endgenerate
   logic [1:0] msg_state;
   logic [10:0] left, right, top, bottom;
   logic [7:0] frame_count;
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (eop & in_valid & packet_video) begin  //Ignore non-video packets
 
       //Latch edges for display overlay on next frame
@@ -195,7 +190,7 @@ endgenerate
 
   `define RED_BOX_MSG_ID "RBB"
 
-  always @(*) begin  //Write words to FIFO as state machine advances
+  always_ff @(*) begin  //Write words to FIFO as state machine advances
     case (msg_state)
       2'b00: begin
         msg_buf_in = 32'b0;
@@ -243,45 +238,11 @@ endgenerate
       .ready_out(sink_ready),
       .valid_out(in_valid),
       .data_out({red, green, blue, sop, eop}),
-      .ready_in(out_ready_step1), //think this should be out_ready_step1
+      .ready_in(out_ready_step1),  //think this should be out_ready_step1
       .valid_in(sink_valid),
       .data_in({sink_data, sink_sop, sink_eop})
   );
-
-  logic [26:0] img_buffer_array[639:0]; // this is the array that contains all of the original pixels
-  logic [31:0] head;
-  logic [31:0] tail;
-  logic ring_valid;
-  
-  
-  /*//Pass pixels indiv
-  logic [27:0] temp_buf_d;
-  logic [27:0] temp_buf_q;
-  
-  always_comb begin
-    temp_buf_d = {source_ready, in_valid, red_out, green_out, blue_out, sop, eop};
-  end
-  always_ff @(posedge clk) begin
-    temp_buf_q <= temp_buf_d;
-  end*/
-  /*
-  RING_BUFFER #(
-      .CAPACITY  (640),
-      .DATA_WIDTH(27)
-  ) ring_buf (
-      .clk(clk),
-      .rst_n(reset_n),
-      .data_in({red_out, green_out, blue_out, sop, eop, in_valid}),
-      .data_new_in(in_valid),
-      .head_out(head),
-	    .tail_out(tail),
-      .buffer_array_out(img_buffer_array),
-      .ring_valid_out(ring_valid)
-  );*/
-
-
-   
-   // Kernel ops occur here
+  // Kernel ops occur here
 
   //Pass on the post-kernel pixel onto the stream reg module below
 
@@ -291,16 +252,17 @@ endgenerate
   logic source_eop_step1;
   logic out_ready_step1;
 
-  STREAM_REG #(
-      .DATA_WIDTH(26)
-  ) out_reg_step1 (
+  RING_BUFFER #(
+      .DATA_WIDTH(26),
+      .CAPACITY(640)
+  ) ring_buffer (
       .clk(clk),
       .rst_n(reset_n),
       .ready_out(out_ready_step1),
       .valid_out(source_valid_step1),
       .data_out({source_data_step1, source_sop_step1, source_eop_step1}),
-      .ready_in(out_ready), // Usual signal: Source Ready
-      .valid_in(in_valid),
+      .ready_in(out_ready),  // Usual signal: Source Ready
+      .valid_in(in_valid),  // Usual signal: in_valid
       .data_in({red_out, green_out, blue_out, sop, eop})
   );
 
@@ -312,12 +274,12 @@ endgenerate
       .ready_out(out_ready),
       .valid_out(source_valid),
       .data_out({source_data, source_sop, source_eop}),
-      .ready_in(source_ready), // Usual signal: Source Ready
+      .ready_in(source_ready),  // Usual signal: Source Ready
       .valid_in(source_valid_step1),
       .data_in({source_data_step1, source_sop_step1, source_eop_step1})
   );
 
-  
+
 
 
   /////////////////////////////////
@@ -340,10 +302,10 @@ endgenerate
 
   // Process write
 
-  logic [7:0] reg_status;
+  logic [ 7:0] reg_status;
   logic [23:0] bb_col;
 
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (~reset_n) begin
       reg_status <= 8'b0;
       bb_col <= BB_COL_DEFAULT;
@@ -364,7 +326,7 @@ endgenerate
   logic read_d;  //Store the read signal for correct updating of the message buffer
 
   // Copy the requested word to the output port when there is a read.
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (~reset_n) begin
       s_readdata <= {32'b0};
       read_d <= 1'b0;

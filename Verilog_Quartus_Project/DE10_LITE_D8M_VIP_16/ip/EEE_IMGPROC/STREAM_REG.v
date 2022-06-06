@@ -30,7 +30,14 @@ module STREAM_REG (
       ready_in_d <= 1'b0;
     end else begin
       ready_in_d <= ready_in;
-      if (valid_in & (~data_valid | ready_in_d)) begin //if sink_valid=1 AND (data_valid  OR ready_in_d=1)
+      // If the stream register is 
+      //	a. recieving valid input AND (
+      // 	b. is not currently holding any valid data that must be passed on OR
+      // 	c.the sreaming register after this is ready to recieve)
+      // then accept new data. If the next streaming register is ready to recieve,
+      // then we can clock out the current contents of this register to it (regardless of validity)
+      // and simultaneously (on the same posedge) clock in the input data.
+      if (valid_in & (~data_valid | ready_in_d)) begin
         data_out   <= data_in;
         data_valid <= 1;
       end else if (ready_in_d) begin
