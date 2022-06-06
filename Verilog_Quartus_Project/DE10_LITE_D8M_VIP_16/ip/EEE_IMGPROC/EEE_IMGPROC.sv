@@ -1,7 +1,7 @@
 // synthesis VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
 
 extern module RING_BUFFER #(
-    parameter DATA_WIDTH = 24,
+    parameter DATA_WIDTH = 26,
     parameter CAPACITY   = 640
 ) (
     input logic clk,
@@ -9,11 +9,14 @@ extern module RING_BUFFER #(
 
     // data flow
     input logic data_in,
-    input logic data_new_in,
+    input logic data_new_in, // Gonna be high if there is a valid pixel ready to be put into the ring buffer
 
     // 32 bits should suit our needs regardless of capacity.. 
     output logic [31:0] head_out,
-    output logic [DATA_WIDTH - 1:0] buffer_array_out[CAPACITY - 1:0]
+    output logic [31:0] tail_out,
+    output logic [DATA_WIDTH - 1:0] buffer_array_out[CAPACITY - 1:0],
+
+    output logic ring_valid_out  // Is going to be high if the buffer is full and is ready to be read
 );
 
 
@@ -74,7 +77,7 @@ module EEE_IMGPROC #(
   assign red_high = red_detect ? {8'hff, 8'h0, 8'h0} : {grey, grey, grey}; //if red is detected - we put red on that pixel
 
   // Show bounding box
-  logic [3:0] new_image;
+  logic [23:0] new_image;
   logic bb_active;
   assign bb_active = (x == left) | (x == right) | (y == top) | (y == bottom); //bb_active if pixel is on any boundary line (on x or y axis)
   assign new_image = bb_active ? bb_col : red_high; //if we are on a boundary pixel; we set the colour to blue, if not; we set it to the computed highlighted (red_high) pixel colour
@@ -92,7 +95,7 @@ module EEE_IMGPROC #(
     if (sop) begin  //if we have the start of packet header - we set x and y coordinates to 0
       x <= 11'h0;
       y <= 11'h0;
-      packet_video <= (blue[3:0] == 3'h0);  //if the 4 LSB of blue are 0 we have a packet? IDK 
+      packet_video <= (blue[3:0] == 3'h0);  //if the 4 LSB of blue are 0 we have a packet? IDK
     end else if (in_valid) begin
       if (x == IMAGE_W - 1) begin
         x <= 11'h0;
@@ -106,8 +109,8 @@ module EEE_IMGPROC #(
 
   //PERSO Addition
   //Solid Kernel relying on delay line
-  // integer k_halfwidth = 4;
-  // integer k_tot_size = (2 * k_halfwidth + 1) * (2 * k_halfwidth + 1);  //this is 9x9 kernel
+  //integer k_halfwidth = 4;
+  //integer k_tot_size = (2 * k_halfwidth + 1) * (2 * k_halfwidth + 1);  //this is 9x9 kernel
 
 
   //NB : coordinates are [y][x] in JLS code
@@ -231,6 +234,7 @@ endgenerate
 
 
   //Streaming registers to buffer video signal
+  // feeds into the ring buffer
   STREAM_REG #(
       .DATA_WIDTH(26)
   ) in_reg (
@@ -239,38 +243,81 @@ endgenerate
       .ready_out(sink_ready),
       .valid_out(in_valid),
       .data_out({red, green, blue, sop, eop}),
-      .ready_in(out_ready),
+      .ready_in(out_ready_step1), //think this should be out_ready_step1
       .valid_in(sink_valid),
       .data_in({sink_data, sink_sop, sink_eop})
   );
 
+  logic [26:0] img_buffer_array[639:0]; // this is the array that contains all of the original pixels
+  logic [31:0] head;
+  logic [31:0] tail;
+  logic ring_valid;
+  
+  
+  /*//Pass pixels indiv
+  logic [27:0] temp_buf_d;
+  logic [27:0] temp_buf_q;
+  
+  always_comb begin
+    temp_buf_d = {source_ready, in_valid, red_out, green_out, blue_out, sop, eop};
+  end
+  always_ff @(posedge clk) begin
+    temp_buf_q <= temp_buf_d;
+  end*/
+  /*
+  RING_BUFFER #(
+      .CAPACITY  (640),
+      .DATA_WIDTH(27)
+  ) ring_buf (
+      .clk(clk),
+      .rst_n(reset_n),
+      .data_in({red_out, green_out, blue_out, sop, eop, in_valid}),
+      .data_new_in(in_valid),
+      .head_out(head),
+	    .tail_out(tail),
+      .buffer_array_out(img_buffer_array),
+      .ring_valid_out(ring_valid)
+  );*/
+
+
+   
+   // Kernel ops occur here
+
+  //Pass on the post-kernel pixel onto the stream reg module below
+
+  logic [23:0] source_data_step1;
+  logic source_valid_step1;
+  logic source_sop_step1;
+  logic source_eop_step1;
+  logic out_ready_step1;
+
   STREAM_REG #(
       .DATA_WIDTH(26)
-  ) out_reg (
+  ) out_reg_step1 (
+      .clk(clk),
+      .rst_n(reset_n),
+      .ready_out(out_ready_step1),
+      .valid_out(source_valid_step1),
+      .data_out({source_data_step1, source_sop_step1, source_eop_step1}),
+      .ready_in(out_ready), // Usual signal: Source Ready
+      .valid_in(in_valid),
+      .data_in({red_out, green_out, blue_out, sop, eop})
+  );
+
+  STREAM_REG #(
+      .DATA_WIDTH(26)
+  ) out_reg_step2 (
       .clk(clk),
       .rst_n(reset_n),
       .ready_out(out_ready),
       .valid_out(source_valid),
       .data_out({source_data, source_sop, source_eop}),
-      .ready_in(source_ready),
-      .valid_in(in_valid),
-      .data_in({red_out, green_out, blue_out, sop, eop})
+      .ready_in(source_ready), // Usual signal: Source Ready
+      .valid_in(source_valid_step1),
+      .data_in({source_data_step1, source_sop_step1, source_eop_step1})
   );
 
-  logic [23:0] img_buffer_array[639:0];
-  logic [31:0] head;
-
-  RING_BUFFER #(
-      .CAPACITY  (640),
-      .DATA_WIDTH(24)
-  ) ring_buf (
-      .clk(clk),
-      .rst_n(reset_n),
-      .data_in(source_data),
-      .data_new_in(in_valid),
-      .head_out(head),
-      .buffer_array_out(img_buffer_array)
-  );
+  
 
 
   /////////////////////////////////
@@ -293,7 +340,7 @@ endgenerate
 
   // Process write
 
-  logic [ 7:0] reg_status;
+  logic [7:0] reg_status;
   logic [23:0] bb_col;
 
   always @(posedge clk) begin
