@@ -230,55 +230,28 @@ endgenerate
 
   //Streaming registers to buffer video signal
   // feeds into the ring buffer
-  STREAM_REG #(
-      .DATA_WIDTH(26)
-  ) in_reg (
-      .clk(clk),
-      .rst_n(reset_n),
-      .ready_out(sink_ready),
-      .valid_out(in_valid),
-      .data_out({red, green, blue, sop, eop}),
-      .ready_in(out_ready_step1),  //think this should be out_ready_step1
-      .valid_in(sink_valid),
-      .data_in({sink_data, sink_sop, sink_eop})
-  );
-  // Kernel ops occur here
-
-  //Pass on the post-kernel pixel onto the stream reg module below
-
-  logic [23:0] source_data_step1;
-  logic source_valid_step1;
-  logic source_sop_step1;
-  logic source_eop_step1;
-  logic out_ready_step1;
-
-  RING_BUFFER #(
-      .DATA_WIDTH(26),
-      .CAPACITY(640)
-  ) ring_buffer (
-      .clk(clk),
-      .rst_n(reset_n),
-      .ready_out(out_ready_step1),
-      .valid_out(source_valid_step1),
-      .data_out({source_data_step1, source_sop_step1, source_eop_step1}),
-      .ready_in(out_ready),  // Usual signal: Source Ready
-      .valid_in(in_valid),  // Usual signal: in_valid
-      .data_in({red_out, green_out, blue_out, sop, eop})
+  //Streaming registers to buffer video signal
+  STREAM_REG #(.DATA_WIDTH(26)) in_reg (
+    .clk(clk),
+    .rst_n(reset_n),
+    .ready_out(sink_ready),
+    .valid_out(in_valid),
+    .data_out({red,green,blue,sop,eop}),
+    .ready_in(out_ready),
+    .valid_in(sink_valid),
+    .data_in({sink_data,sink_sop,sink_eop})
   );
 
-  STREAM_REG #(
-      .DATA_WIDTH(26)
-  ) out_reg_step2 (
-      .clk(clk),
-      .rst_n(reset_n),
-      .ready_out(out_ready),
-      .valid_out(source_valid),
-      .data_out({source_data, source_sop, source_eop}),
-      .ready_in(source_ready),  // Usual signal: Source Ready
-      .valid_in(source_valid_step1),
-      .data_in({source_data_step1, source_sop_step1, source_eop_step1})
+  STREAM_REG #(.DATA_WIDTH(26)) out_reg (
+    .clk(clk),
+    .rst_n(reset_n),
+    .ready_out(out_ready),
+    .valid_out(source_valid),
+    .data_out({source_data,source_sop,source_eop}),
+    .ready_in(source_ready),
+    .valid_in(in_valid),
+    .data_in({red_out, green_out, blue_out, sop, eop})
   );
-
 
 
 

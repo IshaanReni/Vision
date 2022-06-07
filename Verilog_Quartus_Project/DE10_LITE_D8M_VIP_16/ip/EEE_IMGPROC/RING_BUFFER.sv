@@ -15,13 +15,23 @@ module RING_BUFFER #(
 );
   logic data_valid, ready_in_d;
 
+  logic ready_d, ready_q;
+
+  always_comb begin
+    ready_d = ready_in;
+  end
+
+
   always_ff @(posedge clk) begin
+    ready_q <= ready_d;
+
     if (~rst_n) begin
-      data_out   <= 1'b0;
+      ready_q <= 1'b0;
+      data_out <= {DATA_WIDTH{1'b0}};
       data_valid <= 1'b0;
-      ready_in_d <= 1'b0;
     end else begin
-      ready_in_d <= ready_in;
+      //ready_in_d <= ready_in;
+
       // If the stream register is 
       //	a. recieving valid input AND (
       // 	b. is not currently holding any valid data that must be passed on OR
@@ -29,16 +39,22 @@ module RING_BUFFER #(
       // then accept new data. If the next streaming register is ready to recieve,
       // then we can clock out the current contents of this register to it
       // and simultaneously (on the same posedge) clock in the input data.
-      if (valid_in & (~data_valid | ready_in_d)) begin
+      if (valid_in & (~data_valid | ready_q)) begin
+        // We have a valid input, and the reciever is either ready or
+        // we have empty space for the new data. 
+
+
         data_out   <= data_in;
-        data_valid <= 1;
-      end else if (ready_in_d) begin
-        data_valid <= 0;
+        data_valid <= 1'b1;
+      end else if (ready_q) begin
+        // Reciever is ready, but we have no new data on our input
+        data_valid <= 1'b0;
+
+
       end
     end
   end
 
-  // 
   assign ready_out = (~data_valid & ~valid_in) | ready_in; // indicates if the streaming reg is ready to recieve any data. 
   assign valid_out = ready_in_d & data_valid;
 
