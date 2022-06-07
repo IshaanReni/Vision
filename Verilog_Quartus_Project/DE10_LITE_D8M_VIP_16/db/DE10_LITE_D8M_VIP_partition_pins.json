@@ -300,15 +300,15 @@
 					"strict" : false
 				},
 				{
+					"name" : "SW[0]",
+					"strict" : false
+				},
+				{
 					"name" : "MIPI_PIXEL_CLK",
 					"strict" : false
 				},
 				{
 					"name" : "KEY[0]",
-					"strict" : false
-				},
-				{
-					"name" : "SW[0]",
 					"strict" : false
 				},
 				{

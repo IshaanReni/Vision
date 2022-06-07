@@ -242,16 +242,29 @@ endgenerate
     .data_in({sink_data,sink_sop,sink_eop})
   );
 
+  logic [23:0] source_data_intermediate;
+  logic source_sop_intermediate, source_eop_intermediate;
+
   STREAM_REG #(.DATA_WIDTH(26)) out_reg (
     .clk(clk),
     .rst_n(reset_n),
     .ready_out(out_ready),
     .valid_out(source_valid),
-    .data_out({source_data,source_sop,source_eop}),
+    .data_out({source_data_intermediate, source_sop_intermediate, source_eop_intermediate}),
     .ready_in(source_ready),
     .valid_in(in_valid),
     .data_in({red_out, green_out, blue_out, sop, eop})
   );
+
+  always_ff @(posedge clk) begin
+    source_data <= source_data_intermediate;
+    source_sop <= source_sop_intermediate;
+    source_eop <= source_eop_intermediate;
+  end
+
+  
+
+
 
 
 
