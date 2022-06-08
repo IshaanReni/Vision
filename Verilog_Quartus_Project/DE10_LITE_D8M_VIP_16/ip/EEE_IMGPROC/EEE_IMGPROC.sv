@@ -14,7 +14,7 @@ extern module RING_BUFFER #(
     output logic [DATA_WIDTH-1:0] data_out
 );
 
-extern module SHIFT_REG #(
+extern module SHIFT_REGGAE #(
     parameter NO_STAGES  = 9,
     parameter DATA_WIDTH = 26
 ) (
@@ -270,25 +270,13 @@ endgenerate
     .data_in({red_out, green_out, blue_out, sop, eop})
   );
 
-  SHIFT_REG #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_1 (
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_1 (
     .clk(clk),
     .rst_n(reset_n),
     .valid_in(source_ready),
     .data_in({source_data_intermediate, source_sop_intermediate, source_eop_intermediate}),
     .data_out({source_data, source_sop, source_eop})
   );
-
-
-  always_ff @(posedge clk) begin
-    source_data <= source_data_intermediate;
-    source_sop <= source_sop_intermediate;
-    source_eop <= source_eop_intermediate;
-  end
-
-  
-
-
-
 
 
   /////////////////////////////////
