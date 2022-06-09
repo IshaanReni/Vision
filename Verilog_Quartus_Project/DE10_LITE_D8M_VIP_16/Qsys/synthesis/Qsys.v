@@ -70,7 +70,7 @@ module Qsys (
 	wire         alt_vip_vfb_0_dout_ready;                                          // TERASIC_AUTO_FOCUS_0:sink_ready -> alt_vip_vfb_0:dout_ready
 	wire         alt_vip_vfb_0_dout_startofpacket;                                  // alt_vip_vfb_0:dout_startofpacket -> TERASIC_AUTO_FOCUS_0:sink_sop
 	wire         alt_vip_vfb_0_dout_endofpacket;                                    // alt_vip_vfb_0:dout_endofpacket -> TERASIC_AUTO_FOCUS_0:sink_eop
-	wire         altpll_0_c2_clk;                                                   // altpll_0:c2 -> [EEE_IMGPROC_0:clk, TERASIC_AUTO_FOCUS_0:clk, TERASIC_CAMERA_0:clk, alt_vip_itc_0:is_clk, alt_vip_vfb_0:clock, mm_interconnect_0:altpll_0_c2_clk, mm_interconnect_1:altpll_0_c2_clk, rst_controller:clk, sdram:clk]
+	wire         altpll_0_c2_clk;                                                   // altpll_0:c2 -> [EEE_IMGPROC_0:clk, TERASIC_AUTO_FOCUS_0:clk, TERASIC_CAMERA_0:clk, alt_vip_itc_0:is_clk, alt_vip_vfb_0:clock, avalon_st_adapter:in_clk_0_clk, avalon_st_adapter_001:in_clk_0_clk, avalon_st_adapter_002:in_clk_0_clk, avalon_st_adapter_003:in_clk_0_clk, avalon_st_adapter_004:in_clk_0_clk, avalon_st_adapter_005:in_clk_0_clk, avalon_st_adapter_006:in_clk_0_clk, avalon_st_adapter_007:in_clk_0_clk, fifo_1:wrclock, fifo_2:wrclock, fifo_3:wrclock, fifo_4:wrclock, irq_synchronizer:receiver_clk, irq_synchronizer_001:receiver_clk, irq_synchronizer_002:receiver_clk, irq_synchronizer_003:receiver_clk, mm_interconnect_0:altpll_0_c2_clk, mm_interconnect_1:altpll_0_c2_clk, rst_controller:clk, rst_controller_002:clk, sdram:clk]
 	wire  [31:0] nios2_gen2_data_master_readdata;                                   // mm_interconnect_0:nios2_gen2_data_master_readdata -> nios2_gen2:d_readdata
 	wire         nios2_gen2_data_master_waitrequest;                                // mm_interconnect_0:nios2_gen2_data_master_waitrequest -> nios2_gen2:d_waitrequest
 	wire         nios2_gen2_data_master_debugaccess;                                // nios2_gen2:debug_mem_slave_debugaccess_to_roms -> mm_interconnect_0:nios2_gen2_data_master_debugaccess
@@ -156,12 +156,6 @@ module Qsys (
 	wire   [1:0] mm_interconnect_0_mipi_pwdn_n_s1_address;                          // mm_interconnect_0:mipi_pwdn_n_s1_address -> mipi_pwdn_n:address
 	wire         mm_interconnect_0_mipi_pwdn_n_s1_write;                            // mm_interconnect_0:mipi_pwdn_n_s1_write -> mipi_pwdn_n:write_n
 	wire  [31:0] mm_interconnect_0_mipi_pwdn_n_s1_writedata;                        // mm_interconnect_0:mipi_pwdn_n_s1_writedata -> mipi_pwdn_n:writedata
-	wire         mm_interconnect_0_eee_imgproc_0_s1_chipselect;                     // mm_interconnect_0:EEE_IMGPROC_0_s1_chipselect -> EEE_IMGPROC_0:s_chipselect
-	wire  [31:0] mm_interconnect_0_eee_imgproc_0_s1_readdata;                       // EEE_IMGPROC_0:s_readdata -> mm_interconnect_0:EEE_IMGPROC_0_s1_readdata
-	wire   [2:0] mm_interconnect_0_eee_imgproc_0_s1_address;                        // mm_interconnect_0:EEE_IMGPROC_0_s1_address -> EEE_IMGPROC_0:s_address
-	wire         mm_interconnect_0_eee_imgproc_0_s1_read;                           // mm_interconnect_0:EEE_IMGPROC_0_s1_read -> EEE_IMGPROC_0:s_read
-	wire         mm_interconnect_0_eee_imgproc_0_s1_write;                          // mm_interconnect_0:EEE_IMGPROC_0_s1_write -> EEE_IMGPROC_0:s_write
-	wire  [31:0] mm_interconnect_0_eee_imgproc_0_s1_writedata;                      // mm_interconnect_0:EEE_IMGPROC_0_s1_writedata -> EEE_IMGPROC_0:s_writedata
 	wire         mm_interconnect_0_uart_0_s1_chipselect;                            // mm_interconnect_0:uart_0_s1_chipselect -> uart_0:chipselect
 	wire  [15:0] mm_interconnect_0_uart_0_s1_readdata;                              // uart_0:readdata -> mm_interconnect_0:uart_0_s1_readdata
 	wire   [2:0] mm_interconnect_0_uart_0_s1_address;                               // mm_interconnect_0:uart_0_s1_address -> uart_0:address
@@ -169,6 +163,12 @@ module Qsys (
 	wire         mm_interconnect_0_uart_0_s1_begintransfer;                         // mm_interconnect_0:uart_0_s1_begintransfer -> uart_0:begintransfer
 	wire         mm_interconnect_0_uart_0_s1_write;                                 // mm_interconnect_0:uart_0_s1_write -> uart_0:write_n
 	wire  [15:0] mm_interconnect_0_uart_0_s1_writedata;                             // mm_interconnect_0:uart_0_s1_writedata -> uart_0:writedata
+	wire         mm_interconnect_0_eee_imgproc_0_s1_chipselect;                     // mm_interconnect_0:EEE_IMGPROC_0_s1_chipselect -> EEE_IMGPROC_0:s_chipselect
+	wire  [31:0] mm_interconnect_0_eee_imgproc_0_s1_readdata;                       // EEE_IMGPROC_0:s_readdata -> mm_interconnect_0:EEE_IMGPROC_0_s1_readdata
+	wire   [2:0] mm_interconnect_0_eee_imgproc_0_s1_address;                        // mm_interconnect_0:EEE_IMGPROC_0_s1_address -> EEE_IMGPROC_0:s_address
+	wire         mm_interconnect_0_eee_imgproc_0_s1_read;                           // mm_interconnect_0:EEE_IMGPROC_0_s1_read -> EEE_IMGPROC_0:s_read
+	wire         mm_interconnect_0_eee_imgproc_0_s1_write;                          // mm_interconnect_0:EEE_IMGPROC_0_s1_write -> EEE_IMGPROC_0:s_write
+	wire  [31:0] mm_interconnect_0_eee_imgproc_0_s1_writedata;                      // mm_interconnect_0:EEE_IMGPROC_0_s1_writedata -> EEE_IMGPROC_0:s_writedata
 	wire         alt_vip_vfb_0_read_master_waitrequest;                             // mm_interconnect_1:alt_vip_vfb_0_read_master_waitrequest -> alt_vip_vfb_0:read_master_av_waitrequest
 	wire  [31:0] alt_vip_vfb_0_read_master_readdata;                                // mm_interconnect_1:alt_vip_vfb_0_read_master_readdata -> alt_vip_vfb_0:read_master_av_readdata
 	wire  [31:0] alt_vip_vfb_0_read_master_address;                                 // alt_vip_vfb_0:read_master_av_address -> mm_interconnect_1:alt_vip_vfb_0_read_master_address
@@ -189,38 +189,189 @@ module Qsys (
 	wire         mm_interconnect_1_sdram_s1_readdatavalid;                          // sdram:za_valid -> mm_interconnect_1:sdram_s1_readdatavalid
 	wire         mm_interconnect_1_sdram_s1_write;                                  // mm_interconnect_1:sdram_s1_write -> sdram:az_wr_n
 	wire  [15:0] mm_interconnect_1_sdram_s1_writedata;                              // mm_interconnect_1:sdram_s1_writedata -> sdram:az_data
-	wire         irq_mapper_receiver0_irq;                                          // i2c_opencores_mipi:wb_inta_o -> irq_mapper:receiver0_irq
-	wire         irq_mapper_receiver1_irq;                                          // i2c_opencores_camera:wb_inta_o -> irq_mapper:receiver1_irq
-	wire         irq_mapper_receiver2_irq;                                          // jtag_uart:av_irq -> irq_mapper:receiver2_irq
-	wire         irq_mapper_receiver3_irq;                                          // timer:irq -> irq_mapper:receiver3_irq
-	wire         irq_mapper_receiver4_irq;                                          // uart_0:irq -> irq_mapper:receiver4_irq
+	wire         irq_mapper_receiver4_irq;                                          // i2c_opencores_mipi:wb_inta_o -> irq_mapper:receiver4_irq
+	wire         irq_mapper_receiver5_irq;                                          // i2c_opencores_camera:wb_inta_o -> irq_mapper:receiver5_irq
+	wire         irq_mapper_receiver6_irq;                                          // jtag_uart:av_irq -> irq_mapper:receiver6_irq
+	wire         irq_mapper_receiver7_irq;                                          // timer:irq -> irq_mapper:receiver7_irq
+	wire         irq_mapper_receiver8_irq;                                          // uart_0:irq -> irq_mapper:receiver8_irq
 	wire  [31:0] nios2_gen2_irq_irq;                                                // irq_mapper:sender_irq -> nios2_gen2:irq
-	wire         rst_controller_reset_out_reset;                                    // rst_controller:reset_out -> [EEE_IMGPROC_0:reset_n, TERASIC_AUTO_FOCUS_0:reset_n, TERASIC_CAMERA_0:reset_n, alt_vip_itc_0:rst, alt_vip_vfb_0:reset, mm_interconnect_0:TERASIC_AUTO_FOCUS_0_reset_reset_bridge_in_reset_reset, mm_interconnect_1:alt_vip_vfb_0_reset_reset_bridge_in_reset_reset, sdram:reset_n]
-	wire         nios2_gen2_debug_reset_request_reset;                              // nios2_gen2:debug_reset_request -> [rst_controller:reset_in1, rst_controller_002:reset_in1]
+	wire         irq_mapper_receiver0_irq;                                          // irq_synchronizer:sender_irq -> irq_mapper:receiver0_irq
+	wire   [0:0] irq_synchronizer_receiver_irq;                                     // fifo_1:wrclk_control_slave_irq -> irq_synchronizer:receiver_irq
+	wire         irq_mapper_receiver1_irq;                                          // irq_synchronizer_001:sender_irq -> irq_mapper:receiver1_irq
+	wire   [0:0] irq_synchronizer_001_receiver_irq;                                 // fifo_2:wrclk_control_slave_irq -> irq_synchronizer_001:receiver_irq
+	wire         irq_mapper_receiver2_irq;                                          // irq_synchronizer_002:sender_irq -> irq_mapper:receiver2_irq
+	wire   [0:0] irq_synchronizer_002_receiver_irq;                                 // fifo_3:wrclk_control_slave_irq -> irq_synchronizer_002:receiver_irq
+	wire         irq_mapper_receiver3_irq;                                          // irq_synchronizer_003:sender_irq -> irq_mapper:receiver3_irq
+	wire   [0:0] irq_synchronizer_003_receiver_irq;                                 // fifo_4:wrclk_control_slave_irq -> irq_synchronizer_003:receiver_irq
+	wire         eee_imgproc_0_avalon_streaming_source_1_valid;                     // EEE_IMGPROC_0:source_valid_fifo1 -> avalon_st_adapter:in_0_valid
+	wire  [31:0] eee_imgproc_0_avalon_streaming_source_1_data;                      // EEE_IMGPROC_0:source_data_fifo1 -> avalon_st_adapter:in_0_data
+	wire         eee_imgproc_0_avalon_streaming_source_1_ready;                     // avalon_st_adapter:in_0_ready -> EEE_IMGPROC_0:source_ready_fifo1
+	wire         eee_imgproc_0_avalon_streaming_source_1_startofpacket;             // EEE_IMGPROC_0:source_sop_fifo1 -> avalon_st_adapter:in_0_startofpacket
+	wire         eee_imgproc_0_avalon_streaming_source_1_endofpacket;               // EEE_IMGPROC_0:source_eop_fifo1 -> avalon_st_adapter:in_0_endofpacket
+	wire         avalon_st_adapter_out_0_valid;                                     // avalon_st_adapter:out_0_valid -> fifo_1:avalonst_sink_valid
+	wire  [31:0] avalon_st_adapter_out_0_data;                                      // avalon_st_adapter:out_0_data -> fifo_1:avalonst_sink_data
+	wire         avalon_st_adapter_out_0_ready;                                     // fifo_1:avalonst_sink_ready -> avalon_st_adapter:out_0_ready
+	wire         avalon_st_adapter_out_0_channel;                                   // avalon_st_adapter:out_0_channel -> fifo_1:avalonst_sink_channel
+	wire         avalon_st_adapter_out_0_startofpacket;                             // avalon_st_adapter:out_0_startofpacket -> fifo_1:avalonst_sink_startofpacket
+	wire         avalon_st_adapter_out_0_endofpacket;                               // avalon_st_adapter:out_0_endofpacket -> fifo_1:avalonst_sink_endofpacket
+	wire   [1:0] avalon_st_adapter_out_0_empty;                                     // avalon_st_adapter:out_0_empty -> fifo_1:avalonst_sink_empty
+	wire         eee_imgproc_0_avalon_streaming_source_2_valid;                     // EEE_IMGPROC_0:source_valid_fifo2 -> avalon_st_adapter_001:in_0_valid
+	wire  [31:0] eee_imgproc_0_avalon_streaming_source_2_data;                      // EEE_IMGPROC_0:source_data_fifo2 -> avalon_st_adapter_001:in_0_data
+	wire         eee_imgproc_0_avalon_streaming_source_2_ready;                     // avalon_st_adapter_001:in_0_ready -> EEE_IMGPROC_0:source_ready_fifo2
+	wire         eee_imgproc_0_avalon_streaming_source_2_startofpacket;             // EEE_IMGPROC_0:source_sop_fifo2 -> avalon_st_adapter_001:in_0_startofpacket
+	wire         eee_imgproc_0_avalon_streaming_source_2_endofpacket;               // EEE_IMGPROC_0:source_eop_fifo2 -> avalon_st_adapter_001:in_0_endofpacket
+	wire         avalon_st_adapter_001_out_0_valid;                                 // avalon_st_adapter_001:out_0_valid -> fifo_2:avalonst_sink_valid
+	wire  [31:0] avalon_st_adapter_001_out_0_data;                                  // avalon_st_adapter_001:out_0_data -> fifo_2:avalonst_sink_data
+	wire         avalon_st_adapter_001_out_0_ready;                                 // fifo_2:avalonst_sink_ready -> avalon_st_adapter_001:out_0_ready
+	wire         avalon_st_adapter_001_out_0_channel;                               // avalon_st_adapter_001:out_0_channel -> fifo_2:avalonst_sink_channel
+	wire         avalon_st_adapter_001_out_0_startofpacket;                         // avalon_st_adapter_001:out_0_startofpacket -> fifo_2:avalonst_sink_startofpacket
+	wire         avalon_st_adapter_001_out_0_endofpacket;                           // avalon_st_adapter_001:out_0_endofpacket -> fifo_2:avalonst_sink_endofpacket
+	wire   [1:0] avalon_st_adapter_001_out_0_empty;                                 // avalon_st_adapter_001:out_0_empty -> fifo_2:avalonst_sink_empty
+	wire         eee_imgproc_0_avalon_streaming_source_3_valid;                     // EEE_IMGPROC_0:source_valid_fifo3 -> avalon_st_adapter_002:in_0_valid
+	wire  [31:0] eee_imgproc_0_avalon_streaming_source_3_data;                      // EEE_IMGPROC_0:source_data_fifo3 -> avalon_st_adapter_002:in_0_data
+	wire         eee_imgproc_0_avalon_streaming_source_3_ready;                     // avalon_st_adapter_002:in_0_ready -> EEE_IMGPROC_0:source_ready_fifo3
+	wire         eee_imgproc_0_avalon_streaming_source_3_startofpacket;             // EEE_IMGPROC_0:source_sop_fifo3 -> avalon_st_adapter_002:in_0_startofpacket
+	wire         eee_imgproc_0_avalon_streaming_source_3_endofpacket;               // EEE_IMGPROC_0:source_eop_fifo3 -> avalon_st_adapter_002:in_0_endofpacket
+	wire         avalon_st_adapter_002_out_0_valid;                                 // avalon_st_adapter_002:out_0_valid -> fifo_3:avalonst_sink_valid
+	wire  [31:0] avalon_st_adapter_002_out_0_data;                                  // avalon_st_adapter_002:out_0_data -> fifo_3:avalonst_sink_data
+	wire         avalon_st_adapter_002_out_0_ready;                                 // fifo_3:avalonst_sink_ready -> avalon_st_adapter_002:out_0_ready
+	wire         avalon_st_adapter_002_out_0_channel;                               // avalon_st_adapter_002:out_0_channel -> fifo_3:avalonst_sink_channel
+	wire         avalon_st_adapter_002_out_0_startofpacket;                         // avalon_st_adapter_002:out_0_startofpacket -> fifo_3:avalonst_sink_startofpacket
+	wire         avalon_st_adapter_002_out_0_endofpacket;                           // avalon_st_adapter_002:out_0_endofpacket -> fifo_3:avalonst_sink_endofpacket
+	wire   [1:0] avalon_st_adapter_002_out_0_empty;                                 // avalon_st_adapter_002:out_0_empty -> fifo_3:avalonst_sink_empty
+	wire         eee_imgproc_0_avalon_streaming_source_4_valid;                     // EEE_IMGPROC_0:source_valid_fifo4 -> avalon_st_adapter_003:in_0_valid
+	wire  [31:0] eee_imgproc_0_avalon_streaming_source_4_data;                      // EEE_IMGPROC_0:source_data_fifo4 -> avalon_st_adapter_003:in_0_data
+	wire         eee_imgproc_0_avalon_streaming_source_4_ready;                     // avalon_st_adapter_003:in_0_ready -> EEE_IMGPROC_0:source_ready_fifo4
+	wire         eee_imgproc_0_avalon_streaming_source_4_startofpacket;             // EEE_IMGPROC_0:source_sop_fifo4 -> avalon_st_adapter_003:in_0_startofpacket
+	wire         eee_imgproc_0_avalon_streaming_source_4_endofpacket;               // EEE_IMGPROC_0:source_eop_fifo4 -> avalon_st_adapter_003:in_0_endofpacket
+	wire         avalon_st_adapter_003_out_0_valid;                                 // avalon_st_adapter_003:out_0_valid -> fifo_4:avalonst_sink_valid
+	wire  [31:0] avalon_st_adapter_003_out_0_data;                                  // avalon_st_adapter_003:out_0_data -> fifo_4:avalonst_sink_data
+	wire         avalon_st_adapter_003_out_0_ready;                                 // fifo_4:avalonst_sink_ready -> avalon_st_adapter_003:out_0_ready
+	wire         avalon_st_adapter_003_out_0_channel;                               // avalon_st_adapter_003:out_0_channel -> fifo_4:avalonst_sink_channel
+	wire         avalon_st_adapter_003_out_0_startofpacket;                         // avalon_st_adapter_003:out_0_startofpacket -> fifo_4:avalonst_sink_startofpacket
+	wire         avalon_st_adapter_003_out_0_endofpacket;                           // avalon_st_adapter_003:out_0_endofpacket -> fifo_4:avalonst_sink_endofpacket
+	wire   [1:0] avalon_st_adapter_003_out_0_empty;                                 // avalon_st_adapter_003:out_0_empty -> fifo_4:avalonst_sink_empty
+	wire         fifo_1_out_valid;                                                  // fifo_1:avalonst_source_valid -> avalon_st_adapter_004:in_0_valid
+	wire  [31:0] fifo_1_out_data;                                                   // fifo_1:avalonst_source_data -> avalon_st_adapter_004:in_0_data
+	wire         fifo_1_out_ready;                                                  // avalon_st_adapter_004:in_0_ready -> fifo_1:avalonst_source_ready
+	wire         fifo_1_out_channel;                                                // fifo_1:avalonst_source_channel -> avalon_st_adapter_004:in_0_channel
+	wire         fifo_1_out_startofpacket;                                          // fifo_1:avalonst_source_startofpacket -> avalon_st_adapter_004:in_0_startofpacket
+	wire         fifo_1_out_endofpacket;                                            // fifo_1:avalonst_source_endofpacket -> avalon_st_adapter_004:in_0_endofpacket
+	wire   [1:0] fifo_1_out_empty;                                                  // fifo_1:avalonst_source_empty -> avalon_st_adapter_004:in_0_empty
+	wire         avalon_st_adapter_004_out_0_valid;                                 // avalon_st_adapter_004:out_0_valid -> EEE_IMGPROC_0:sink_valid_fifo1
+	wire  [31:0] avalon_st_adapter_004_out_0_data;                                  // avalon_st_adapter_004:out_0_data -> EEE_IMGPROC_0:sink_data_fifo1
+	wire         avalon_st_adapter_004_out_0_ready;                                 // EEE_IMGPROC_0:sink_ready_fifo1 -> avalon_st_adapter_004:out_0_ready
+	wire         avalon_st_adapter_004_out_0_startofpacket;                         // avalon_st_adapter_004:out_0_startofpacket -> EEE_IMGPROC_0:sink_sop_fifo1
+	wire         avalon_st_adapter_004_out_0_endofpacket;                           // avalon_st_adapter_004:out_0_endofpacket -> EEE_IMGPROC_0:sink_eop_fifo1
+	wire         fifo_2_out_valid;                                                  // fifo_2:avalonst_source_valid -> avalon_st_adapter_005:in_0_valid
+	wire  [31:0] fifo_2_out_data;                                                   // fifo_2:avalonst_source_data -> avalon_st_adapter_005:in_0_data
+	wire         fifo_2_out_ready;                                                  // avalon_st_adapter_005:in_0_ready -> fifo_2:avalonst_source_ready
+	wire         fifo_2_out_channel;                                                // fifo_2:avalonst_source_channel -> avalon_st_adapter_005:in_0_channel
+	wire         fifo_2_out_startofpacket;                                          // fifo_2:avalonst_source_startofpacket -> avalon_st_adapter_005:in_0_startofpacket
+	wire         fifo_2_out_endofpacket;                                            // fifo_2:avalonst_source_endofpacket -> avalon_st_adapter_005:in_0_endofpacket
+	wire   [1:0] fifo_2_out_empty;                                                  // fifo_2:avalonst_source_empty -> avalon_st_adapter_005:in_0_empty
+	wire         avalon_st_adapter_005_out_0_valid;                                 // avalon_st_adapter_005:out_0_valid -> EEE_IMGPROC_0:sink_valid_fifo2
+	wire  [31:0] avalon_st_adapter_005_out_0_data;                                  // avalon_st_adapter_005:out_0_data -> EEE_IMGPROC_0:sink_data_fifo2
+	wire         avalon_st_adapter_005_out_0_ready;                                 // EEE_IMGPROC_0:sink_ready_fifo2 -> avalon_st_adapter_005:out_0_ready
+	wire         avalon_st_adapter_005_out_0_startofpacket;                         // avalon_st_adapter_005:out_0_startofpacket -> EEE_IMGPROC_0:sink_sop_fifo2
+	wire         avalon_st_adapter_005_out_0_endofpacket;                           // avalon_st_adapter_005:out_0_endofpacket -> EEE_IMGPROC_0:sink_eop_fifo2
+	wire         fifo_3_out_valid;                                                  // fifo_3:avalonst_source_valid -> avalon_st_adapter_006:in_0_valid
+	wire  [31:0] fifo_3_out_data;                                                   // fifo_3:avalonst_source_data -> avalon_st_adapter_006:in_0_data
+	wire         fifo_3_out_ready;                                                  // avalon_st_adapter_006:in_0_ready -> fifo_3:avalonst_source_ready
+	wire         fifo_3_out_channel;                                                // fifo_3:avalonst_source_channel -> avalon_st_adapter_006:in_0_channel
+	wire         fifo_3_out_startofpacket;                                          // fifo_3:avalonst_source_startofpacket -> avalon_st_adapter_006:in_0_startofpacket
+	wire         fifo_3_out_endofpacket;                                            // fifo_3:avalonst_source_endofpacket -> avalon_st_adapter_006:in_0_endofpacket
+	wire   [1:0] fifo_3_out_empty;                                                  // fifo_3:avalonst_source_empty -> avalon_st_adapter_006:in_0_empty
+	wire         avalon_st_adapter_006_out_0_valid;                                 // avalon_st_adapter_006:out_0_valid -> EEE_IMGPROC_0:sink_valid_fifo3
+	wire  [31:0] avalon_st_adapter_006_out_0_data;                                  // avalon_st_adapter_006:out_0_data -> EEE_IMGPROC_0:sink_data_fifo3
+	wire         avalon_st_adapter_006_out_0_ready;                                 // EEE_IMGPROC_0:sink_ready_fifo3 -> avalon_st_adapter_006:out_0_ready
+	wire         avalon_st_adapter_006_out_0_startofpacket;                         // avalon_st_adapter_006:out_0_startofpacket -> EEE_IMGPROC_0:sink_sop_fifo3
+	wire         avalon_st_adapter_006_out_0_endofpacket;                           // avalon_st_adapter_006:out_0_endofpacket -> EEE_IMGPROC_0:sink_eop_fifo3
+	wire         fifo_4_out_valid;                                                  // fifo_4:avalonst_source_valid -> avalon_st_adapter_007:in_0_valid
+	wire  [31:0] fifo_4_out_data;                                                   // fifo_4:avalonst_source_data -> avalon_st_adapter_007:in_0_data
+	wire         fifo_4_out_ready;                                                  // avalon_st_adapter_007:in_0_ready -> fifo_4:avalonst_source_ready
+	wire         fifo_4_out_channel;                                                // fifo_4:avalonst_source_channel -> avalon_st_adapter_007:in_0_channel
+	wire         fifo_4_out_startofpacket;                                          // fifo_4:avalonst_source_startofpacket -> avalon_st_adapter_007:in_0_startofpacket
+	wire         fifo_4_out_endofpacket;                                            // fifo_4:avalonst_source_endofpacket -> avalon_st_adapter_007:in_0_endofpacket
+	wire   [1:0] fifo_4_out_empty;                                                  // fifo_4:avalonst_source_empty -> avalon_st_adapter_007:in_0_empty
+	wire         avalon_st_adapter_007_out_0_valid;                                 // avalon_st_adapter_007:out_0_valid -> EEE_IMGPROC_0:sink_valid_fifo4
+	wire  [31:0] avalon_st_adapter_007_out_0_data;                                  // avalon_st_adapter_007:out_0_data -> EEE_IMGPROC_0:sink_data_fifo4
+	wire         avalon_st_adapter_007_out_0_ready;                                 // EEE_IMGPROC_0:sink_ready_fifo4 -> avalon_st_adapter_007:out_0_ready
+	wire         avalon_st_adapter_007_out_0_startofpacket;                         // avalon_st_adapter_007:out_0_startofpacket -> EEE_IMGPROC_0:sink_sop_fifo4
+	wire         avalon_st_adapter_007_out_0_endofpacket;                           // avalon_st_adapter_007:out_0_endofpacket -> EEE_IMGPROC_0:sink_eop_fifo4
+	wire         rst_controller_reset_out_reset;                                    // rst_controller:reset_out -> [EEE_IMGPROC_0:reset_n, TERASIC_AUTO_FOCUS_0:reset_n, TERASIC_CAMERA_0:reset_n, alt_vip_itc_0:rst, alt_vip_vfb_0:reset, avalon_st_adapter:in_rst_0_reset, avalon_st_adapter_001:in_rst_0_reset, avalon_st_adapter_002:in_rst_0_reset, avalon_st_adapter_003:in_rst_0_reset, mm_interconnect_0:TERASIC_AUTO_FOCUS_0_reset_reset_bridge_in_reset_reset, mm_interconnect_1:alt_vip_vfb_0_reset_reset_bridge_in_reset_reset, sdram:reset_n]
+	wire         nios2_gen2_debug_reset_request_reset;                              // nios2_gen2:debug_reset_request -> [rst_controller:reset_in1, rst_controller_003:reset_in1]
 	wire         rst_controller_001_reset_out_reset;                                // rst_controller_001:reset_out -> [altpll_0:reset, mm_interconnect_0:altpll_0_inclk_interface_reset_reset_bridge_in_reset_reset]
-	wire         rst_controller_002_reset_out_reset;                                // rst_controller_002:reset_out -> [i2c_opencores_camera:wb_rst_i, i2c_opencores_mipi:wb_rst_i, irq_mapper:reset, jtag_uart:rst_n, key:reset_n, led:reset_n, mipi_pwdn_n:reset_n, mipi_reset_n:reset_n, mm_interconnect_0:nios2_gen2_reset_reset_bridge_in_reset_reset, nios2_gen2:reset_n, onchip_memory2_0:reset, rst_translator:in_reset, sw:reset_n, sysid_qsys:reset_n, timer:reset_n, uart_0:reset_n]
-	wire         rst_controller_002_reset_out_reset_req;                            // rst_controller_002:reset_req -> [nios2_gen2:reset_req, onchip_memory2_0:reset_req, rst_translator:reset_req_in]
+	wire         rst_controller_002_reset_out_reset;                                // rst_controller_002:reset_out -> [avalon_st_adapter_004:in_rst_0_reset, avalon_st_adapter_005:in_rst_0_reset, avalon_st_adapter_006:in_rst_0_reset, avalon_st_adapter_007:in_rst_0_reset, fifo_1:reset_n, fifo_2:reset_n, fifo_3:reset_n, fifo_4:reset_n, irq_synchronizer:receiver_reset, irq_synchronizer_001:receiver_reset, irq_synchronizer_002:receiver_reset, irq_synchronizer_003:receiver_reset]
+	wire         rst_controller_003_reset_out_reset;                                // rst_controller_003:reset_out -> [i2c_opencores_camera:wb_rst_i, i2c_opencores_mipi:wb_rst_i, irq_mapper:reset, irq_synchronizer:sender_reset, irq_synchronizer_001:sender_reset, irq_synchronizer_002:sender_reset, irq_synchronizer_003:sender_reset, jtag_uart:rst_n, key:reset_n, led:reset_n, mipi_pwdn_n:reset_n, mipi_reset_n:reset_n, mm_interconnect_0:nios2_gen2_reset_reset_bridge_in_reset_reset, nios2_gen2:reset_n, onchip_memory2_0:reset, rst_translator:in_reset, sw:reset_n, sysid_qsys:reset_n, timer:reset_n, uart_0:reset_n]
+	wire         rst_controller_003_reset_out_reset_req;                            // rst_controller_003:reset_req -> [nios2_gen2:reset_req, onchip_memory2_0:reset_req, rst_translator:reset_req_in]
 
-	EEE_IMGPROC eee_imgproc_0 (
-		.clk          (altpll_0_c2_clk),                                     //                   clock.clk
-		.reset_n      (~rst_controller_reset_out_reset),                     //                   reset.reset_n
-		.sink_data    (terasic_auto_focus_0_dout_data),                      //   avalon_streaming_sink.data
-		.sink_valid   (terasic_auto_focus_0_dout_valid),                     //                        .valid
-		.sink_ready   (terasic_auto_focus_0_dout_ready),                     //                        .ready
-		.sink_sop     (terasic_auto_focus_0_dout_startofpacket),             //                        .startofpacket
-		.sink_eop     (terasic_auto_focus_0_dout_endofpacket),               //                        .endofpacket
-		.source_data  (eee_imgproc_0_avalon_streaming_source_data),          // avalon_streaming_source.data
-		.source_eop   (eee_imgproc_0_avalon_streaming_source_endofpacket),   //                        .endofpacket
-		.source_ready (eee_imgproc_0_avalon_streaming_source_ready),         //                        .ready
-		.source_sop   (eee_imgproc_0_avalon_streaming_source_startofpacket), //                        .startofpacket
-		.source_valid (eee_imgproc_0_avalon_streaming_source_valid),         //                        .valid
-		.s_chipselect (mm_interconnect_0_eee_imgproc_0_s1_chipselect),       //                      s1.chipselect
-		.s_read       (mm_interconnect_0_eee_imgproc_0_s1_read),             //                        .read
-		.s_write      (mm_interconnect_0_eee_imgproc_0_s1_write),            //                        .write
-		.s_readdata   (mm_interconnect_0_eee_imgproc_0_s1_readdata),         //                        .readdata
-		.s_writedata  (mm_interconnect_0_eee_imgproc_0_s1_writedata),        //                        .writedata
-		.s_address    (mm_interconnect_0_eee_imgproc_0_s1_address),          //                        .address
-		.mode         (eee_imgproc_0_conduit_mode_new_signal)                //            conduit_mode.new_signal
+	EEE_IMGPROC #(
+		.IMAGE_W         (13'b0001010000000),
+		.IMAGE_H         (13'b0000111100000),
+		.MESSAGE_BUF_MAX (256),
+		.MSG_INTERVAL    (6),
+		.BB_COL_DEFAULT  (26'b00000000001111111100000000)
+	) eee_imgproc_0 (
+		.clk                (altpll_0_c2_clk),                                       //                     clock.clk
+		.reset_n            (~rst_controller_reset_out_reset),                       //                     reset.reset_n
+		.sink_data          (terasic_auto_focus_0_dout_data),                        //     avalon_streaming_sink.data
+		.sink_valid         (terasic_auto_focus_0_dout_valid),                       //                          .valid
+		.sink_ready         (terasic_auto_focus_0_dout_ready),                       //                          .ready
+		.sink_sop           (terasic_auto_focus_0_dout_startofpacket),               //                          .startofpacket
+		.sink_eop           (terasic_auto_focus_0_dout_endofpacket),                 //                          .endofpacket
+		.source_data        (eee_imgproc_0_avalon_streaming_source_data),            //   avalon_streaming_source.data
+		.source_eop         (eee_imgproc_0_avalon_streaming_source_endofpacket),     //                          .endofpacket
+		.source_ready       (eee_imgproc_0_avalon_streaming_source_ready),           //                          .ready
+		.source_sop         (eee_imgproc_0_avalon_streaming_source_startofpacket),   //                          .startofpacket
+		.source_valid       (eee_imgproc_0_avalon_streaming_source_valid),           //                          .valid
+		.s_chipselect       (mm_interconnect_0_eee_imgproc_0_s1_chipselect),         //                        s1.chipselect
+		.s_read             (mm_interconnect_0_eee_imgproc_0_s1_read),               //                          .read
+		.s_write            (mm_interconnect_0_eee_imgproc_0_s1_write),              //                          .write
+		.s_readdata         (mm_interconnect_0_eee_imgproc_0_s1_readdata),           //                          .readdata
+		.s_writedata        (mm_interconnect_0_eee_imgproc_0_s1_writedata),          //                          .writedata
+		.s_address          (mm_interconnect_0_eee_imgproc_0_s1_address),            //                          .address
+		.mode               (eee_imgproc_0_conduit_mode_new_signal),                 //              conduit_mode.new_signal
+		.sink_data_fifo1    (avalon_st_adapter_004_out_0_data),                      //   avalon_streaming_sink_1.data
+		.sink_valid_fifo1   (avalon_st_adapter_004_out_0_valid),                     //                          .valid
+		.sink_ready_fifo1   (avalon_st_adapter_004_out_0_ready),                     //                          .ready
+		.sink_sop_fifo1     (avalon_st_adapter_004_out_0_startofpacket),             //                          .startofpacket
+		.sink_eop_fifo1     (avalon_st_adapter_004_out_0_endofpacket),               //                          .endofpacket
+		.source_data_fifo1  (eee_imgproc_0_avalon_streaming_source_1_data),          // avalon_streaming_source_1.data
+		.source_ready_fifo1 (eee_imgproc_0_avalon_streaming_source_1_ready),         //                          .ready
+		.source_valid_fifo1 (eee_imgproc_0_avalon_streaming_source_1_valid),         //                          .valid
+		.source_eop_fifo1   (eee_imgproc_0_avalon_streaming_source_1_endofpacket),   //                          .endofpacket
+		.source_sop_fifo1   (eee_imgproc_0_avalon_streaming_source_1_startofpacket), //                          .startofpacket
+		.sink_data_fifo2    (avalon_st_adapter_005_out_0_data),                      //   avalon_streaming_sink_2.data
+		.sink_eop_fifo2     (avalon_st_adapter_005_out_0_endofpacket),               //                          .endofpacket
+		.sink_ready_fifo2   (avalon_st_adapter_005_out_0_ready),                     //                          .ready
+		.sink_sop_fifo2     (avalon_st_adapter_005_out_0_startofpacket),             //                          .startofpacket
+		.sink_valid_fifo2   (avalon_st_adapter_005_out_0_valid),                     //                          .valid
+		.sink_data_fifo3    (avalon_st_adapter_006_out_0_data),                      //   avalon_streaming_sink_3.data
+		.sink_eop_fifo3     (avalon_st_adapter_006_out_0_endofpacket),               //                          .endofpacket
+		.sink_ready_fifo3   (avalon_st_adapter_006_out_0_ready),                     //                          .ready
+		.sink_sop_fifo3     (avalon_st_adapter_006_out_0_startofpacket),             //                          .startofpacket
+		.sink_valid_fifo3   (avalon_st_adapter_006_out_0_valid),                     //                          .valid
+		.sink_data_fifo4    (avalon_st_adapter_007_out_0_data),                      //   avalon_streaming_sink_4.data
+		.sink_eop_fifo4     (avalon_st_adapter_007_out_0_endofpacket),               //                          .endofpacket
+		.sink_ready_fifo4   (avalon_st_adapter_007_out_0_ready),                     //                          .ready
+		.sink_sop_fifo4     (avalon_st_adapter_007_out_0_startofpacket),             //                          .startofpacket
+		.sink_valid_fifo4   (avalon_st_adapter_007_out_0_valid),                     //                          .valid
+		.source_data_fifo2  (eee_imgproc_0_avalon_streaming_source_2_data),          // avalon_streaming_source_2.data
+		.source_eop_fifo2   (eee_imgproc_0_avalon_streaming_source_2_endofpacket),   //                          .endofpacket
+		.source_ready_fifo2 (eee_imgproc_0_avalon_streaming_source_2_ready),         //                          .ready
+		.source_sop_fifo2   (eee_imgproc_0_avalon_streaming_source_2_startofpacket), //                          .startofpacket
+		.source_valid_fifo2 (eee_imgproc_0_avalon_streaming_source_2_valid),         //                          .valid
+		.source_data_fifo3  (eee_imgproc_0_avalon_streaming_source_3_data),          // avalon_streaming_source_3.data
+		.source_eop_fifo3   (eee_imgproc_0_avalon_streaming_source_3_endofpacket),   //                          .endofpacket
+		.source_ready_fifo3 (eee_imgproc_0_avalon_streaming_source_3_ready),         //                          .ready
+		.source_sop_fifo3   (eee_imgproc_0_avalon_streaming_source_3_startofpacket), //                          .startofpacket
+		.source_valid_fifo3 (eee_imgproc_0_avalon_streaming_source_3_valid),         //                          .valid
+		.source_data_fifo4  (eee_imgproc_0_avalon_streaming_source_4_data),          // avalon_streaming_source_4.data
+		.source_eop_fifo4   (eee_imgproc_0_avalon_streaming_source_4_endofpacket),   //                          .endofpacket
+		.source_ready_fifo4 (eee_imgproc_0_avalon_streaming_source_4_ready),         //                          .ready
+		.source_sop_fifo4   (eee_imgproc_0_avalon_streaming_source_4_startofpacket), //                          .startofpacket
+		.source_valid_fifo4 (eee_imgproc_0_avalon_streaming_source_4_valid)          //                          .valid
 	);
 
 	TERASIC_AUTO_FOCUS #(
@@ -373,9 +524,109 @@ module Qsys (
 		.configupdate       (1'b0)                                            //           (terminated)
 	);
 
+	Qsys_fifo_1 fifo_1 (
+		.wrclock                       (altpll_0_c2_clk),                       //   clk_in.clk
+		.reset_n                       (~rst_controller_002_reset_out_reset),   // reset_in.reset_n
+		.avalonst_sink_valid           (avalon_st_adapter_out_0_valid),         //       in.valid
+		.avalonst_sink_data            (avalon_st_adapter_out_0_data),          //         .data
+		.avalonst_sink_channel         (avalon_st_adapter_out_0_channel),       //         .channel
+		.avalonst_sink_startofpacket   (avalon_st_adapter_out_0_startofpacket), //         .startofpacket
+		.avalonst_sink_endofpacket     (avalon_st_adapter_out_0_endofpacket),   //         .endofpacket
+		.avalonst_sink_empty           (avalon_st_adapter_out_0_empty),         //         .empty
+		.avalonst_sink_ready           (avalon_st_adapter_out_0_ready),         //         .ready
+		.avalonst_source_valid         (fifo_1_out_valid),                      //      out.valid
+		.avalonst_source_data          (fifo_1_out_data),                       //         .data
+		.avalonst_source_channel       (fifo_1_out_channel),                    //         .channel
+		.avalonst_source_startofpacket (fifo_1_out_startofpacket),              //         .startofpacket
+		.avalonst_source_endofpacket   (fifo_1_out_endofpacket),                //         .endofpacket
+		.avalonst_source_empty         (fifo_1_out_empty),                      //         .empty
+		.avalonst_source_ready         (fifo_1_out_ready),                      //         .ready
+		.wrclk_control_slave_address   (),                                      //   in_csr.address
+		.wrclk_control_slave_read      (),                                      //         .read
+		.wrclk_control_slave_writedata (),                                      //         .writedata
+		.wrclk_control_slave_write     (),                                      //         .write
+		.wrclk_control_slave_readdata  (),                                      //         .readdata
+		.wrclk_control_slave_irq       (irq_synchronizer_receiver_irq)          //   in_irq.irq
+	);
+
+	Qsys_fifo_1 fifo_2 (
+		.wrclock                       (altpll_0_c2_clk),                           //   clk_in.clk
+		.reset_n                       (~rst_controller_002_reset_out_reset),       // reset_in.reset_n
+		.avalonst_sink_valid           (avalon_st_adapter_001_out_0_valid),         //       in.valid
+		.avalonst_sink_data            (avalon_st_adapter_001_out_0_data),          //         .data
+		.avalonst_sink_channel         (avalon_st_adapter_001_out_0_channel),       //         .channel
+		.avalonst_sink_startofpacket   (avalon_st_adapter_001_out_0_startofpacket), //         .startofpacket
+		.avalonst_sink_endofpacket     (avalon_st_adapter_001_out_0_endofpacket),   //         .endofpacket
+		.avalonst_sink_empty           (avalon_st_adapter_001_out_0_empty),         //         .empty
+		.avalonst_sink_ready           (avalon_st_adapter_001_out_0_ready),         //         .ready
+		.avalonst_source_valid         (fifo_2_out_valid),                          //      out.valid
+		.avalonst_source_data          (fifo_2_out_data),                           //         .data
+		.avalonst_source_channel       (fifo_2_out_channel),                        //         .channel
+		.avalonst_source_startofpacket (fifo_2_out_startofpacket),                  //         .startofpacket
+		.avalonst_source_endofpacket   (fifo_2_out_endofpacket),                    //         .endofpacket
+		.avalonst_source_empty         (fifo_2_out_empty),                          //         .empty
+		.avalonst_source_ready         (fifo_2_out_ready),                          //         .ready
+		.wrclk_control_slave_address   (),                                          //   in_csr.address
+		.wrclk_control_slave_read      (),                                          //         .read
+		.wrclk_control_slave_writedata (),                                          //         .writedata
+		.wrclk_control_slave_write     (),                                          //         .write
+		.wrclk_control_slave_readdata  (),                                          //         .readdata
+		.wrclk_control_slave_irq       (irq_synchronizer_001_receiver_irq)          //   in_irq.irq
+	);
+
+	Qsys_fifo_1 fifo_3 (
+		.wrclock                       (altpll_0_c2_clk),                           //   clk_in.clk
+		.reset_n                       (~rst_controller_002_reset_out_reset),       // reset_in.reset_n
+		.avalonst_sink_valid           (avalon_st_adapter_002_out_0_valid),         //       in.valid
+		.avalonst_sink_data            (avalon_st_adapter_002_out_0_data),          //         .data
+		.avalonst_sink_channel         (avalon_st_adapter_002_out_0_channel),       //         .channel
+		.avalonst_sink_startofpacket   (avalon_st_adapter_002_out_0_startofpacket), //         .startofpacket
+		.avalonst_sink_endofpacket     (avalon_st_adapter_002_out_0_endofpacket),   //         .endofpacket
+		.avalonst_sink_empty           (avalon_st_adapter_002_out_0_empty),         //         .empty
+		.avalonst_sink_ready           (avalon_st_adapter_002_out_0_ready),         //         .ready
+		.avalonst_source_valid         (fifo_3_out_valid),                          //      out.valid
+		.avalonst_source_data          (fifo_3_out_data),                           //         .data
+		.avalonst_source_channel       (fifo_3_out_channel),                        //         .channel
+		.avalonst_source_startofpacket (fifo_3_out_startofpacket),                  //         .startofpacket
+		.avalonst_source_endofpacket   (fifo_3_out_endofpacket),                    //         .endofpacket
+		.avalonst_source_empty         (fifo_3_out_empty),                          //         .empty
+		.avalonst_source_ready         (fifo_3_out_ready),                          //         .ready
+		.wrclk_control_slave_address   (),                                          //   in_csr.address
+		.wrclk_control_slave_read      (),                                          //         .read
+		.wrclk_control_slave_writedata (),                                          //         .writedata
+		.wrclk_control_slave_write     (),                                          //         .write
+		.wrclk_control_slave_readdata  (),                                          //         .readdata
+		.wrclk_control_slave_irq       (irq_synchronizer_002_receiver_irq)          //   in_irq.irq
+	);
+
+	Qsys_fifo_1 fifo_4 (
+		.wrclock                       (altpll_0_c2_clk),                           //   clk_in.clk
+		.reset_n                       (~rst_controller_002_reset_out_reset),       // reset_in.reset_n
+		.avalonst_sink_valid           (avalon_st_adapter_003_out_0_valid),         //       in.valid
+		.avalonst_sink_data            (avalon_st_adapter_003_out_0_data),          //         .data
+		.avalonst_sink_channel         (avalon_st_adapter_003_out_0_channel),       //         .channel
+		.avalonst_sink_startofpacket   (avalon_st_adapter_003_out_0_startofpacket), //         .startofpacket
+		.avalonst_sink_endofpacket     (avalon_st_adapter_003_out_0_endofpacket),   //         .endofpacket
+		.avalonst_sink_empty           (avalon_st_adapter_003_out_0_empty),         //         .empty
+		.avalonst_sink_ready           (avalon_st_adapter_003_out_0_ready),         //         .ready
+		.avalonst_source_valid         (fifo_4_out_valid),                          //      out.valid
+		.avalonst_source_data          (fifo_4_out_data),                           //         .data
+		.avalonst_source_channel       (fifo_4_out_channel),                        //         .channel
+		.avalonst_source_startofpacket (fifo_4_out_startofpacket),                  //         .startofpacket
+		.avalonst_source_endofpacket   (fifo_4_out_endofpacket),                    //         .endofpacket
+		.avalonst_source_empty         (fifo_4_out_empty),                          //         .empty
+		.avalonst_source_ready         (fifo_4_out_ready),                          //         .ready
+		.wrclk_control_slave_address   (),                                          //   in_csr.address
+		.wrclk_control_slave_read      (),                                          //         .read
+		.wrclk_control_slave_writedata (),                                          //         .writedata
+		.wrclk_control_slave_write     (),                                          //         .write
+		.wrclk_control_slave_readdata  (),                                          //         .readdata
+		.wrclk_control_slave_irq       (irq_synchronizer_003_receiver_irq)          //   in_irq.irq
+	);
+
 	i2c_opencores i2c_opencores_camera (
 		.wb_clk_i   (clk_clk),                                                           //            clock.clk
-		.wb_rst_i   (rst_controller_002_reset_out_reset),                                //      clock_reset.reset
+		.wb_rst_i   (rst_controller_003_reset_out_reset),                                //      clock_reset.reset
 		.scl_pad_io (i2c_opencores_camera_export_scl_pad_io),                            //           export.export
 		.sda_pad_io (i2c_opencores_camera_export_sda_pad_io),                            //                 .export
 		.wb_adr_i   (mm_interconnect_0_i2c_opencores_camera_avalon_slave_0_address),     //   avalon_slave_0.address
@@ -384,12 +635,12 @@ module Qsys (
 		.wb_we_i    (mm_interconnect_0_i2c_opencores_camera_avalon_slave_0_write),       //                 .write
 		.wb_stb_i   (mm_interconnect_0_i2c_opencores_camera_avalon_slave_0_chipselect),  //                 .chipselect
 		.wb_ack_o   (mm_interconnect_0_i2c_opencores_camera_avalon_slave_0_waitrequest), //                 .waitrequest_n
-		.wb_inta_o  (irq_mapper_receiver1_irq)                                           // interrupt_sender.irq
+		.wb_inta_o  (irq_mapper_receiver5_irq)                                           // interrupt_sender.irq
 	);
 
 	i2c_opencores i2c_opencores_mipi (
 		.wb_clk_i   (clk_clk),                                                         //            clock.clk
-		.wb_rst_i   (rst_controller_002_reset_out_reset),                              //      clock_reset.reset
+		.wb_rst_i   (rst_controller_003_reset_out_reset),                              //      clock_reset.reset
 		.scl_pad_io (i2c_opencores_mipi_export_scl_pad_io),                            //           export.export
 		.sda_pad_io (i2c_opencores_mipi_export_sda_pad_io),                            //                 .export
 		.wb_adr_i   (mm_interconnect_0_i2c_opencores_mipi_avalon_slave_0_address),     //   avalon_slave_0.address
@@ -398,12 +649,12 @@ module Qsys (
 		.wb_we_i    (mm_interconnect_0_i2c_opencores_mipi_avalon_slave_0_write),       //                 .write
 		.wb_stb_i   (mm_interconnect_0_i2c_opencores_mipi_avalon_slave_0_chipselect),  //                 .chipselect
 		.wb_ack_o   (mm_interconnect_0_i2c_opencores_mipi_avalon_slave_0_waitrequest), //                 .waitrequest_n
-		.wb_inta_o  (irq_mapper_receiver0_irq)                                         // interrupt_sender.irq
+		.wb_inta_o  (irq_mapper_receiver4_irq)                                         // interrupt_sender.irq
 	);
 
 	Qsys_jtag_uart jtag_uart (
 		.clk            (clk_clk),                                                   //               clk.clk
-		.rst_n          (~rst_controller_002_reset_out_reset),                       //             reset.reset_n
+		.rst_n          (~rst_controller_003_reset_out_reset),                       //             reset.reset_n
 		.av_chipselect  (mm_interconnect_0_jtag_uart_avalon_jtag_slave_chipselect),  // avalon_jtag_slave.chipselect
 		.av_address     (mm_interconnect_0_jtag_uart_avalon_jtag_slave_address),     //                  .address
 		.av_read_n      (~mm_interconnect_0_jtag_uart_avalon_jtag_slave_read),       //                  .read_n
@@ -411,12 +662,12 @@ module Qsys (
 		.av_write_n     (~mm_interconnect_0_jtag_uart_avalon_jtag_slave_write),      //                  .write_n
 		.av_writedata   (mm_interconnect_0_jtag_uart_avalon_jtag_slave_writedata),   //                  .writedata
 		.av_waitrequest (mm_interconnect_0_jtag_uart_avalon_jtag_slave_waitrequest), //                  .waitrequest
-		.av_irq         (irq_mapper_receiver2_irq)                                   //               irq.irq
+		.av_irq         (irq_mapper_receiver6_irq)                                   //               irq.irq
 	);
 
 	Qsys_key key (
 		.clk      (clk_clk),                             //                 clk.clk
-		.reset_n  (~rst_controller_002_reset_out_reset), //               reset.reset_n
+		.reset_n  (~rst_controller_003_reset_out_reset), //               reset.reset_n
 		.address  (mm_interconnect_0_key_s1_address),    //                  s1.address
 		.readdata (mm_interconnect_0_key_s1_readdata),   //                    .readdata
 		.in_port  (key_external_connection_export)       // external_connection.export
@@ -424,7 +675,7 @@ module Qsys (
 
 	Qsys_led led (
 		.clk        (clk_clk),                             //                 clk.clk
-		.reset_n    (~rst_controller_002_reset_out_reset), //               reset.reset_n
+		.reset_n    (~rst_controller_003_reset_out_reset), //               reset.reset_n
 		.address    (mm_interconnect_0_led_s1_address),    //                  s1.address
 		.write_n    (~mm_interconnect_0_led_s1_write),     //                    .write_n
 		.writedata  (mm_interconnect_0_led_s1_writedata),  //                    .writedata
@@ -435,7 +686,7 @@ module Qsys (
 
 	Qsys_mipi_pwdn_n mipi_pwdn_n (
 		.clk        (clk_clk),                                     //                 clk.clk
-		.reset_n    (~rst_controller_002_reset_out_reset),         //               reset.reset_n
+		.reset_n    (~rst_controller_003_reset_out_reset),         //               reset.reset_n
 		.address    (mm_interconnect_0_mipi_pwdn_n_s1_address),    //                  s1.address
 		.write_n    (~mm_interconnect_0_mipi_pwdn_n_s1_write),     //                    .write_n
 		.writedata  (mm_interconnect_0_mipi_pwdn_n_s1_writedata),  //                    .writedata
@@ -446,7 +697,7 @@ module Qsys (
 
 	Qsys_mipi_pwdn_n mipi_reset_n (
 		.clk        (clk_clk),                                      //                 clk.clk
-		.reset_n    (~rst_controller_002_reset_out_reset),          //               reset.reset_n
+		.reset_n    (~rst_controller_003_reset_out_reset),          //               reset.reset_n
 		.address    (mm_interconnect_0_mipi_reset_n_s1_address),    //                  s1.address
 		.write_n    (~mm_interconnect_0_mipi_reset_n_s1_write),     //                    .write_n
 		.writedata  (mm_interconnect_0_mipi_reset_n_s1_writedata),  //                    .writedata
@@ -457,8 +708,8 @@ module Qsys (
 
 	Qsys_nios2_gen2 nios2_gen2 (
 		.clk                                 (clk_clk),                                                  //                       clk.clk
-		.reset_n                             (~rst_controller_002_reset_out_reset),                      //                     reset.reset_n
-		.reset_req                           (rst_controller_002_reset_out_reset_req),                   //                          .reset_req
+		.reset_n                             (~rst_controller_003_reset_out_reset),                      //                     reset.reset_n
+		.reset_req                           (rst_controller_003_reset_out_reset_req),                   //                          .reset_req
 		.d_address                           (nios2_gen2_data_master_address),                           //               data_master.address
 		.d_byteenable                        (nios2_gen2_data_master_byteenable),                        //                          .byteenable
 		.d_read                              (nios2_gen2_data_master_read),                              //                          .read
@@ -495,8 +746,8 @@ module Qsys (
 		.readdata   (mm_interconnect_0_onchip_memory2_0_s1_readdata),   //       .readdata
 		.writedata  (mm_interconnect_0_onchip_memory2_0_s1_writedata),  //       .writedata
 		.byteenable (mm_interconnect_0_onchip_memory2_0_s1_byteenable), //       .byteenable
-		.reset      (rst_controller_002_reset_out_reset),               // reset1.reset
-		.reset_req  (rst_controller_002_reset_out_reset_req),           //       .reset_req
+		.reset      (rst_controller_003_reset_out_reset),               // reset1.reset
+		.reset_req  (rst_controller_003_reset_out_reset_req),           //       .reset_req
 		.freeze     (1'b0)                                              // (terminated)
 	);
 
@@ -525,7 +776,7 @@ module Qsys (
 
 	Qsys_sw sw (
 		.clk      (clk_clk),                             //                 clk.clk
-		.reset_n  (~rst_controller_002_reset_out_reset), //               reset.reset_n
+		.reset_n  (~rst_controller_003_reset_out_reset), //               reset.reset_n
 		.address  (mm_interconnect_0_sw_s1_address),     //                  s1.address
 		.readdata (mm_interconnect_0_sw_s1_readdata),    //                    .readdata
 		.in_port  (sw_external_connection_export)        // external_connection.export
@@ -533,25 +784,25 @@ module Qsys (
 
 	Qsys_sysid_qsys sysid_qsys (
 		.clock    (clk_clk),                                             //           clk.clk
-		.reset_n  (~rst_controller_002_reset_out_reset),                 //         reset.reset_n
+		.reset_n  (~rst_controller_003_reset_out_reset),                 //         reset.reset_n
 		.readdata (mm_interconnect_0_sysid_qsys_control_slave_readdata), // control_slave.readdata
 		.address  (mm_interconnect_0_sysid_qsys_control_slave_address)   //              .address
 	);
 
 	Qsys_timer timer (
 		.clk        (clk_clk),                               //   clk.clk
-		.reset_n    (~rst_controller_002_reset_out_reset),   // reset.reset_n
+		.reset_n    (~rst_controller_003_reset_out_reset),   // reset.reset_n
 		.address    (mm_interconnect_0_timer_s1_address),    //    s1.address
 		.writedata  (mm_interconnect_0_timer_s1_writedata),  //      .writedata
 		.readdata   (mm_interconnect_0_timer_s1_readdata),   //      .readdata
 		.chipselect (mm_interconnect_0_timer_s1_chipselect), //      .chipselect
 		.write_n    (~mm_interconnect_0_timer_s1_write),     //      .write_n
-		.irq        (irq_mapper_receiver3_irq)               //   irq.irq
+		.irq        (irq_mapper_receiver7_irq)               //   irq.irq
 	);
 
 	Qsys_uart_0 uart_0 (
 		.clk           (clk_clk),                                   //                 clk.clk
-		.reset_n       (~rst_controller_002_reset_out_reset),       //               reset.reset_n
+		.reset_n       (~rst_controller_003_reset_out_reset),       //               reset.reset_n
 		.address       (mm_interconnect_0_uart_0_s1_address),       //                  s1.address
 		.begintransfer (mm_interconnect_0_uart_0_s1_begintransfer), //                    .begintransfer
 		.chipselect    (mm_interconnect_0_uart_0_s1_chipselect),    //                    .chipselect
@@ -561,14 +812,14 @@ module Qsys (
 		.readdata      (mm_interconnect_0_uart_0_s1_readdata),      //                    .readdata
 		.rxd           (uart_0_rx_tx_rxd),                          // external_connection.export
 		.txd           (uart_0_rx_tx_txd),                          //                    .export
-		.irq           (irq_mapper_receiver4_irq)                   //                 irq.irq
+		.irq           (irq_mapper_receiver8_irq)                   //                 irq.irq
 	);
 
 	Qsys_mm_interconnect_0 mm_interconnect_0 (
 		.altpll_0_c2_clk                                            (altpll_0_c2_clk),                                                    //                                          altpll_0_c2.clk
 		.clk_50_clk_clk                                             (clk_clk),                                                            //                                           clk_50_clk.clk
 		.altpll_0_inclk_interface_reset_reset_bridge_in_reset_reset (rst_controller_001_reset_out_reset),                                 // altpll_0_inclk_interface_reset_reset_bridge_in_reset.reset
-		.nios2_gen2_reset_reset_bridge_in_reset_reset               (rst_controller_002_reset_out_reset),                                 //               nios2_gen2_reset_reset_bridge_in_reset.reset
+		.nios2_gen2_reset_reset_bridge_in_reset_reset               (rst_controller_003_reset_out_reset),                                 //               nios2_gen2_reset_reset_bridge_in_reset.reset
 		.TERASIC_AUTO_FOCUS_0_reset_reset_bridge_in_reset_reset     (rst_controller_reset_out_reset),                                     //     TERASIC_AUTO_FOCUS_0_reset_reset_bridge_in_reset.reset
 		.nios2_gen2_data_master_address                             (nios2_gen2_data_master_address),                                     //                               nios2_gen2_data_master.address
 		.nios2_gen2_data_master_waitrequest                         (nios2_gen2_data_master_waitrequest),                                 //                                                     .waitrequest
@@ -697,13 +948,333 @@ module Qsys (
 
 	Qsys_irq_mapper irq_mapper (
 		.clk           (clk_clk),                            //       clk.clk
-		.reset         (rst_controller_002_reset_out_reset), // clk_reset.reset
+		.reset         (rst_controller_003_reset_out_reset), // clk_reset.reset
 		.receiver0_irq (irq_mapper_receiver0_irq),           // receiver0.irq
 		.receiver1_irq (irq_mapper_receiver1_irq),           // receiver1.irq
 		.receiver2_irq (irq_mapper_receiver2_irq),           // receiver2.irq
 		.receiver3_irq (irq_mapper_receiver3_irq),           // receiver3.irq
 		.receiver4_irq (irq_mapper_receiver4_irq),           // receiver4.irq
+		.receiver5_irq (irq_mapper_receiver5_irq),           // receiver5.irq
+		.receiver6_irq (irq_mapper_receiver6_irq),           // receiver6.irq
+		.receiver7_irq (irq_mapper_receiver7_irq),           // receiver7.irq
+		.receiver8_irq (irq_mapper_receiver8_irq),           // receiver8.irq
 		.sender_irq    (nios2_gen2_irq_irq)                  //    sender.irq
+	);
+
+	altera_irq_clock_crosser #(
+		.IRQ_WIDTH (1)
+	) irq_synchronizer (
+		.receiver_clk   (altpll_0_c2_clk),                    //       receiver_clk.clk
+		.sender_clk     (clk_clk),                            //         sender_clk.clk
+		.receiver_reset (rst_controller_002_reset_out_reset), // receiver_clk_reset.reset
+		.sender_reset   (rst_controller_003_reset_out_reset), //   sender_clk_reset.reset
+		.receiver_irq   (irq_synchronizer_receiver_irq),      //           receiver.irq
+		.sender_irq     (irq_mapper_receiver0_irq)            //             sender.irq
+	);
+
+	altera_irq_clock_crosser #(
+		.IRQ_WIDTH (1)
+	) irq_synchronizer_001 (
+		.receiver_clk   (altpll_0_c2_clk),                    //       receiver_clk.clk
+		.sender_clk     (clk_clk),                            //         sender_clk.clk
+		.receiver_reset (rst_controller_002_reset_out_reset), // receiver_clk_reset.reset
+		.sender_reset   (rst_controller_003_reset_out_reset), //   sender_clk_reset.reset
+		.receiver_irq   (irq_synchronizer_001_receiver_irq),  //           receiver.irq
+		.sender_irq     (irq_mapper_receiver1_irq)            //             sender.irq
+	);
+
+	altera_irq_clock_crosser #(
+		.IRQ_WIDTH (1)
+	) irq_synchronizer_002 (
+		.receiver_clk   (altpll_0_c2_clk),                    //       receiver_clk.clk
+		.sender_clk     (clk_clk),                            //         sender_clk.clk
+		.receiver_reset (rst_controller_002_reset_out_reset), // receiver_clk_reset.reset
+		.sender_reset   (rst_controller_003_reset_out_reset), //   sender_clk_reset.reset
+		.receiver_irq   (irq_synchronizer_002_receiver_irq),  //           receiver.irq
+		.sender_irq     (irq_mapper_receiver2_irq)            //             sender.irq
+	);
+
+	altera_irq_clock_crosser #(
+		.IRQ_WIDTH (1)
+	) irq_synchronizer_003 (
+		.receiver_clk   (altpll_0_c2_clk),                    //       receiver_clk.clk
+		.sender_clk     (clk_clk),                            //         sender_clk.clk
+		.receiver_reset (rst_controller_002_reset_out_reset), // receiver_clk_reset.reset
+		.sender_reset   (rst_controller_003_reset_out_reset), //   sender_clk_reset.reset
+		.receiver_irq   (irq_synchronizer_003_receiver_irq),  //           receiver.irq
+		.sender_irq     (irq_mapper_receiver3_irq)            //             sender.irq
+	);
+
+	Qsys_avalon_st_adapter #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (32),
+		.inChannelWidth  (0),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (0),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (0),
+		.outDataWidth    (32),
+		.outChannelWidth (1),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (1),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (1)
+	) avalon_st_adapter (
+		.in_clk_0_clk        (altpll_0_c2_clk),                                       // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_reset_out_reset),                        // in_rst_0.reset
+		.in_0_data           (eee_imgproc_0_avalon_streaming_source_1_data),          //     in_0.data
+		.in_0_valid          (eee_imgproc_0_avalon_streaming_source_1_valid),         //         .valid
+		.in_0_ready          (eee_imgproc_0_avalon_streaming_source_1_ready),         //         .ready
+		.in_0_startofpacket  (eee_imgproc_0_avalon_streaming_source_1_startofpacket), //         .startofpacket
+		.in_0_endofpacket    (eee_imgproc_0_avalon_streaming_source_1_endofpacket),   //         .endofpacket
+		.out_0_data          (avalon_st_adapter_out_0_data),                          //    out_0.data
+		.out_0_valid         (avalon_st_adapter_out_0_valid),                         //         .valid
+		.out_0_ready         (avalon_st_adapter_out_0_ready),                         //         .ready
+		.out_0_startofpacket (avalon_st_adapter_out_0_startofpacket),                 //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_out_0_endofpacket),                   //         .endofpacket
+		.out_0_empty         (avalon_st_adapter_out_0_empty),                         //         .empty
+		.out_0_channel       (avalon_st_adapter_out_0_channel)                        //         .channel
+	);
+
+	Qsys_avalon_st_adapter #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (32),
+		.inChannelWidth  (0),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (0),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (0),
+		.outDataWidth    (32),
+		.outChannelWidth (1),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (1),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (1)
+	) avalon_st_adapter_001 (
+		.in_clk_0_clk        (altpll_0_c2_clk),                                       // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_reset_out_reset),                        // in_rst_0.reset
+		.in_0_data           (eee_imgproc_0_avalon_streaming_source_2_data),          //     in_0.data
+		.in_0_valid          (eee_imgproc_0_avalon_streaming_source_2_valid),         //         .valid
+		.in_0_ready          (eee_imgproc_0_avalon_streaming_source_2_ready),         //         .ready
+		.in_0_startofpacket  (eee_imgproc_0_avalon_streaming_source_2_startofpacket), //         .startofpacket
+		.in_0_endofpacket    (eee_imgproc_0_avalon_streaming_source_2_endofpacket),   //         .endofpacket
+		.out_0_data          (avalon_st_adapter_001_out_0_data),                      //    out_0.data
+		.out_0_valid         (avalon_st_adapter_001_out_0_valid),                     //         .valid
+		.out_0_ready         (avalon_st_adapter_001_out_0_ready),                     //         .ready
+		.out_0_startofpacket (avalon_st_adapter_001_out_0_startofpacket),             //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_001_out_0_endofpacket),               //         .endofpacket
+		.out_0_empty         (avalon_st_adapter_001_out_0_empty),                     //         .empty
+		.out_0_channel       (avalon_st_adapter_001_out_0_channel)                    //         .channel
+	);
+
+	Qsys_avalon_st_adapter #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (32),
+		.inChannelWidth  (0),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (0),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (0),
+		.outDataWidth    (32),
+		.outChannelWidth (1),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (1),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (1)
+	) avalon_st_adapter_002 (
+		.in_clk_0_clk        (altpll_0_c2_clk),                                       // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_reset_out_reset),                        // in_rst_0.reset
+		.in_0_data           (eee_imgproc_0_avalon_streaming_source_3_data),          //     in_0.data
+		.in_0_valid          (eee_imgproc_0_avalon_streaming_source_3_valid),         //         .valid
+		.in_0_ready          (eee_imgproc_0_avalon_streaming_source_3_ready),         //         .ready
+		.in_0_startofpacket  (eee_imgproc_0_avalon_streaming_source_3_startofpacket), //         .startofpacket
+		.in_0_endofpacket    (eee_imgproc_0_avalon_streaming_source_3_endofpacket),   //         .endofpacket
+		.out_0_data          (avalon_st_adapter_002_out_0_data),                      //    out_0.data
+		.out_0_valid         (avalon_st_adapter_002_out_0_valid),                     //         .valid
+		.out_0_ready         (avalon_st_adapter_002_out_0_ready),                     //         .ready
+		.out_0_startofpacket (avalon_st_adapter_002_out_0_startofpacket),             //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_002_out_0_endofpacket),               //         .endofpacket
+		.out_0_empty         (avalon_st_adapter_002_out_0_empty),                     //         .empty
+		.out_0_channel       (avalon_st_adapter_002_out_0_channel)                    //         .channel
+	);
+
+	Qsys_avalon_st_adapter #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (32),
+		.inChannelWidth  (0),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (0),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (0),
+		.outDataWidth    (32),
+		.outChannelWidth (1),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (1),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (1)
+	) avalon_st_adapter_003 (
+		.in_clk_0_clk        (altpll_0_c2_clk),                                       // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_reset_out_reset),                        // in_rst_0.reset
+		.in_0_data           (eee_imgproc_0_avalon_streaming_source_4_data),          //     in_0.data
+		.in_0_valid          (eee_imgproc_0_avalon_streaming_source_4_valid),         //         .valid
+		.in_0_ready          (eee_imgproc_0_avalon_streaming_source_4_ready),         //         .ready
+		.in_0_startofpacket  (eee_imgproc_0_avalon_streaming_source_4_startofpacket), //         .startofpacket
+		.in_0_endofpacket    (eee_imgproc_0_avalon_streaming_source_4_endofpacket),   //         .endofpacket
+		.out_0_data          (avalon_st_adapter_003_out_0_data),                      //    out_0.data
+		.out_0_valid         (avalon_st_adapter_003_out_0_valid),                     //         .valid
+		.out_0_ready         (avalon_st_adapter_003_out_0_ready),                     //         .ready
+		.out_0_startofpacket (avalon_st_adapter_003_out_0_startofpacket),             //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_003_out_0_endofpacket),               //         .endofpacket
+		.out_0_empty         (avalon_st_adapter_003_out_0_empty),                     //         .empty
+		.out_0_channel       (avalon_st_adapter_003_out_0_channel)                    //         .channel
+	);
+
+	Qsys_avalon_st_adapter_004 #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (32),
+		.inChannelWidth  (1),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (1),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (1),
+		.outDataWidth    (32),
+		.outChannelWidth (0),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (0),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (0)
+	) avalon_st_adapter_004 (
+		.in_clk_0_clk        (altpll_0_c2_clk),                           // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_002_reset_out_reset),        // in_rst_0.reset
+		.in_0_data           (fifo_1_out_data),                           //     in_0.data
+		.in_0_valid          (fifo_1_out_valid),                          //         .valid
+		.in_0_ready          (fifo_1_out_ready),                          //         .ready
+		.in_0_startofpacket  (fifo_1_out_startofpacket),                  //         .startofpacket
+		.in_0_endofpacket    (fifo_1_out_endofpacket),                    //         .endofpacket
+		.in_0_empty          (fifo_1_out_empty),                          //         .empty
+		.in_0_channel        (fifo_1_out_channel),                        //         .channel
+		.out_0_data          (avalon_st_adapter_004_out_0_data),          //    out_0.data
+		.out_0_valid         (avalon_st_adapter_004_out_0_valid),         //         .valid
+		.out_0_ready         (avalon_st_adapter_004_out_0_ready),         //         .ready
+		.out_0_startofpacket (avalon_st_adapter_004_out_0_startofpacket), //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_004_out_0_endofpacket)    //         .endofpacket
+	);
+
+	Qsys_avalon_st_adapter_004 #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (32),
+		.inChannelWidth  (1),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (1),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (1),
+		.outDataWidth    (32),
+		.outChannelWidth (0),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (0),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (0)
+	) avalon_st_adapter_005 (
+		.in_clk_0_clk        (altpll_0_c2_clk),                           // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_002_reset_out_reset),        // in_rst_0.reset
+		.in_0_data           (fifo_2_out_data),                           //     in_0.data
+		.in_0_valid          (fifo_2_out_valid),                          //         .valid
+		.in_0_ready          (fifo_2_out_ready),                          //         .ready
+		.in_0_startofpacket  (fifo_2_out_startofpacket),                  //         .startofpacket
+		.in_0_endofpacket    (fifo_2_out_endofpacket),                    //         .endofpacket
+		.in_0_empty          (fifo_2_out_empty),                          //         .empty
+		.in_0_channel        (fifo_2_out_channel),                        //         .channel
+		.out_0_data          (avalon_st_adapter_005_out_0_data),          //    out_0.data
+		.out_0_valid         (avalon_st_adapter_005_out_0_valid),         //         .valid
+		.out_0_ready         (avalon_st_adapter_005_out_0_ready),         //         .ready
+		.out_0_startofpacket (avalon_st_adapter_005_out_0_startofpacket), //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_005_out_0_endofpacket)    //         .endofpacket
+	);
+
+	Qsys_avalon_st_adapter_004 #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (32),
+		.inChannelWidth  (1),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (1),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (1),
+		.outDataWidth    (32),
+		.outChannelWidth (0),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (0),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (0)
+	) avalon_st_adapter_006 (
+		.in_clk_0_clk        (altpll_0_c2_clk),                           // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_002_reset_out_reset),        // in_rst_0.reset
+		.in_0_data           (fifo_3_out_data),                           //     in_0.data
+		.in_0_valid          (fifo_3_out_valid),                          //         .valid
+		.in_0_ready          (fifo_3_out_ready),                          //         .ready
+		.in_0_startofpacket  (fifo_3_out_startofpacket),                  //         .startofpacket
+		.in_0_endofpacket    (fifo_3_out_endofpacket),                    //         .endofpacket
+		.in_0_empty          (fifo_3_out_empty),                          //         .empty
+		.in_0_channel        (fifo_3_out_channel),                        //         .channel
+		.out_0_data          (avalon_st_adapter_006_out_0_data),          //    out_0.data
+		.out_0_valid         (avalon_st_adapter_006_out_0_valid),         //         .valid
+		.out_0_ready         (avalon_st_adapter_006_out_0_ready),         //         .ready
+		.out_0_startofpacket (avalon_st_adapter_006_out_0_startofpacket), //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_006_out_0_endofpacket)    //         .endofpacket
+	);
+
+	Qsys_avalon_st_adapter_004 #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (32),
+		.inChannelWidth  (1),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (1),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (1),
+		.outDataWidth    (32),
+		.outChannelWidth (0),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (0),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (0)
+	) avalon_st_adapter_007 (
+		.in_clk_0_clk        (altpll_0_c2_clk),                           // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_002_reset_out_reset),        // in_rst_0.reset
+		.in_0_data           (fifo_4_out_data),                           //     in_0.data
+		.in_0_valid          (fifo_4_out_valid),                          //         .valid
+		.in_0_ready          (fifo_4_out_ready),                          //         .ready
+		.in_0_startofpacket  (fifo_4_out_startofpacket),                  //         .startofpacket
+		.in_0_endofpacket    (fifo_4_out_endofpacket),                    //         .endofpacket
+		.in_0_empty          (fifo_4_out_empty),                          //         .empty
+		.in_0_channel        (fifo_4_out_channel),                        //         .channel
+		.out_0_data          (avalon_st_adapter_007_out_0_data),          //    out_0.data
+		.out_0_valid         (avalon_st_adapter_007_out_0_valid),         //         .valid
+		.out_0_ready         (avalon_st_adapter_007_out_0_ready),         //         .ready
+		.out_0_startofpacket (avalon_st_adapter_007_out_0_startofpacket), //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_007_out_0_endofpacket)    //         .endofpacket
 	);
 
 	altera_reset_controller #(
@@ -833,6 +1404,69 @@ module Qsys (
 	);
 
 	altera_reset_controller #(
+		.NUM_RESET_INPUTS          (1),
+		.OUTPUT_RESET_SYNC_EDGES   ("deassert"),
+		.SYNC_DEPTH                (2),
+		.RESET_REQUEST_PRESENT     (0),
+		.RESET_REQ_WAIT_TIME       (1),
+		.MIN_RST_ASSERTION_TIME    (3),
+		.RESET_REQ_EARLY_DSRT_TIME (1),
+		.USE_RESET_REQUEST_IN0     (0),
+		.USE_RESET_REQUEST_IN1     (0),
+		.USE_RESET_REQUEST_IN2     (0),
+		.USE_RESET_REQUEST_IN3     (0),
+		.USE_RESET_REQUEST_IN4     (0),
+		.USE_RESET_REQUEST_IN5     (0),
+		.USE_RESET_REQUEST_IN6     (0),
+		.USE_RESET_REQUEST_IN7     (0),
+		.USE_RESET_REQUEST_IN8     (0),
+		.USE_RESET_REQUEST_IN9     (0),
+		.USE_RESET_REQUEST_IN10    (0),
+		.USE_RESET_REQUEST_IN11    (0),
+		.USE_RESET_REQUEST_IN12    (0),
+		.USE_RESET_REQUEST_IN13    (0),
+		.USE_RESET_REQUEST_IN14    (0),
+		.USE_RESET_REQUEST_IN15    (0),
+		.ADAPT_RESET_REQUEST       (0)
+	) rst_controller_002 (
+		.reset_in0      (~reset_reset_n),                     // reset_in0.reset
+		.clk            (altpll_0_c2_clk),                    //       clk.clk
+		.reset_out      (rst_controller_002_reset_out_reset), // reset_out.reset
+		.reset_req      (),                                   // (terminated)
+		.reset_req_in0  (1'b0),                               // (terminated)
+		.reset_in1      (1'b0),                               // (terminated)
+		.reset_req_in1  (1'b0),                               // (terminated)
+		.reset_in2      (1'b0),                               // (terminated)
+		.reset_req_in2  (1'b0),                               // (terminated)
+		.reset_in3      (1'b0),                               // (terminated)
+		.reset_req_in3  (1'b0),                               // (terminated)
+		.reset_in4      (1'b0),                               // (terminated)
+		.reset_req_in4  (1'b0),                               // (terminated)
+		.reset_in5      (1'b0),                               // (terminated)
+		.reset_req_in5  (1'b0),                               // (terminated)
+		.reset_in6      (1'b0),                               // (terminated)
+		.reset_req_in6  (1'b0),                               // (terminated)
+		.reset_in7      (1'b0),                               // (terminated)
+		.reset_req_in7  (1'b0),                               // (terminated)
+		.reset_in8      (1'b0),                               // (terminated)
+		.reset_req_in8  (1'b0),                               // (terminated)
+		.reset_in9      (1'b0),                               // (terminated)
+		.reset_req_in9  (1'b0),                               // (terminated)
+		.reset_in10     (1'b0),                               // (terminated)
+		.reset_req_in10 (1'b0),                               // (terminated)
+		.reset_in11     (1'b0),                               // (terminated)
+		.reset_req_in11 (1'b0),                               // (terminated)
+		.reset_in12     (1'b0),                               // (terminated)
+		.reset_req_in12 (1'b0),                               // (terminated)
+		.reset_in13     (1'b0),                               // (terminated)
+		.reset_req_in13 (1'b0),                               // (terminated)
+		.reset_in14     (1'b0),                               // (terminated)
+		.reset_req_in14 (1'b0),                               // (terminated)
+		.reset_in15     (1'b0),                               // (terminated)
+		.reset_req_in15 (1'b0)                                // (terminated)
+	);
+
+	altera_reset_controller #(
 		.NUM_RESET_INPUTS          (2),
 		.OUTPUT_RESET_SYNC_EDGES   ("deassert"),
 		.SYNC_DEPTH                (2),
@@ -857,12 +1491,12 @@ module Qsys (
 		.USE_RESET_REQUEST_IN14    (0),
 		.USE_RESET_REQUEST_IN15    (0),
 		.ADAPT_RESET_REQUEST       (0)
-	) rst_controller_002 (
+	) rst_controller_003 (
 		.reset_in0      (~reset_reset_n),                         // reset_in0.reset
 		.reset_in1      (nios2_gen2_debug_reset_request_reset),   // reset_in1.reset
 		.clk            (clk_clk),                                //       clk.clk
-		.reset_out      (rst_controller_002_reset_out_reset),     // reset_out.reset
-		.reset_req      (rst_controller_002_reset_out_reset_req), //          .reset_req
+		.reset_out      (rst_controller_003_reset_out_reset),     // reset_out.reset
+		.reset_req      (rst_controller_003_reset_out_reset_req), //          .reset_req
 		.reset_req_in0  (1'b0),                                   // (terminated)
 		.reset_req_in1  (1'b0),                                   // (terminated)
 		.reset_in2      (1'b0),                                   // (terminated)

@@ -1,0 +1,1488 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007fe17aead465, pid=59004, tid=140608839467008
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_05-b13) (build 1.8.0_05-b13)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.5-b02 mixed mode linux-amd64 compressed oops)
+# Problematic frame:
+# C  [libcusp181_parser.so+0xad465]  jni_ParserLink_c::logMessage(int, char const*)+0x25
+#
+# Core dump written. Default location: /home/ishaan/projects/Vision/Verilog_Quartus_Project/DE10_LITE_D8M_VIP_16/core or core.59004
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread is native thread
+
+siginfo:si_signo=SIGSEGV: si_errno=0, si_code=128 (), si_addr=0x0000000000000000
+
+Registers:
+RAX=0x00007fe17b3bd681, RBX=0x00007fe17b3bdaf0, RCX=0x00007fe20ba7c119, RDX=0x00007fe17b3bd680
+RSP=0x00007fffe82f9850, RBP=0x000000000000e67e, RSI=0x00007fe17b3bd680, RDI=0x00007fe1886ef1e0
+R8 =0x00007fe2002270f0, R9 =0x00000000ffffffff, R10=0x0000000000000000, R11=0x0000000000000246
+R12=0x00007fe1741949d0, R13=0x0000000000000000, R14=0x00007fe20a4bb910, R15=0x00007fe20a4bb640
+RIP=0x00007fe17aead465, EFLAGS=0x0000000000010202, CSGSFS=0x002b000000000033, ERR=0x0000000000000000
+  TRAPNO=0x000000000000000d
+
+Top of Stack: (sp=0x00007fffe82f9850)
+0x00007fffe82f9850:   0000000280000050 00007fe17b3bd680
+0x00007fffe82f9860:   000000000000e67e 00007fe17b3bd680
+0x00007fffe82f9870:   00007fffe82fa5a0 00007fe17aea048f
+0x00007fffe82f9880:   000000000000000a 000000000000e67e
+0x00007fffe82f9890:   0000000000000000 00007fe17aea0629
+0x00007fffe82f98a0:   0000000000000000 00007fe17af3ffb8
+0x00007fffe82f98b0:   0000000000001e2c 00007fe20ba318e0
+0x00007fffe82f98c0:   0000000000000007 0000000000000000
+0x00007fffe82f98d0:   0000000000000000 0000000000000002
+0x00007fffe82f98e0:   0000000000000000 0000000000000000
+0x00007fffe82f98f0:   00000000ffffffff 0000000000000000
+0x00007fffe82f9900:   0000000000000246 0000000000000000
+0x00007fffe82f9910:   00007fffe82fa5a0 00007fe20a4bb910
+0x00007fffe82f9920:   00007fe20a4bb640 00007fe20a4bb910
+0x00007fffe82f9930:   0000000000000109 000000000000e67e
+0x00007fffe82f9940:   0000000000000000 000000000000e67e
+0x00007fffe82f9950:   00000000000000ca 00007fe20ba7c119
+0x00007fffe82f9960:   00007fffe82fa4a0 00007fe20ba7c117
+0x00007fffe82f9970:   0000000000000246 002b000000000033
+0x00007fffe82f9980:   0000000000000000 0000000000000000
+0x00007fffe82f9990:   0000000000000000 0000000000000000
+0x00007fffe82f99a0:   00007fffe82f9a80 00007fffe82f9940
+0x00007fffe82f99b0:   00007fffe82f99c0 00007fe20ba1d5b1
+0x00007fffe82f99c0:   000000000231b9b1 000000000000000e
+0x00007fffe82f99d0:   0000000380000044 000000000231b970
+0x00007fffe82f99e0:   00007fffe82fa280 0000000000000000
+0x00007fffe82f99f0:   0000000000000004 00007fe20ba1d5b1
+0x00007fffe82f9a00:   000000000231b741 000000000000000e
+0x00007fffe82f9a10:   0000000380000042 000000000231b700
+0x00007fffe82f9a20:   00007fffe82fa280 00007fffe82f99c0
+0x00007fffe82f9a30:   00000000022f3b50 00007fe20ba1d5b1
+0x00007fffe82f9a40:   000000000231b3d1 0000000000000005 
+
+Instructions: (pc=0x00007fe17aead465)
+0x00007fe17aead445:   41 54 49 89 fc 55 53 48 83 ec 08 48 85 d2 74 2b
+0x00007fe17aead455:   48 8b 1d 64 e4 4e 00 48 89 d6 48 8b 3b 4c 8b 07
+0x00007fe17aead465:   41 ff 90 38 05 00 00 48 85 c0 48 89 c5 75 3b 48
+0x00007fe17aead475:   83 c4 08 5b 5d 41 5c 41 5d c3 90 48 8b 05 09 da 
+
+Register to memory mapping:
+
+RAX=0x00007fe17b3bd681: <offset 0x5bd681> in /home/ishaan/intelFPGA_lite/18.1/quartus/cusp/bin/libcusp181_parser.so at 0x00007fe17ae00000
+RBX=0x00007fe17b3bdaf0: _ZN8jni_base5s_envE+0 in /home/ishaan/intelFPGA_lite/18.1/quartus/cusp/bin/libcusp181_parser.so at 0x00007fe17ae00000
+RCX=0x00007fe20ba7c119: <offset 0x89119> in /usr/lib/libc.so.6 at 0x00007fe20b9f3000
+RDX=0x00007fe17b3bd680: <offset 0x5bd680> in /home/ishaan/intelFPGA_lite/18.1/quartus/cusp/bin/libcusp181_parser.so at 0x00007fe17ae00000
+RSP=0x00007fffe82f9850 is an unknown value
+RBP=0x000000000000e67e is an unknown value
+RSI=0x00007fe17b3bd680: <offset 0x5bd680> in /home/ishaan/intelFPGA_lite/18.1/quartus/cusp/bin/libcusp181_parser.so at 0x00007fe17ae00000
+RDI=0x00007fe1886ef1e0 is an unknown value
+R8 =0x00007fe2002270f0: <offset 0x270f0> in /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libawt_xawt.so at 0x00007fe200200000
+R9 =0x00000000ffffffff is an unallocated location in the heap
+R10=0x0000000000000000 is an unknown value
+R11=0x0000000000000246 is an unknown value
+R12=0x00007fe1741949d0 is an unknown value
+R13=0x0000000000000000 is an unknown value
+R14=0x00007fe20a4bb910 is pointing into the stack for thread: 0x00007fe1fc00f000
+R15=0x00007fe20a4bb640 is pointing into the stack for thread: 0x00007fe1fc00f000
+
+
+Stack: [0x00007fffe8204000,0x00007fffe8304000],  sp=0x00007fffe82f9850,  free space=982k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libcusp181_parser.so+0xad465]  jni_ParserLink_c::logMessage(int, char const*)+0x25
+
+
+---------------  P R O C E S S  ---------------
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ def new generation   total 249024K, used 23924K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K,  10% used [0x00000000a2400000, 0x00000000a3b570f0, 0x00000000afc30000)
+  from space 27648K,   0% used [0x00000000afc30000, 0x00000000afc361b0, 0x00000000b1730000)
+  to   space 27648K,   0% used [0x00000000b1730000, 0x00000000b1730000, 0x00000000b3230000)
+ tenured generation   total 553292K, used 516830K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  93% used [0x00000000c1800000, 0x00000000e10b7a28, 0x00000000e10b7c00, 0x00000000e3453000)
+ Metaspace       used 67494K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8511K, capacity 8886K, committed 9008K, reserved 1048576K
+
+Card table byte_map: [0x00007fe208351000,0x00007fe208640000] byte_map_base: 0x00007fe207e3f000
+
+Polling page: 0x00007fe20bf44000
+
+CodeCache: size=245760Kb used=90890Kb max_used=90894Kb free=154869Kb
+ bounds [0x00007fe1ed000000, 0x00007fe1f2990000, 0x00007fe1fc000000]
+ total_blobs=22817 nmethods=22073 adapters=651
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 8900.790 Thread 0x00007fe1fc202000 29584       3       sun.awt.datatransfer.DataTransferer::adaptFlavorMap (21 bytes)
+Event: 8900.790 Thread 0x00007fe1fc1ff000 29585  s!   3       sun.awt.X11.XSelection::setOwner (121 bytes)
+Event: 8900.790 Thread 0x00007fe1fc202000 nmethod 29584 0x00007fe1ef6f4250 code [0x00007fe1ef6f43e0, 0x00007fe1ef6f47e8]
+Event: 8900.792 Thread 0x00007fe1fc1ff000 nmethod 29585 0x00007fe1f1d72b90 code [0x00007fe1f1d72e20, 0x00007fe1f1d73ff8]
+Event: 8907.396 Thread 0x00007fe1fc204000 29587       3       sun.awt.X11.XWindowPeer::getNativeFocusedWindowPeer (40 bytes)
+Event: 8907.397 Thread 0x00007fe1fc204000 nmethod 29587 0x00007fe1f0e28b10 code [0x00007fe1f0e28d80, 0x00007fe1f0e29d78]
+Event: 8908.018 Thread 0x00007fe1fc202000 29588       3       sun.awt.X11.XWindow::handleXCrossingEvent (435 bytes)
+Event: 8908.018 Thread 0x00007fe1fc1ff000 29589       3       java.awt.LightweightDispatcher$1::run (22 bytes)
+Event: 8908.018 Thread 0x00007fe1fc1ff000 nmethod 29589 0x00007fe1f1f4be90 code [0x00007fe1f1f4c020, 0x00007fe1f1f4c338]
+Event: 8908.023 Thread 0x00007fe1fc202000 nmethod 29588 0x00007fe1f29833d0 code [0x00007fe1f2983e40, 0x00007fe1f298a398]
+
+GC Heap History (10 events):
+Event: 8806.730 GC heap before
+{Heap before GC invocations=496 (full 5):
+ def new generation   total 249024K, used 233746K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K, 100% used [0x00000000a2400000, 0x00000000afc30000, 0x00000000afc30000)
+  from space 27648K,  44% used [0x00000000b1730000, 0x00000000b2344990, 0x00000000b3230000)
+  to   space 27648K,   0% used [0x00000000afc30000, 0x00000000afc30000, 0x00000000b1730000)
+ tenured generation   total 553292K, used 504016K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  91% used [0x00000000c1800000, 0x00000000e0434138, 0x00000000e0434200, 0x00000000e3453000)
+ Metaspace       used 67466K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+Event: 8806.746 GC heap after
+Heap after GC invocations=497 (full 5):
+ def new generation   total 249024K, used 12710K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K,   0% used [0x00000000a2400000, 0x00000000a2400000, 0x00000000afc30000)
+  from space 27648K,  45% used [0x00000000afc30000, 0x00000000b0899a98, 0x00000000b1730000)
+  to   space 27648K,   0% used [0x00000000b1730000, 0x00000000b1730000, 0x00000000b3230000)
+ tenured generation   total 553292K, used 504016K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  91% used [0x00000000c1800000, 0x00000000e0434138, 0x00000000e0434200, 0x00000000e3453000)
+ Metaspace       used 67466K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+}
+Event: 8806.863 GC heap before
+{Heap before GC invocations=497 (full 5):
+ def new generation   total 249024K, used 234086K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K, 100% used [0x00000000a2400000, 0x00000000afc30000, 0x00000000afc30000)
+  from space 27648K,  45% used [0x00000000afc30000, 0x00000000b0899a98, 0x00000000b1730000)
+  to   space 27648K,   0% used [0x00000000b1730000, 0x00000000b1730000, 0x00000000b3230000)
+ tenured generation   total 553292K, used 504016K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  91% used [0x00000000c1800000, 0x00000000e0434138, 0x00000000e0434200, 0x00000000e3453000)
+ Metaspace       used 67479K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+Event: 8806.888 GC heap after
+Heap after GC invocations=498 (full 5):
+ def new generation   total 249024K, used 23125K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K,   0% used [0x00000000a2400000, 0x00000000a2400000, 0x00000000afc30000)
+  from space 27648K,  83% used [0x00000000b1730000, 0x00000000b2dc54d0, 0x00000000b3230000)
+  to   space 27648K,   0% used [0x00000000afc30000, 0x00000000afc30000, 0x00000000b1730000)
+ tenured generation   total 553292K, used 504016K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  91% used [0x00000000c1800000, 0x00000000e0434138, 0x00000000e0434200, 0x00000000e3453000)
+ Metaspace       used 67479K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+}
+Event: 8806.971 GC heap before
+{Heap before GC invocations=498 (full 5):
+ def new generation   total 249024K, used 244501K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K, 100% used [0x00000000a2400000, 0x00000000afc30000, 0x00000000afc30000)
+  from space 27648K,  83% used [0x00000000b1730000, 0x00000000b2dc54d0, 0x00000000b3230000)
+  to   space 27648K,   0% used [0x00000000afc30000, 0x00000000afc30000, 0x00000000b1730000)
+ tenured generation   total 553292K, used 504016K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  91% used [0x00000000c1800000, 0x00000000e0434138, 0x00000000e0434200, 0x00000000e3453000)
+ Metaspace       used 67482K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+Event: 8807.010 GC heap after
+Heap after GC invocations=499 (full 5):
+ def new generation   total 249024K, used 11900K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K,   0% used [0x00000000a2400000, 0x00000000a2400000, 0x00000000afc30000)
+  from space 27648K,  43% used [0x00000000afc30000, 0x00000000b07cf200, 0x00000000b1730000)
+  to   space 27648K,   0% used [0x00000000b1730000, 0x00000000b1730000, 0x00000000b3230000)
+ tenured generation   total 553292K, used 515980K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  93% used [0x00000000c1800000, 0x00000000e0fe32e8, 0x00000000e0fe3400, 0x00000000e3453000)
+ Metaspace       used 67482K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+}
+Event: 8807.047 GC heap before
+{Heap before GC invocations=499 (full 5):
+ def new generation   total 249024K, used 233276K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K, 100% used [0x00000000a2400000, 0x00000000afc30000, 0x00000000afc30000)
+  from space 27648K,  43% used [0x00000000afc30000, 0x00000000b07cf200, 0x00000000b1730000)
+  to   space 27648K,   0% used [0x00000000b1730000, 0x00000000b1730000, 0x00000000b3230000)
+ tenured generation   total 553292K, used 515980K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  93% used [0x00000000c1800000, 0x00000000e0fe32e8, 0x00000000e0fe3400, 0x00000000e3453000)
+ Metaspace       used 67482K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+Event: 8807.073 GC heap after
+Heap after GC invocations=500 (full 5):
+ def new generation   total 249024K, used 20697K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K,   0% used [0x00000000a2400000, 0x00000000a2400000, 0x00000000afc30000)
+  from space 27648K,  74% used [0x00000000b1730000, 0x00000000b2b665b8, 0x00000000b3230000)
+  to   space 27648K,   0% used [0x00000000afc30000, 0x00000000afc30000, 0x00000000b1730000)
+ tenured generation   total 553292K, used 515980K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  93% used [0x00000000c1800000, 0x00000000e0fe32e8, 0x00000000e0fe3400, 0x00000000e3453000)
+ Metaspace       used 67482K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+}
+Event: 8807.139 GC heap before
+{Heap before GC invocations=500 (full 5):
+ def new generation   total 249024K, used 242073K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K, 100% used [0x00000000a2400000, 0x00000000afc30000, 0x00000000afc30000)
+  from space 27648K,  74% used [0x00000000b1730000, 0x00000000b2b665b8, 0x00000000b3230000)
+  to   space 27648K,   0% used [0x00000000afc30000, 0x00000000afc30000, 0x00000000b1730000)
+ tenured generation   total 553292K, used 515980K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  93% used [0x00000000c1800000, 0x00000000e0fe32e8, 0x00000000e0fe3400, 0x00000000e3453000)
+ Metaspace       used 67482K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+Event: 8807.145 GC heap after
+Heap after GC invocations=501 (full 5):
+ def new generation   total 249024K, used 24K [0x00000000a2400000, 0x00000000b3230000, 0x00000000c1800000)
+  eden space 221376K,   0% used [0x00000000a2400000, 0x00000000a2400000, 0x00000000afc30000)
+  from space 27648K,   0% used [0x00000000afc30000, 0x00000000afc361b0, 0x00000000b1730000)
+  to   space 27648K,   0% used [0x00000000b1730000, 0x00000000b1730000, 0x00000000b3230000)
+ tenured generation   total 553292K, used 516830K [0x00000000c1800000, 0x00000000e3453000, 0x0000000100000000)
+   the space 553292K,  93% used [0x00000000c1800000, 0x00000000e10b7a28, 0x00000000e10b7c00, 0x00000000e3453000)
+ Metaspace       used 67482K, capacity 69260K, committed 69424K, reserved 1110016K
+  class space    used 8510K, capacity 8886K, committed 9008K, reserved 1048576K
+}
+
+Deoptimization events (10 events):
+Event: 8798.431 Thread 0x00007fe1886ef000 Uncommon trap: reason=unreached action=reinterpret pc=0x00007fe1ee31c048 method=java.io.BufferedInputStream.close()V @ 6
+Event: 8801.224 Thread 0x00007fe1886ef000 Uncommon trap: reason=unreached action=reinterpret pc=0x00007fe1f23f96d8 method=com.altera.utilities.NameDecorator$Key.hashCode()I @ 19
+Event: 8801.224 Thread 0x00007fe1886ef000 Uncommon trap: reason=unreached action=reinterpret pc=0x00007fe1f1c03138 method=com.altera.utilities.NameDecorator$Key.hashCode()I @ 19
+Event: 8801.323 Thread 0x00007fe1886ef000 Uncommon trap: reason=unreached action=reinterpret pc=0x00007fe1edf43d80 method=com.altera.tcl.interpreter.TclObjectConverter.convertTclStringToObject(Ljava/lang/String;Ljava/lang/Class;[Ljava/lang/Class;I)Ljava/lang/Object; @ 3
+Event: 8806.432 Thread 0x00007fe165c4f800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007fe1ef4839c8 method=java.io.BufferedInputStream.read1([BII)I @ 39
+Event: 8806.925 Thread 0x00007fe1886ef000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007fe1f110d6c4 method=com.altera.sopcmodel.ensemble.BorderPointBuilder.findOrigins(Ljava/util/Set;Lcom/altera/entityinterfaces/IConnectionPoint;Z)Ljava/util/List; @ 190
+Event: 8806.926 Thread 0x00007fe1886ef000 Uncommon trap: reason=null_check action=make_not_entrant pc=0x00007fe1f1d34d5c method=com.altera.sopcmodel.ensemble.EnsembleGraph$ConnectionNode.<init>(Lcom/altera/entityinterfaces/IConnection;Lcom/altera/sopcmodel/ensemble/EnsembleGraph;Lcom/altera/sopcm
+Event: 8806.927 Thread 0x00007fe1886ef000 Uncommon trap: reason=unreached action=reinterpret pc=0x00007fe1f2061708 method=com.altera.sopcmodel.ensemble.EnsembleGraph.getInterior(Lcom/altera/entityinterfaces/IConnectionPoint;)Lcom/altera/entityinterfaces/IConnectionPoint; @ 9
+Event: 8899.142 Thread 0x00007fe1fc95a000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007fe1f0391554 method=javax.swing.KeyboardManager.registerKeyStroke(Ljavax/swing/KeyStroke;Ljavax/swing/JComponent;)V @ 119
+Event: 8899.143 Thread 0x00007fe1fc95a000 Uncommon trap: reason=unreached action=reinterpret pc=0x00007fe1f039109c method=javax.swing.KeyboardManager.registerKeyStroke(Ljavax/swing/KeyStroke;Ljavax/swing/JComponent;)V @ 64
+
+Internal exceptions (10 events):
+Event: 8797.866 Thread 0x00007fe1886ef000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000a68c7d50) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8u5/2488/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 8798.314 Thread 0x00007fe1886ef000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000a99378b8) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8u5/2488/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 8798.320 Thread 0x00007fe1886ef000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000adb76678) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8u5/2488/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 8798.321 Thread 0x00007fe1886ef000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000adb84d18) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8u5/2488/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 8798.321 Thread 0x00007fe1886ef000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000adb8d2b8) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8u5/2488/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 8798.323 Thread 0x00007fe1886ef000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000adb9c5c0) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8u5/2488/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 8800.837 Thread 0x00007fe1886ef000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000a9e01dd8) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8u5/2488/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+Event: 8801.224 Thread 0x00007fe1886ef000 Implicit null exception at 0x00007fe1f23f78a1 to 0x00007fe1f23f96a9
+Event: 8801.224 Thread 0x00007fe1886ef000 Implicit null exception at 0x00007fe1f1c02f48 to 0x00007fe1f1c03121
+Event: 8899.140 Thread 0x00007fe1fc95a000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000a376cc70) thrown at [/HUDSON/workspace/8-2-build-linux-amd64/jdk8u5/2488/hotspot/src/share/vm/prims/jvm.cpp, line 1248]
+
+Events (10 events):
+Event: 8900.794 Executing VM operation: RevokeBias
+Event: 8900.794 Executing VM operation: RevokeBias done
+Event: 8900.794 Executing VM operation: RevokeBias
+Event: 8900.794 Executing VM operation: RevokeBias done
+Event: 8907.397 Thread 0x00007fe1fc204000 flushing nmethod 0x00007fe1ed5c2950
+Event: 8908.019 Thread 0x00007fe1fc1ff000 flushing nmethod 0x00007fe1ed9f5210
+Event: 8908.020 Thread 0x00007fe1fc1ff000 flushing nmethod 0x00007fe1edbc5110
+Event: 8908.023 Thread 0x00007fe1fc202000 flushing nmethod 0x00007fe1edd29910
+Event: 8909.266 Executing VM operation: RevokeBias
+Event: 8909.266 Executing VM operation: RevokeBias done
+
+
+Dynamic libraries:
+00400000-00401000 r-xp 00000000 103:02 1182457                           /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/bin/java
+00600000-00601000 rw-p 00000000 103:02 1182457                           /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/bin/java
+022ed000-02350000 rw-p 00000000 00:00 0                                  [heap]
+a2400000-b3230000 rw-p 00000000 00:00 0 
+b3230000-c1800000 ---p 00000000 00:00 0 
+c1800000-e3453000 rw-p 00000000 00:00 0 
+e3453000-100000000 ---p 00000000 00:00 0 
+100000000-1008cc000 rw-p 00000000 00:00 0 
+1008cc000-140000000 ---p 00000000 00:00 0 
+7fe14c000000-7fe14fffa000 rw-p 00000000 00:00 0 
+7fe14fffa000-7fe150000000 ---p 00000000 00:00 0 
+7fe154000000-7fe154def000 rw-p 00000000 00:00 0 
+7fe154def000-7fe158000000 ---p 00000000 00:00 0 
+7fe158000000-7fe15bff5000 rw-p 00000000 00:00 0 
+7fe15bff5000-7fe15c000000 ---p 00000000 00:00 0 
+7fe15c000000-7fe15c021000 rw-p 00000000 00:00 0 
+7fe15c021000-7fe160000000 ---p 00000000 00:00 0 
+7fe160000000-7fe160396000 rw-p 00000000 00:00 0 
+7fe160396000-7fe164000000 ---p 00000000 00:00 0 
+7fe164000000-7fe166254000 rw-p 00000000 00:00 0 
+7fe166254000-7fe168000000 ---p 00000000 00:00 0 
+7fe168000000-7fe168021000 rw-p 00000000 00:00 0 
+7fe168021000-7fe16c000000 ---p 00000000 00:00 0 
+7fe16c000000-7fe16c46b000 rw-p 00000000 00:00 0 
+7fe16c46b000-7fe170000000 ---p 00000000 00:00 0 
+7fe170000000-7fe170264000 rw-p 00000000 00:00 0 
+7fe170264000-7fe174000000 ---p 00000000 00:00 0 
+7fe174000000-7fe177ffc000 rw-p 00000000 00:00 0 
+7fe177ffc000-7fe178000000 ---p 00000000 00:00 0 
+7fe179a00000-7fe179b00000 rw-p 00000000 00:00 0 
+7fe179b00000-7fe179c00000 ---p 00000000 00:00 0 
+7fe179c00000-7fe179e00000 rw-p 00000000 00:00 0 
+7fe179e00000-7fe17a000000 rw-p 00000000 00:00 0 
+7fe17a000000-7fe17a200000 rw-p 00000000 00:00 0 
+7fe17a200000-7fe17a400000 rw-p 00000000 00:00 0 
+7fe17a400000-7fe17a600000 rw-p 00000000 00:00 0 
+7fe17a600000-7fe17a800000 rw-p 00000000 00:00 0 
+7fe17a800000-7fe17aa00000 rw-p 00000000 00:00 0 
+7fe17aa00000-7fe17ac00000 rw-p 00000000 00:00 0 
+7fe17ac00000-7fe17ae00000 rw-p 00000000 00:00 0 
+7fe17ae00000-7fe17b194000 r-xp 00000000 103:02 1314623                   /home/ishaan/intelFPGA_lite/18.1/quartus/cusp/bin/libcusp181_parser.so
+7fe17b194000-7fe17b393000 ---p 00394000 103:02 1314623                   /home/ishaan/intelFPGA_lite/18.1/quartus/cusp/bin/libcusp181_parser.so
+7fe17b393000-7fe17b3be000 rw-p 00393000 103:02 1314623                   /home/ishaan/intelFPGA_lite/18.1/quartus/cusp/bin/libcusp181_parser.so
+7fe17b3be000-7fe17b40a000 rw-p 00000000 00:00 0 
+7fe17b600000-7fe17b608000 r-xp 00000000 103:02 1182352                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libmanagement.so
+7fe17b608000-7fe17b808000 ---p 00008000 103:02 1182352                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libmanagement.so
+7fe17b808000-7fe17b809000 rw-p 00008000 103:02 1182352                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libmanagement.so
+7fe17b9ff000-7fe17bbff000 rw-p 00000000 00:00 0 
+7fe17bbff000-7fe17bdff000 rw-p 00000000 00:00 0 
+7fe17bdff000-7fe17bfff000 rw-p 00000000 00:00 0 
+7fe17bfff000-7fe17c1ff000 rw-p 00000000 00:00 0 
+7fe17c1ff000-7fe17c200000 ---p 00000000 00:00 0 
+7fe17c200000-7fe17cc00000 rw-p 00000000 00:00 0 
+7fe17cc00000-7fe17cc0f000 r-xp 00000000 103:02 1180388                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libccl_thr.so
+7fe17cc0f000-7fe17ce0e000 ---p 0000f000 103:02 1180388                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libccl_thr.so
+7fe17ce0e000-7fe17ce0f000 rw-p 0000e000 103:02 1180388                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libccl_thr.so
+7fe17ce0f000-7fe17ce34000 rw-p 00000000 00:00 0 
+7fe17d000000-7fe17d001000 r-xp 00000000 103:02 1181956                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtbbamalloc.so
+7fe17d001000-7fe17d200000 ---p 00001000 103:02 1181956                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtbbamalloc.so
+7fe17d200000-7fe17d201000 rw-p 00000000 103:02 1181956                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtbbamalloc.so
+7fe17d400000-7fe17d417000 r-xp 00000000 103:02 1181983                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtbbmalloc.so.2
+7fe17d417000-7fe17d617000 ---p 00017000 103:02 1181983                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtbbmalloc.so.2
+7fe17d617000-7fe17d61a000 rw-p 00017000 103:02 1181983                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtbbmalloc.so.2
+7fe17d61a000-7fe17e22d000 rw-p 00000000 00:00 0 
+7fe17e400000-7fe17e402000 r-xp 00000000 103:02 1181928                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtbbmalloc_proxy.so.2
+7fe17e402000-7fe17e602000 ---p 00002000 103:02 1181928                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtbbmalloc_proxy.so.2
+7fe17e602000-7fe17e603000 rw-p 00002000 103:02 1181928                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtbbmalloc_proxy.so.2
+7fe17e800000-7fe17e9a9000 r-xp 00000000 103:02 1181872                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtcl8.6.so
+7fe17e9a9000-7fe17eba9000 ---p 001a9000 103:02 1181872                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtcl8.6.so
+7fe17eba9000-7fe17ebb9000 rw-p 001a9000 103:02 1181872                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtcl8.6.so
+7fe17ebb9000-7fe17ebba000 rw-p 00000000 00:00 0 
+7fe17ec00000-7fe17ec06000 r-xp 00000000 103:02 1180958                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtcl_jni_bridge.so
+7fe17ec06000-7fe17ee05000 ---p 00006000 103:02 1180958                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtcl_jni_bridge.so
+7fe17ee05000-7fe17ee06000 rw-p 00005000 103:02 1180958                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libtcl_jni_bridge.so
+7fe17f000000-7fe17f200000 rw-p 00000000 00:00 0 
+7fe17f200000-7fe17f33a000 r-xp 00000000 103:02 1181347                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libsld_filejni.so
+7fe17f33a000-7fe17f53a000 ---p 0013a000 103:02 1181347                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libsld_filejni.so
+7fe17f53a000-7fe17f54b000 rw-p 0013a000 103:02 1181347                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libsld_filejni.so
+7fe17f54b000-7fe17f553000 rw-p 00000000 00:00 0 
+7fe17f600000-7fe17f62a000 r-xp 00000000 103:02 1182350                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libdcpr.so
+7fe17f62a000-7fe17f829000 ---p 0002a000 103:02 1182350                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libdcpr.so
+7fe17f829000-7fe17f82c000 rw-p 00029000 103:02 1182350                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libdcpr.so
+7fe17fa00000-7fe17fc00000 rw-p 00000000 00:00 0 
+7fe17fc00000-7fe17fe00000 r-xp 00000000 103:02 1181873                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libnlview.so
+7fe17fe00000-7fe17fe0f000 rw-p 00200000 103:02 1181873                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libnlview.so
+7fe17fe0f000-7fe17fe11000 rw-p 00000000 00:00 0 
+7fe180000000-7fe180021000 rw-p 00000000 00:00 0 
+7fe180021000-7fe184000000 ---p 00000000 00:00 0 
+7fe184000000-7fe1849b2000 rw-p 00000000 00:00 0 
+7fe1849b2000-7fe188000000 ---p 00000000 00:00 0 
+7fe188000000-7fe188863000 rw-p 00000000 00:00 0 
+7fe188863000-7fe18c000000 ---p 00000000 00:00 0 
+7fe18c000000-7fe18c200000 rw-p 00000000 00:00 0 
+7fe18c200000-7fe18c400000 rw-p 00000000 00:00 0 
+7fe18c400000-7fe18c600000 rw-p 00000000 00:00 0 
+7fe18c600000-7fe18c800000 rw-p 00000000 00:00 0 
+7fe18c800000-7fe18ca00000 rw-p 00000000 00:00 0 
+7fe18ca00000-7fe18cc00000 rw-p 00000000 00:00 0 
+7fe18cc00000-7fe18cc69000 r-xp 00000000 103:02 1182296                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libt2k.so
+7fe18cc69000-7fe18ce68000 ---p 00069000 103:02 1182296                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libt2k.so
+7fe18ce68000-7fe18ce6f000 rw-p 00068000 103:02 1182296                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libt2k.so
+7fe18ce6f000-7fe18ce7f000 rw-p 00000000 00:00 0 
+7fe18d000000-7fe18d200000 rw-p 00000000 00:00 0 
+7fe18d200000-7fe18d400000 rw-p 00000000 00:00 0 
+7fe18d400000-7fe18d408000 r-xp 00000000 103:02 1181955                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_chrono.so.1.59.0
+7fe18d408000-7fe18d607000 ---p 00008000 103:02 1181955                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_chrono.so.1.59.0
+7fe18d607000-7fe18d608000 rw-p 00007000 103:02 1181955                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_chrono.so.1.59.0
+7fe18d6bf000-7fe18d800000 rw-s 00000000 00:01 819233                     /SYSV00000000 (deleted)
+7fe18d800000-7fe18d804000 r-xp 00000000 103:02 1181909                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_timer.so.1.59.0
+7fe18d804000-7fe18da03000 ---p 00004000 103:02 1181909                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_timer.so.1.59.0
+7fe18da03000-7fe18da04000 rw-p 00003000 103:02 1181909                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_timer.so.1.59.0
+7fe18db00000-7fe18db03000 ---p 00000000 00:00 0 
+7fe18db03000-7fe18dc00000 rw-p 00000000 00:00 0 
+7fe18dc00000-7fe18dc0e000 r-xp 00000000 103:02 1182997                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libgomp.so.1
+7fe18dc0e000-7fe18de0d000 ---p 0000e000 103:02 1182997                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libgomp.so.1
+7fe18de0d000-7fe18de0e000 rw-p 0000d000 103:02 1182997                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libgomp.so.1
+7fe18df00000-7fe18df03000 ---p 00000000 00:00 0 
+7fe18df03000-7fe18e000000 rw-p 00000000 00:00 0 
+7fe18e000000-7fe18e0ea000 r-xp 00000000 103:02 1182995                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libstdc++.so.6
+7fe18e0ea000-7fe18e2e9000 ---p 000ea000 103:02 1182995                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libstdc++.so.6
+7fe18e2e9000-7fe18e2f1000 r--p 000e9000 103:02 1182995                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libstdc++.so.6
+7fe18e2f1000-7fe18e2f3000 rw-p 000f1000 103:02 1182995                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libstdc++.so.6
+7fe18e2f3000-7fe18e308000 rw-p 00000000 00:00 0 
+7fe18e400000-7fe18e4bc000 r-xp 00000000 103:02 1181943                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_unit_test_framework.so.1.59.0
+7fe18e4bc000-7fe18e6bb000 ---p 000bc000 103:02 1181943                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_unit_test_framework.so.1.59.0
+7fe18e6bb000-7fe18e6c2000 rw-p 000bb000 103:02 1181943                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_unit_test_framework.so.1.59.0
+7fe18e6c2000-7fe18e6c4000 rw-p 00000000 00:00 0 
+7fe18e700000-7fe18e703000 ---p 00000000 00:00 0 
+7fe18e703000-7fe18e800000 rw-p 00000000 00:00 0 
+7fe18e800000-7fe18e863000 r-xp 00000000 103:02 1181932                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_program_options.so.1.59.0
+7fe18e863000-7fe18ea63000 ---p 00063000 103:02 1181932                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_program_options.so.1.59.0
+7fe18ea63000-7fe18ea67000 rw-p 00063000 103:02 1181932                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_program_options.so.1.59.0
+7fe18eb00000-7fe18eb03000 ---p 00000000 00:00 0 
+7fe18eb03000-7fe18ec00000 rw-p 00000000 00:00 0 
+7fe18ec00000-7fe18ec02000 r-xp 00000000 103:02 1181912                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_system.so.1.59.0
+7fe18ec02000-7fe18ee02000 ---p 00002000 103:02 1181912                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_system.so.1.59.0
+7fe18ee02000-7fe18ee03000 rw-p 00002000 103:02 1181912                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_system.so.1.59.0
+7fe18ef00000-7fe18ef03000 ---p 00000000 00:00 0 
+7fe18ef03000-7fe18f000000 rw-p 00000000 00:00 0 
+7fe18f000000-7fe18f016000 r-xp 00000000 103:02 1181916                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_filesystem.so.1.59.0
+7fe18f016000-7fe18f216000 ---p 00016000 103:02 1181916                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_filesystem.so.1.59.0
+7fe18f216000-7fe18f217000 rw-p 00016000 103:02 1181916                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_filesystem.so.1.59.0
+7fe18f300000-7fe18f303000 ---p 00000000 00:00 0 
+7fe18f303000-7fe18f400000 rw-p 00000000 00:00 0 
+7fe18f400000-7fe18f44d000 r-xp 00000000 103:02 1181923                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_serialization.so.1.59.0
+7fe18f44d000-7fe18f64c000 ---p 0004d000 103:02 1181923                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_serialization.so.1.59.0
+7fe18f64c000-7fe18f650000 rw-p 0004c000 103:02 1181923                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_serialization.so.1.59.0
+7fe18f6ef000-7fe18f800000 r--s 00000000 103:02 18225042                  /var/cache/fontconfig/923e285e415b1073c8df160bee08820f-le64.cache-8
+7fe18f800000-7fe18f8ef000 r-xp 00000000 103:02 1181926                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_regex.so.1.59.0
+7fe18f8ef000-7fe18faee000 ---p 000ef000 103:02 1181926                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_regex.so.1.59.0
+7fe18faee000-7fe18faf4000 rw-p 000ee000 103:02 1181926                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libboost_regex.so.1.59.0
+7fe18fb00000-7fe18fb03000 ---p 00000000 00:00 0 
+7fe18fb03000-7fe18fc00000 rw-p 00000000 00:00 0 
+7fe18fc00000-7fe18fc9e000 r-xp 00000000 103:02 1180296                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libccl_sqlite3.so
+7fe18fc9e000-7fe18fe9d000 ---p 0009e000 103:02 1180296                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libccl_sqlite3.so
+7fe18fe9d000-7fe18fea2000 rw-p 0009d000 103:02 1180296                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libccl_sqlite3.so
+7fe18ff00000-7fe18ff03000 ---p 00000000 00:00 0 
+7fe18ff03000-7fe190000000 rw-p 00000000 00:00 0 
+7fe190000000-7fe190021000 rw-p 00000000 00:00 0 
+7fe190021000-7fe194000000 ---p 00000000 00:00 0 
+7fe194000000-7fe194021000 rw-p 00000000 00:00 0 
+7fe194021000-7fe198000000 ---p 00000000 00:00 0 
+7fe198000000-7fe198285000 rw-p 00000000 00:00 0 
+7fe198285000-7fe19c000000 ---p 00000000 00:00 0 
+7fe19c000000-7fe19c363000 rw-p 00000000 00:00 0 
+7fe19c363000-7fe1a0000000 ---p 00000000 00:00 0 
+7fe1a0000000-7fe1a0021000 rw-p 00000000 00:00 0 
+7fe1a0021000-7fe1a4000000 ---p 00000000 00:00 0 
+7fe1a4000000-7fe1a4021000 rw-p 00000000 00:00 0 
+7fe1a4021000-7fe1a8000000 ---p 00000000 00:00 0 
+7fe1a8000000-7fe1a8fd6000 rw-p 00000000 00:00 0 
+7fe1a8fd6000-7fe1ac000000 ---p 00000000 00:00 0 
+7fe1ac000000-7fe1ac021000 rw-p 00000000 00:00 0 
+7fe1ac021000-7fe1b0000000 ---p 00000000 00:00 0 
+7fe1b0000000-7fe1b0a0a000 rw-p 00000000 00:00 0 
+7fe1b0a0a000-7fe1b4000000 ---p 00000000 00:00 0 
+7fe1b4000000-7fe1b53ae000 rw-p 00000000 00:00 0 
+7fe1b53ae000-7fe1b8000000 ---p 00000000 00:00 0 
+7fe1b8000000-7fe1b9d9c000 rw-p 00000000 00:00 0 
+7fe1b9d9c000-7fe1bc000000 ---p 00000000 00:00 0 
+7fe1bc000000-7fe1bc886000 rw-p 00000000 00:00 0 
+7fe1bc886000-7fe1c0000000 ---p 00000000 00:00 0 
+7fe1c0000000-7fe1c1e80000 rw-p 00000000 00:00 0 
+7fe1c1e80000-7fe1c4000000 ---p 00000000 00:00 0 
+7fe1c4000000-7fe1c7ffd000 rw-p 00000000 00:00 0 
+7fe1c7ffd000-7fe1c8000000 ---p 00000000 00:00 0 
+7fe1c8000000-7fe1ca0f5000 rw-p 00000000 00:00 0 
+7fe1ca0f5000-7fe1cc000000 ---p 00000000 00:00 0 
+7fe1cc000000-7fe1ce893000 rw-p 00000000 00:00 0 
+7fe1ce893000-7fe1d0000000 ---p 00000000 00:00 0 
+7fe1d0000000-7fe1d188a000 rw-p 00000000 00:00 0 
+7fe1d188a000-7fe1d4000000 ---p 00000000 00:00 0 
+7fe1d4000000-7fe1d584c000 rw-p 00000000 00:00 0 
+7fe1d584c000-7fe1d8000000 ---p 00000000 00:00 0 
+7fe1d8000000-7fe1d8021000 rw-p 00000000 00:00 0 
+7fe1d8021000-7fe1dc000000 ---p 00000000 00:00 0 
+7fe1dc000000-7fe1ddf08000 rw-p 00000000 00:00 0 
+7fe1ddf08000-7fe1e0000000 ---p 00000000 00:00 0 
+7fe1e0000000-7fe1e0021000 rw-p 00000000 00:00 0 
+7fe1e0021000-7fe1e4000000 ---p 00000000 00:00 0 
+7fe1e4000000-7fe1e4021000 rw-p 00000000 00:00 0 
+7fe1e4021000-7fe1e8000000 ---p 00000000 00:00 0 
+7fe1e8000000-7fe1e886c000 rw-p 00000000 00:00 0 
+7fe1e886c000-7fe1ec000000 ---p 00000000 00:00 0 
+7fe1ec000000-7fe1ec200000 rw-p 00000000 00:00 0 
+7fe1ec200000-7fe1ec20d000 r-xp 00000000 103:02 1181454                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libccl_sqlite3_jdbc_jni_bridge.so
+7fe1ec20d000-7fe1ec40c000 ---p 0000d000 103:02 1181454                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libccl_sqlite3_jdbc_jni_bridge.so
+7fe1ec40c000-7fe1ec40d000 rw-p 0000c000 103:02 1181454                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libccl_sqlite3_jdbc_jni_bridge.so
+7fe1ec500000-7fe1ec503000 ---p 00000000 00:00 0 
+7fe1ec503000-7fe1ec800000 rw-p 00000000 00:00 0 
+7fe1ec800000-7fe1ec815000 r-xp 00000000 103:02 1182996                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libgcc_s.so.1
+7fe1ec815000-7fe1eca15000 ---p 00015000 103:02 1182996                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libgcc_s.so.1
+7fe1eca15000-7fe1eca16000 rw-p 00015000 103:02 1182996                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/libgcc_s.so.1
+7fe1ecb00000-7fe1ecb03000 ---p 00000000 00:00 0 
+7fe1ecb03000-7fe1ecc00000 rw-p 00000000 00:00 0 
+7fe1ecc00000-7fe1ecc65000 r-xp 00000000 103:02 1182337                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libfontmanager.so
+7fe1ecc65000-7fe1ece64000 ---p 00065000 103:02 1182337                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libfontmanager.so
+7fe1ece64000-7fe1ece68000 rw-p 00064000 103:02 1182337                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libfontmanager.so
+7fe1ece68000-7fe1ece79000 rw-p 00000000 00:00 0 
+7fe1ecea1000-7fe1eceb0000 r--s 00000000 103:02 18225633                  /var/cache/fontconfig/8d4af663993b81a124ee82e610bb31f9-le64.cache-8
+7fe1eceb0000-7fe1eceef000 r--s 00000000 103:02 18225043                  /var/cache/fontconfig/f6b893a7224233d96cb72fd88691c0b4-le64.cache-8
+7fe1eceef000-7fe1ed000000 r--s 00000000 103:02 18225042                  /var/cache/fontconfig/923e285e415b1073c8df160bee08820f-le64.cache-8
+7fe1ed000000-7fe1f2990000 rwxp 00000000 00:00 0 
+7fe1f2990000-7fe1fc000000 ---p 00000000 00:00 0 
+7fe1fc000000-7fe1fcb7c000 rw-p 00000000 00:00 0 
+7fe1fcb7c000-7fe200000000 ---p 00000000 00:00 0 
+7fe200004000-7fe200013000 r--s 00000000 103:02 18225461                  /var/cache/fontconfig/491f45a0a771fef1c10b9b647a97fb82-le64.cache-8
+7fe200013000-7fe200029000 r--s 00000000 103:02 18225441                  /var/cache/fontconfig/f96e5f8939a23ba08c47f4cda8028859-le64.cache-8
+7fe20004a000-7fe20004d000 ---p 00000000 00:00 0 
+7fe20004d000-7fe200083000 rw-p 00000000 00:00 0 
+7fe200083000-7fe2000c2000 r--s 00000000 103:02 18225043                  /var/cache/fontconfig/f6b893a7224233d96cb72fd88691c0b4-le64.cache-8
+7fe2000c2000-7fe2000df000 r--p 00000000 103:02 14815816                  /usr/lib/libglib-2.0.so.0.7200.1
+7fe2000df000-7fe200171000 r-xp 0001d000 103:02 14815816                  /usr/lib/libglib-2.0.so.0.7200.1
+7fe200171000-7fe2001fc000 r--p 000af000 103:02 14815816                  /usr/lib/libglib-2.0.so.0.7200.1
+7fe2001fc000-7fe2001fd000 ---p 0013a000 103:02 14815816                  /usr/lib/libglib-2.0.so.0.7200.1
+7fe2001fd000-7fe2001fe000 r--p 0013a000 103:02 14815816                  /usr/lib/libglib-2.0.so.0.7200.1
+7fe2001fe000-7fe2001ff000 rw-p 0013b000 103:02 14815816                  /usr/lib/libglib-2.0.so.0.7200.1
+7fe2001ff000-7fe200200000 rw-p 00000000 00:00 0 
+7fe200200000-7fe200251000 r-xp 00000000 103:02 1182329                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libawt_xawt.so
+7fe200251000-7fe200450000 ---p 00051000 103:02 1182329                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libawt_xawt.so
+7fe200450000-7fe200454000 rw-p 00050000 103:02 1182329                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libawt_xawt.so
+7fe200454000-7fe200455000 rw-p 00000000 00:00 0 
+7fe200458000-7fe200467000 r--s 00000000 103:02 18225633                  /var/cache/fontconfig/8d4af663993b81a124ee82e610bb31f9-le64.cache-8
+7fe200467000-7fe200476000 r--s 00000000 103:02 18225461                  /var/cache/fontconfig/491f45a0a771fef1c10b9b647a97fb82-le64.cache-8
+7fe200476000-7fe200478000 r--p 00000000 103:02 14817626                  /usr/lib/libpcre.so.1.2.13
+7fe200478000-7fe2004ce000 r-xp 00002000 103:02 14817626                  /usr/lib/libpcre.so.1.2.13
+7fe2004ce000-7fe2004eb000 r--p 00058000 103:02 14817626                  /usr/lib/libpcre.so.1.2.13
+7fe2004eb000-7fe2004ec000 r--p 00074000 103:02 14817626                  /usr/lib/libpcre.so.1.2.13
+7fe2004ec000-7fe2004ed000 rw-p 00075000 103:02 14817626                  /usr/lib/libpcre.so.1.2.13
+7fe2004f2000-7fe200500000 r--s 00000000 103:02 18225459                  /var/cache/fontconfig/1dce2cb908b447e938fc03acd9b47fcf-le64.cache-8
+7fe200500000-7fe200503000 ---p 00000000 00:00 0 
+7fe200503000-7fe200600000 rw-p 00000000 00:00 0 
+7fe200600000-7fe2006a3000 r-xp 00000000 103:02 1182355                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libawt.so
+7fe2006a3000-7fe2008a2000 ---p 000a3000 103:02 1182355                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libawt.so
+7fe2008a2000-7fe2008ae000 rw-p 000a2000 103:02 1182355                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libawt.so
+7fe2008ae000-7fe2008d2000 rw-p 00000000 00:00 0 
+7fe2008ff000-7fe200902000 ---p 00000000 00:00 0 
+7fe200902000-7fe202200000 rw-p 00000000 00:00 0 
+7fe202200000-7fe202216000 r-xp 00000000 103:02 1182309                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libnet.so
+7fe202216000-7fe202415000 ---p 00016000 103:02 1182309                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libnet.so
+7fe202415000-7fe202416000 rw-p 00015000 103:02 1182309                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libnet.so
+7fe202423000-7fe202431000 r--s 00000000 103:02 18225459                  /var/cache/fontconfig/1dce2cb908b447e938fc03acd9b47fcf-le64.cache-8
+7fe202440000-7fe202444000 r--s 0004d000 103:02 2752910                   /home/ishaan/intelFPGA_lite/18.1/ip/altera/frame_buffer/lib/ip_toolbench/forms_rt.jar
+7fe202444000-7fe20244d000 r--s 0007b000 103:02 2752909                   /home/ishaan/intelFPGA_lite/18.1/ip/altera/frame_buffer/lib/ip_toolbench/frame_buffer.jar
+7fe202451000-7fe202459000 r--s 00051000 103:02 1317716                   /home/ishaan/intelFPGA_lite/18.1/quartus/dsp_builder/bin64/extlibs/velocity-1.4.jar
+7fe202459000-7fe20246c000 r--s 00089000 103:02 1317712                   /home/ishaan/intelFPGA_lite/18.1/quartus/dsp_builder/bin64/dspb_entities.jar
+7fe20246c000-7fe2024dc000 r--s 006c2000 103:02 1314625                   /home/ishaan/intelFPGA_lite/18.1/quartus/cusp/bin/cusp-engine.jar
+7fe2024dc000-7fe2024df000 r--p 00000000 103:02 14816150                  /usr/lib/libnss_resolve.so.2
+7fe2024df000-7fe2024f6000 r-xp 00003000 103:02 14816150                  /usr/lib/libnss_resolve.so.2
+7fe2024f6000-7fe2024fd000 r--p 0001a000 103:02 14816150                  /usr/lib/libnss_resolve.so.2
+7fe2024fd000-7fe2024fe000 ---p 00021000 103:02 14816150                  /usr/lib/libnss_resolve.so.2
+7fe2024fe000-7fe2024ff000 r--p 00021000 103:02 14816150                  /usr/lib/libnss_resolve.so.2
+7fe2024ff000-7fe202500000 rw-p 00022000 103:02 14816150                  /usr/lib/libnss_resolve.so.2
+7fe202500000-7fe202503000 ---p 00000000 00:00 0 
+7fe202503000-7fe202600000 rw-p 00000000 00:00 0 
+7fe202600000-7fe202610000 r-xp 00000000 103:02 1182318                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libnio.so
+7fe202610000-7fe202810000 ---p 00010000 103:02 1182318                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libnio.so
+7fe202810000-7fe202811000 rw-p 00010000 103:02 1182318                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libnio.so
+7fe202812000-7fe202828000 r--s 00000000 103:02 18225441                  /var/cache/fontconfig/f96e5f8939a23ba08c47f4cda8028859-le64.cache-8
+7fe202829000-7fe202849000 r--s 001d6000 103:02 1317714                   /home/ishaan/intelFPGA_lite/18.1/quartus/dsp_builder/bin64/extlibs/castor-1.0.3.jar
+7fe202849000-7fe20284d000 r--p 00000000 103:02 14821177                  /usr/lib/libresolv.so.2
+7fe20284d000-7fe202855000 r-xp 00004000 103:02 14821177                  /usr/lib/libresolv.so.2
+7fe202855000-7fe202858000 r--p 0000c000 103:02 14821177                  /usr/lib/libresolv.so.2
+7fe202858000-7fe202859000 r--p 0000e000 103:02 14821177                  /usr/lib/libresolv.so.2
+7fe202859000-7fe20285a000 rw-p 0000f000 103:02 14821177                  /usr/lib/libresolv.so.2
+7fe20285a000-7fe20285c000 rw-p 00000000 00:00 0 
+7fe20285c000-7fe202863000 r--p 00000000 103:02 14816122                  /usr/lib/libnss_mymachines.so.2
+7fe202863000-7fe202899000 r-xp 00007000 103:02 14816122                  /usr/lib/libnss_mymachines.so.2
+7fe202899000-7fe2028ac000 r--p 0003d000 103:02 14816122                  /usr/lib/libnss_mymachines.so.2
+7fe2028ac000-7fe2028ad000 ---p 00050000 103:02 14816122                  /usr/lib/libnss_mymachines.so.2
+7fe2028ad000-7fe2028b0000 r--p 00050000 103:02 14816122                  /usr/lib/libnss_mymachines.so.2
+7fe2028b0000-7fe2028b1000 rw-p 00053000 103:02 14816122                  /usr/lib/libnss_mymachines.so.2
+7fe2028b1000-7fe2028b2000 rw-p 00000000 00:00 0 
+7fe2028b2000-7fe2028b6000 r--p 00000000 103:02 14821162                  /usr/lib/libnsl.so.1
+7fe2028b6000-7fe2028c3000 r-xp 00004000 103:02 14821162                  /usr/lib/libnsl.so.1
+7fe2028c3000-7fe2028c8000 r--p 00011000 103:02 14821162                  /usr/lib/libnsl.so.1
+7fe2028c8000-7fe2028c9000 r--p 00015000 103:02 14821162                  /usr/lib/libnsl.so.1
+7fe2028c9000-7fe2028ca000 rw-p 00016000 103:02 14821162                  /usr/lib/libnsl.so.1
+7fe2028ca000-7fe2028cc000 rw-p 00000000 00:00 0 
+7fe2028cf000-7fe2028d5000 r--s 00000000 103:02 18225462                  /var/cache/fontconfig/b67b32625a2bb51b023d3814a918f351-le64.cache-8
+7fe2028d5000-7fe2028e6000 r--s 00000000 103:02 18225440                  /var/cache/fontconfig/fb42211fc6e0c1a73c189e83d3791827-le64.cache-8
+7fe2028e6000-7fe2028f3000 r--s 00000000 103:02 18224400                  /var/cache/fontconfig/210c0516121708a580e22e6b1f9a103a-le64.cache-8
+7fe2028f3000-7fe2028f4000 ---p 00000000 00:00 0 
+7fe2028f4000-7fe2029f4000 rw-p 00000000 00:00 0 
+7fe2029f4000-7fe2029f7000 ---p 00000000 00:00 0 
+7fe2029f7000-7fe202af4000 rw-p 00000000 00:00 0 
+7fe202af4000-7fe202af5000 ---p 00000000 00:00 0 
+7fe202af5000-7fe202af8000 ---p 00000000 00:00 0 
+7fe202af8000-7fe202bf5000 rw-p 00000000 00:00 0 
+7fe202bf5000-7fe202bf6000 ---p 00000000 00:00 0 
+7fe202bf6000-7fe202bf9000 ---p 00000000 00:00 0 
+7fe202bf9000-7fe202cf6000 rw-p 00000000 00:00 0 
+7fe202cf6000-7fe202cf7000 ---p 00000000 00:00 0 
+7fe202cf7000-7fe202cfa000 ---p 00000000 00:00 0 
+7fe202cfa000-7fe202df7000 rw-p 00000000 00:00 0 
+7fe202df7000-7fe202df8000 ---p 00000000 00:00 0 
+7fe202df8000-7fe202dfb000 ---p 00000000 00:00 0 
+7fe202dfb000-7fe202ef8000 rw-p 00000000 00:00 0 
+7fe202ef8000-7fe202ef9000 ---p 00000000 00:00 0 
+7fe202ef9000-7fe202efc000 ---p 00000000 00:00 0 
+7fe202efc000-7fe202ff9000 rw-p 00000000 00:00 0 
+7fe202ff9000-7fe202ffa000 ---p 00000000 00:00 0 
+7fe202ffa000-7fe202ffd000 ---p 00000000 00:00 0 
+7fe202ffd000-7fe2030fa000 rw-p 00000000 00:00 0 
+7fe2030fa000-7fe2030fb000 ---p 00000000 00:00 0 
+7fe2030fb000-7fe2030fe000 ---p 00000000 00:00 0 
+7fe2030fe000-7fe2031fb000 rw-p 00000000 00:00 0 
+7fe2031fb000-7fe2031fc000 ---p 00000000 00:00 0 
+7fe2031fc000-7fe2031ff000 ---p 00000000 00:00 0 
+7fe2031ff000-7fe2032fc000 rw-p 00000000 00:00 0 
+7fe2032fc000-7fe2032fd000 ---p 00000000 00:00 0 
+7fe2032fd000-7fe203300000 ---p 00000000 00:00 0 
+7fe203300000-7fe2033fd000 rw-p 00000000 00:00 0 
+7fe2033fd000-7fe2033fe000 ---p 00000000 00:00 0 
+7fe2033fe000-7fe203401000 ---p 00000000 00:00 0 
+7fe203401000-7fe2034fe000 rw-p 00000000 00:00 0 
+7fe2034fe000-7fe2034ff000 ---p 00000000 00:00 0 
+7fe2034ff000-7fe203502000 ---p 00000000 00:00 0 
+7fe203502000-7fe2035ff000 rw-p 00000000 00:00 0 
+7fe2035ff000-7fe203600000 ---p 00000000 00:00 0 
+7fe203600000-7fe203603000 ---p 00000000 00:00 0 
+7fe203603000-7fe203700000 rw-p 00000000 00:00 0 
+7fe203700000-7fe203703000 ---p 00000000 00:00 0 
+7fe203703000-7fe204000000 rw-p 00000000 00:00 0 
+7fe204000000-7fe207ffe000 rw-p 00000000 00:00 0 
+7fe207ffe000-7fe208000000 ---p 00000000 00:00 0 
+7fe208002000-7fe208005000 r--p 00000000 103:02 14816748                  /usr/lib/libcap.so.2.64
+7fe208005000-7fe20800a000 r-xp 00003000 103:02 14816748                  /usr/lib/libcap.so.2.64
+7fe20800a000-7fe20800c000 r--p 00008000 103:02 14816748                  /usr/lib/libcap.so.2.64
+7fe20800c000-7fe20800d000 r--p 00009000 103:02 14816748                  /usr/lib/libcap.so.2.64
+7fe20800d000-7fe20800e000 rw-p 0000a000 103:02 14816748                  /usr/lib/libcap.so.2.64
+7fe20800e000-7fe208021000 r--s 00345000 103:02 1182231                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/resources.jar
+7fe208021000-7fe208024000 r--p 00000000 103:02 14827536                  /usr/lib/libXi.so.6.1.0
+7fe208024000-7fe208030000 r-xp 00003000 103:02 14827536                  /usr/lib/libXi.so.6.1.0
+7fe208030000-7fe208033000 r--p 0000f000 103:02 14827536                  /usr/lib/libXi.so.6.1.0
+7fe208033000-7fe208034000 r--p 00011000 103:02 14827536                  /usr/lib/libXi.so.6.1.0
+7fe208034000-7fe208035000 rw-p 00012000 103:02 14827536                  /usr/lib/libXi.so.6.1.0
+7fe208035000-7fe208038000 r--s 00022000 103:02 2752908                   /home/ishaan/intelFPGA_lite/18.1/ip/altera/frame_buffer/lib/ip_toolbench/jdom.jar
+7fe208038000-7fe20803e000 r--s 00000000 103:02 18225462                  /var/cache/fontconfig/b67b32625a2bb51b023d3814a918f351-le64.cache-8
+7fe20803e000-7fe20804f000 r--s 00000000 103:02 18225440                  /var/cache/fontconfig/fb42211fc6e0c1a73c189e83d3791827-le64.cache-8
+7fe20804f000-7fe20805c000 r--s 00000000 103:02 18224400                  /var/cache/fontconfig/210c0516121708a580e22e6b1f9a103a-le64.cache-8
+7fe20805c000-7fe20805f000 ---p 00000000 00:00 0 
+7fe20805f000-7fe20826b000 rw-p 00000000 00:00 0 
+7fe20826b000-7fe208351000 ---p 00000000 00:00 0 
+7fe208351000-7fe2083d9000 rw-p 00000000 00:00 0 
+7fe2083d9000-7fe20844b000 ---p 00000000 00:00 0 
+7fe20844b000-7fe20855a000 rw-p 00000000 00:00 0 
+7fe20855a000-7fe20863f000 ---p 00000000 00:00 0 
+7fe20863f000-7fe2087a7000 rw-p 00000000 00:00 0 
+7fe2087a7000-7fe208a00000 ---p 00000000 00:00 0 
+7fe208a00000-7fe208a1c000 r-xp 00000000 103:02 1182349                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libzip.so
+7fe208a1c000-7fe208c1b000 ---p 0001c000 103:02 1182349                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libzip.so
+7fe208c1b000-7fe208c1c000 rw-p 0001b000 103:02 1182349                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libzip.so
+7fe208c1d000-7fe208c1e000 r--s 00000000 103:02 18225693                  /var/cache/fontconfig/40a9d18f2870572023edd72623462882-le64.cache-8
+7fe208c1e000-7fe208c21000 r--s 00000000 103:02 18225442                  /var/cache/fontconfig/6ba42ae0000f58711b5caaf10d690066-le64.cache-8
+7fe208c21000-7fe208c22000 r--p 00000000 103:02 14827990                  /usr/lib/libnss_mdns4_minimal.so.2
+7fe208c22000-7fe208c24000 r-xp 00001000 103:02 14827990                  /usr/lib/libnss_mdns4_minimal.so.2
+7fe208c24000-7fe208c25000 r--p 00003000 103:02 14827990                  /usr/lib/libnss_mdns4_minimal.so.2
+7fe208c25000-7fe208c26000 r--p 00003000 103:02 14827990                  /usr/lib/libnss_mdns4_minimal.so.2
+7fe208c26000-7fe208c27000 rw-p 00004000 103:02 14827990                  /usr/lib/libnss_mdns4_minimal.so.2
+7fe208c27000-7fe208c2b000 r--s 00084000 103:02 1182202                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/jsse.jar
+7fe208c2b000-7fe208e00000 r--s 033af000 103:02 1182208                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/rt.jar
+7fe208e00000-7fe208e2a000 r-xp 00000000 103:02 1182335                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libjava.so
+7fe208e2a000-7fe20902a000 ---p 0002a000 103:02 1182335                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libjava.so
+7fe20902a000-7fe20902c000 rw-p 0002a000 103:02 1182335                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libjava.so
+7fe20902c000-7fe20902e000 r--s 00000000 103:02 18225443                  /var/cache/fontconfig/4c31730dec557ab86b580f3ca5555446-le64.cache-8
+7fe20902e000-7fe20902f000 r--s 00000000 103:02 18225693                  /var/cache/fontconfig/40a9d18f2870572023edd72623462882-le64.cache-8
+7fe20902f000-7fe209031000 r--s 00000000 103:02 18225443                  /var/cache/fontconfig/4c31730dec557ab86b580f3ca5555446-le64.cache-8
+7fe209031000-7fe209034000 r--s 00000000 103:02 18225442                  /var/cache/fontconfig/6ba42ae0000f58711b5caaf10d690066-le64.cache-8
+7fe209034000-7fe209036000 r--p 00000000 103:02 14827545                  /usr/lib/libXtst.so.6.1.0
+7fe209036000-7fe209039000 r-xp 00002000 103:02 14827545                  /usr/lib/libXtst.so.6.1.0
+7fe209039000-7fe20903a000 r--p 00005000 103:02 14827545                  /usr/lib/libXtst.so.6.1.0
+7fe20903a000-7fe20903b000 r--p 00005000 103:02 14827545                  /usr/lib/libXtst.so.6.1.0
+7fe20903b000-7fe20903c000 rw-p 00006000 103:02 14827545                  /usr/lib/libXtst.so.6.1.0
+7fe20903c000-7fe209047000 r--s 00210000 103:02 1182249                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/ext/localedata.jar
+7fe209047000-7fe209063000 r--s 00393000 103:02 1182246                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/ext/cldrdata.jar
+7fe209063000-7fe2090a0000 r--s 0024e000 103:02 1186772                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/xbean.jar
+7fe2090a0000-7fe2090a2000 r--s 00008000 103:02 1186862                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/wraplf.jar
+7fe2090a2000-7fe2090a3000 r--s 00002000 103:02 1186867                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/swing-worker.jar
+7fe2090a3000-7fe2090a5000 r--s 00014000 103:02 1186767                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/org-netbeans-swing-outline-RELEASE691-sources.jar
+7fe2090a5000-7fe2090ab000 r--s 0002e000 103:02 1186785                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/l2fprod-common-sheet.jar
+7fe2090ab000-7fe2090b7000 r--s 0008f000 103:02 1186776                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jgraphx.jar
+7fe2090b7000-7fe2090c8000 r--s 0014c000 103:02 1186870                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jfreechart-1.0.13.jar
+7fe2090c8000-7fe209100000 r--s 00217000 103:02 1186884                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/docking-frames-core.jar
+7fe209100000-7fe209103000 ---p 00000000 00:00 0 
+7fe209103000-7fe209200000 rw-p 00000000 00:00 0 
+7fe209200000-7fe20920d000 r-xp 00000000 103:02 1182353                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libverify.so
+7fe20920d000-7fe20940d000 ---p 0000d000 103:02 1182353                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libverify.so
+7fe20940d000-7fe20940f000 rw-p 0000d000 103:02 1182353                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libverify.so
+7fe20940f000-7fe209410000 r--s 00011000 103:02 1186798                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/miglayout-swing.jar
+7fe209410000-7fe209412000 r--s 00004000 103:02 1186874                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jsr173_1.0_api.jar
+7fe209412000-7fe209416000 r--s 00031000 103:02 1186838                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jline-2.12.jar
+7fe209416000-7fe20941c000 r--s 00046000 103:02 1186872                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jcommon-1.0.16.jar
+7fe20941c000-7fe209432000 r--s 000bc000 103:02 1186907                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/docking-frames-common.jar
+7fe209432000-7fe209434000 r--s 00003000 103:02 1186898                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.util.elf.jar
+7fe209434000-7fe209436000 r--s 00002000 103:02 1186903                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.tools.sopcformats.jar
+7fe209436000-7fe209437000 r--s 00002000 103:02 1186816                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.tools.exampledesigns.jar
+7fe209437000-7fe209438000 r--s 00006000 103:02 1186805                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.spdy.jar
+7fe209438000-7fe209439000 r--s 0000b000 103:02 1186837                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.sldhubchannel.jar
+7fe209439000-7fe20943b000 r--s 00007000 103:02 1186777                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.gdbserver.jar
+7fe20943b000-7fe20943c000 r--s 00007000 103:02 1186826                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.issp.jar
+7fe20943c000-7fe20943f000 r--s 0000d000 103:02 1186823                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.monitor.jar
+7fe20943f000-7fe209446000 r--s 0003f000 103:02 1186916                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.busanalyzer.jar
+7fe209446000-7fe209454000 r--s 0007f000 103:02 1186844                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/commons-collections-3.2.1.jar
+7fe209454000-7fe209455000 r--s 00003000 103:02 1186915                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.iobus.jar
+7fe209455000-7fe209456000 r--s 00002000 103:02 1186839                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.helper.jar
+7fe209456000-7fe20945c000 r--s 0002c000 103:02 1186803                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.dashboard.jar
+7fe20945c000-7fe209460000 r--s 00020000 103:02 1186852                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.trace.gui.jar
+7fe209460000-7fe209465000 r--s 00029000 103:02 1186873                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.trace.database.jar
+7fe209465000-7fe209466000 r--s 00001000 103:02 1186869                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.plugin.memory.jar
+7fe209466000-7fe209468000 r--s 00003000 103:02 1186894                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.plugin.pli.jar
+7fe209468000-7fe209469000 r--s 00006000 103:02 1186813                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.tcpchannel.jar
+7fe209469000-7fe20946c000 r--s 00011000 103:02 1186879                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.usb.jar
+7fe20946c000-7fe209470000 r--s 0001d000 103:02 1186779                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.trace.drivers.jar
+7fe209470000-7fe209471000 r--s 00001000 103:02 1186904                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.matlabapi.jar
+7fe209471000-7fe209474000 r--s 0001c000 103:02 1186769                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.app.jar
+7fe209474000-7fe209476000 r--s 0000c000 103:02 1186811                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcmodel.components.hwtclvalidator.jar
+7fe209476000-7fe209477000 ---p 00000000 00:00 0 
+7fe209477000-7fe209577000 rw-p 00000000 00:00 0 
+7fe209577000-7fe209861000 r--p 00000000 103:02 14821375                  /usr/lib/locale/locale-archive
+7fe209861000-7fe209862000 ---p 00000000 00:00 0 
+7fe209862000-7fe20a262000 rw-p 00000000 00:00 0 
+7fe20a262000-7fe20a263000 r--p 00000000 00:00 0 
+7fe20a263000-7fe20a264000 r--s 00000000 103:02 1313604                   /home/ishaan/intelFPGA_lite/18.1/quartus/common/librarian/factories/dspb_entities.jar
+7fe20a264000-7fe20a267000 r--s 00013000 103:02 1317715                   /home/ishaan/intelFPGA_lite/18.1/quartus/dsp_builder/bin64/extlibs/velocity-tools-1.2.jar
+7fe20a267000-7fe20a272000 r--s 00074000 103:02 1317718                   /home/ishaan/intelFPGA_lite/18.1/quartus/dsp_builder/bin64/extlibs/velocity-dep-1.4.jar
+7fe20a272000-7fe20a27b000 r--s 00034000 103:02 1317711                   /home/ishaan/intelFPGA_lite/18.1/quartus/dsp_builder/bin64/simulink_model.jar
+7fe20a27b000-7fe20a27d000 r--s 0000f000 103:02 1317717                   /home/ishaan/intelFPGA_lite/18.1/quartus/dsp_builder/bin64/extlibs/JSAP-2.0a.jar
+7fe20a27d000-7fe20a28c000 r--s 00085000 103:02 1317713                   /home/ishaan/intelFPGA_lite/18.1/quartus/dsp_builder/bin64/dspb.jar
+7fe20a28c000-7fe20a28d000 r--s 00000000 103:02 1313605                   /home/ishaan/intelFPGA_lite/18.1/quartus/common/librarian/factories/mdl_factory.jar
+7fe20a28d000-7fe20a28f000 r--s 00003000 103:02 1313606                   /home/ishaan/intelFPGA_lite/18.1/quartus/common/librarian/factories/cusp-factory.jar
+7fe20a28f000-7fe20a292000 ---p 00000000 00:00 0 
+7fe20a292000-7fe20a38f000 rw-p 00000000 00:00 0 
+7fe20a38f000-7fe20a390000 r--s 0000e000 103:02 1186847                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcmodel.components.atlantic.packetformatconverter.jar
+7fe20a390000-7fe20a392000 r--s 00003000 103:02 1186902                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.script.debugwindow.jar
+7fe20a392000-7fe20a394000 r--s 00001000 103:02 1186878                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.nios2.trace.jar
+7fe20a394000-7fe20a396000 r--s 00009000 103:02 1186819                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.nios2.rtl.trace.jar
+7fe20a396000-7fe20a3a8000 r--s 00091000 103:02 1186856                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.nios2.isa.jar
+7fe20a3a8000-7fe20a3b1000 r--s 00076000 103:02 1186797                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jmwizc.jar
+7fe20a3b1000-7fe20a3b6000 r--s 00055000 103:02 1186891                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.qsys.hypericonnect.jar
+7fe20a3b6000-7fe20a3bb000 r--s 00035000 103:02 1186899                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcmodel.sbtools.jar
+7fe20a3bb000-7fe20a3bc000 ---p 00000000 00:00 0 
+7fe20a3bc000-7fe20a3bf000 ---p 00000000 00:00 0 
+7fe20a3bf000-7fe20a4bc000 rw-p 00000000 00:00 0 
+7fe20a4bc000-7fe20a4d8000 r--p 00000000 103:02 14821691                  /usr/lib/libX11.so.6.4.0
+7fe20a4d8000-7fe20a564000 r-xp 0001c000 103:02 14821691                  /usr/lib/libX11.so.6.4.0
+7fe20a564000-7fe20a5f9000 r--p 000a8000 103:02 14821691                  /usr/lib/libX11.so.6.4.0
+7fe20a5f9000-7fe20a5fc000 r--p 0013c000 103:02 14821691                  /usr/lib/libX11.so.6.4.0
+7fe20a5fc000-7fe20a600000 rw-p 0013f000 103:02 14821691                  /usr/lib/libX11.so.6.4.0
+7fe20a600000-7fe20a65b000 r-xp 00000000 103:02 1182305                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libsplashscreen.so
+7fe20a65b000-7fe20a85b000 ---p 0005b000 103:02 1182305                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libsplashscreen.so
+7fe20a85b000-7fe20a85c000 rw-p 0005b000 103:02 1182305                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/libsplashscreen.so
+7fe20a85c000-7fe20a85f000 rw-p 00000000 00:00 0 
+7fe20a85f000-7fe20a861000 r--s 00007000 103:02 1186764                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.qsys.ipxact.module.jar
+7fe20a861000-7fe20a863000 r--s 0000a000 103:02 1186875                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.widgets.jar
+7fe20a863000-7fe20a865000 r--s 00007000 103:02 1186796                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.qsys.blackboxmodule.jar
+7fe20a865000-7fe20a866000 r--s 00003000 103:02 1186851                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.qsys.ui.jar
+7fe20a866000-7fe20a897000 r--s 00411000 103:02 1186882                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopceditor.jar
+7fe20a897000-7fe20a89a000 r--s 00020000 103:02 1186901                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.iplauncher.jar
+7fe20a89a000-7fe20a89c000 r--s 0000e000 103:02 1186804                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.ip.regenerator.jar
+7fe20a89c000-7fe20a89f000 r--s 00024000 103:02 1186783                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.genman.jar
+7fe20a89f000-7fe20a8a2000 r--s 0002d000 103:02 1186855                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.launch.jar
+7fe20a8a2000-7fe20a8a3000 r--s 00006000 103:02 1186788                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.configrom.jar
+7fe20a8a3000-7fe20a8a4000 r--s 00000000 103:02 1186883                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.jtagsimulator.jar
+7fe20a8a4000-7fe20a8a5000 r--s 00002000 103:02 1186877                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.lightclient.jar
+7fe20a8a5000-7fe20a8a7000 r--s 00007000 103:02 1186905                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.driver.jar
+7fe20a8a7000-7fe20a8af000 r--s 00048000 103:02 1186833                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.plugin.jtag.jar
+7fe20a8af000-7fe20a8bd000 r--s 00072000 103:02 1186799                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.plugin.elf.jar
+7fe20a8bd000-7fe20a8c1000 r--s 00036000 103:02 1186868                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.gui.jar
+7fe20a8c1000-7fe20a8c4000 r--s 00038000 103:02 1186784                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.scripting.jar
+7fe20a8c4000-7fe20a8ca000 r--s 0004a000 103:02 1186861                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.designs.jar
+7fe20a8ca000-7fe20a8d5000 r--s 00184000 103:02 1186830                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.systemconsole.jar
+7fe20a8d5000-7fe20a8dc000 r--s 00056000 103:02 1186775                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.flash.jar
+7fe20a8dc000-7fe20a8dd000 r--s 00004000 103:02 1186914                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.cpexample.jar
+7fe20a8dd000-7fe20a8de000 r--s 00003000 103:02 1186854                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.tcl.ui.jar
+7fe20a8de000-7fe20a8df000 r--s 0001f000 103:02 1186821                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.scripting.jar
+7fe20a8df000-7fe20a8e1000 r--s 00006000 103:02 1186866                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.plugin.lwhal.jar
+7fe20a8e1000-7fe20a8e4000 r--s 0000b000 103:02 1186791                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.plugin.hal.jar
+7fe20a8e4000-7fe20a8e8000 r--s 0001c000 103:02 1186841                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.plugin.core.jar
+7fe20a8e8000-7fe20a8ea000 r--s 0000f000 103:02 1186889                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.commandline.jar
+7fe20a8ea000-7fe20a8f7000 r--s 00084000 103:02 1186774                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.editor.jar
+7fe20a8f7000-7fe20a8fe000 r--s 00063000 103:02 1186827                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.megawizard2.jar
+7fe20a8fe000-7fe20a902000 r--s 00029000 103:02 1186890                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcmodel.components.atlantic.jar
+7fe20a902000-7fe20a90d000 r--s 00074000 103:02 1186871                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/velocity-dep-1.4.jar
+7fe20a90d000-7fe20a915000 r--s 00051000 103:02 1186858                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/velocity-1.4.jar
+7fe20a915000-7fe20a919000 r--s 0001f000 103:02 1186795                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/explicitlayout.jar
+7fe20a919000-7fe20a927000 r--p 00000000 103:02 14821156                  /usr/lib/libm.so.6
+7fe20a927000-7fe20a9a0000 r-xp 0000e000 103:02 14821156                  /usr/lib/libm.so.6
+7fe20a9a0000-7fe20a9fe000 r--p 00087000 103:02 14821156                  /usr/lib/libm.so.6
+7fe20a9fe000-7fe20a9ff000 r--p 000e4000 103:02 14821156                  /usr/lib/libm.so.6
+7fe20a9ff000-7fe20aa00000 rw-p 000e5000 103:02 14821156                  /usr/lib/libm.so.6
+7fe20aa00000-7fe20b61a000 r-xp 00000000 103:02 1182358                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/server/libjvm.so
+7fe20b61a000-7fe20b819000 ---p 00c1a000 103:02 1182358                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/server/libjvm.so
+7fe20b819000-7fe20b8e2000 rw-p 00c19000 103:02 1182358                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/server/libjvm.so
+7fe20b8e2000-7fe20b923000 rw-p 00000000 00:00 0 
+7fe20b923000-7fe20b925000 r--s 00006000 103:02 1186810                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcfactories.jar
+7fe20b925000-7fe20b927000 r--s 0001a000 103:02 1186808                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopclibrary.jar
+7fe20b927000-7fe20b928000 r--s 00000000 103:02 1186863                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.librarian.jar
+7fe20b928000-7fe20b929000 r--s 00002000 103:02 1186822                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcplatform.jar
+7fe20b929000-7fe20b92a000 r--s 00000000 103:02 1186887                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.service.jre.jar
+7fe20b92a000-7fe20b92b000 r--s 00000000 103:02 1186817                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/xmlbeans-2.2.0.jar
+7fe20b92b000-7fe20b92f000 r--s 0001e000 103:02 1186792                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.utilities.jar
+7fe20b92f000-7fe20b930000 r--s 00003000 103:02 1186768                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcmodel.embeddedsw.jar
+7fe20b930000-7fe20b932000 r--s 00016000 103:02 1186834                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.swinfo.jar
+7fe20b932000-7fe20b936000 r--s 0000d000 103:02 1186880                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.schema.jar
+7fe20b936000-7fe20b938000 r--s 0000b000 103:02 1186909                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.elements.jar
+7fe20b938000-7fe20b93d000 r--s 0008b000 103:02 1186794                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.jar
+7fe20b93d000-7fe20b940000 r--s 00014000 103:02 1186801                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.app_lib.jar
+7fe20b940000-7fe20b946000 r--s 0007a000 103:02 1186893                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jacl1.3.2a.jar
+7fe20b946000-7fe20b94b000 r--s 0002a000 103:02 1186832                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.tcl.interpreter.jar
+7fe20b94b000-7fe20b94e000 r--s 00012000 103:02 1186846                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcreport.build.jar
+7fe20b94e000-7fe20b950000 r--s 00007000 103:02 1186766                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcreport.jar
+7fe20b950000-7fe20b952000 r--s 0000d000 103:02 1186800                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcmodel.atlantic.jar
+7fe20b952000-7fe20b953000 r--s 0000c000 103:02 1186918                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/commons-logging-1.1.jar
+7fe20b953000-7fe20b954000 r--s 00014000 103:02 1186787                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/javasysmon.jar
+7fe20b954000-7fe20b957000 r--s 0003e000 103:02 1186906                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.utilities.jar
+7fe20b957000-7fe20b959000 r--s 00007000 103:02 1186806                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.qsys.model.common.jar
+7fe20b959000-7fe20b95e000 r--s 0000f000 103:02 1186773                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.privateinterfaces.jar
+7fe20b95e000-7fe20b961000 r--s 0000b000 103:02 1186814                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.entityinterfaces.jar
+7fe20b961000-7fe20b972000 r--s 000e8000 103:02 1186895                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcmodel.jar
+7fe20b972000-7fe20b973000 r--s 0000b000 103:02 1186912                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcdocument.jar
+7fe20b973000-7fe20b978000 r--s 00054000 103:02 1186778                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcmodel.transforms.jar
+7fe20b978000-7fe20b980000 r--s 00051000 103:02 1186807                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.qsys.ipxact.jar
+7fe20b980000-7fe20b986000 r--s 00031000 103:02 1186802                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jaxb-core.jar
+7fe20b986000-7fe20b98a000 r--s 00015000 103:02 1186849                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jaxb-api.jar
+7fe20b98a000-7fe20b99b000 r--s 000d0000 103:02 1186824                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/jaxb-impl.jar
+7fe20b99b000-7fe20b9a3000 r--s 00051000 103:02 1186843                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.qsys.cmsis.jar
+7fe20b9a3000-7fe20b9aa000 r--s 00050000 103:02 1186853                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopc.generator.jar
+7fe20b9aa000-7fe20b9b1000 r--s 0007d000 103:02 1186825                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopcmodel.components.tclmodule.jar
+7fe20b9b1000-7fe20b9b7000 r--s 00045000 103:02 1186828                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/hamcrest-all-1.3.jar
+7fe20b9b7000-7fe20b9ba000 r--s 0002a000 103:02 1186812                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.hdlwriter.jar
+7fe20b9ba000-7fe20b9bd000 r--s 0000e000 103:02 1186789                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.minieval2.jar
+7fe20b9bd000-7fe20b9be000 r--s 00006000 103:02 1186892                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.hdlcomponent.jar
+7fe20b9be000-7fe20b9c1000 r--s 00036000 103:02 1186848                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/org-netbeans-swing-outline.jar
+7fe20b9c1000-7fe20b9c3000 r--s 00010000 103:02 1186860                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.sopc.qsymbol.jar
+7fe20b9c3000-7fe20b9c5000 r--s 00000000 103:02 1186865                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.version.jar
+7fe20b9c5000-7fe20b9c7000 r--s 00018000 103:02 1186857                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.jdbcsqlite.jar
+7fe20b9c7000-7fe20b9c9000 r--s 0000e000 103:02 1186815                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.infrastructure.jar
+7fe20b9c9000-7fe20b9f3000 r--s 001e9000 103:02 1186763                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/guava-15.0.jar
+7fe20b9f3000-7fe20ba1b000 r--p 00000000 103:02 14821146                  /usr/lib/libc.so.6
+7fe20ba1b000-7fe20bb95000 r-xp 00028000 103:02 14821146                  /usr/lib/libc.so.6
+7fe20bb95000-7fe20bbed000 r--p 001a2000 103:02 14821146                  /usr/lib/libc.so.6
+7fe20bbed000-7fe20bbf1000 r--p 001f9000 103:02 14821146                  /usr/lib/libc.so.6
+7fe20bbf1000-7fe20bbf3000 rw-p 001fd000 103:02 14821146                  /usr/lib/libc.so.6
+7fe20bbf3000-7fe20bc00000 rw-p 00000000 00:00 0 
+7fe20bc00000-7fe20bc17000 r-xp 00000000 103:02 1182357                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/jli/libjli.so
+7fe20bc17000-7fe20be16000 ---p 00017000 103:02 1182357                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/jli/libjli.so
+7fe20be16000-7fe20be17000 rw-p 00016000 103:02 1182357                   /home/ishaan/intelFPGA_lite/18.1/quartus/linux64/jre64/lib/amd64/jli/libjli.so
+7fe20be17000-7fe20be1f000 r--s 0004f000 103:02 1186910                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.ui.ientity.jar
+7fe20be1f000-7fe20be25000 r--s 00048000 103:02 1186885                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/commons-lang3-3.1.jar
+7fe20be25000-7fe20be26000 r--s 00005000 103:02 1186888                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.ui.quartus.jar
+7fe20be26000-7fe20be28000 r--s 00004000 103:02 1186881                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/mydoggy-res.jar
+7fe20be28000-7fe20be2a000 r--s 00007000 103:02 1186876                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/mydoggy-api.jar
+7fe20be2a000-7fe20be3a000 r--s 000a4000 103:02 1186840                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/mydoggy-plaf.jar
+7fe20be3a000-7fe20be3c000 r--s 00010000 103:02 1186859                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/miglayout15-swing.jar
+7fe20be3c000-7fe20be46000 r--s 00052000 103:02 1186896                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.ui.jar
+7fe20be46000-7fe20be54000 r--s 0007b000 103:02 1186836                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.componenteditor2.jar
+7fe20be54000-7fe20be58000 r--s 00022000 103:02 1186780                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/binding-2.0.6.jar
+7fe20be58000-7fe20be5f000 r--s 00094000 103:02 1186820                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/beansbinding-1.2.1.jar
+7fe20be5f000-7fe20be62000 r--s 00011000 103:02 1186781                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/basicmodel.jar
+7fe20be62000-7fe20be63000 r--s 00007000 103:02 1186835                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/asm-commons-3.1.jar
+7fe20be63000-7fe20be67000 r--s 0004a000 103:02 1186864                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/appframework-1.03.jar
+7fe20be67000-7fe20be68000 r--p 00000000 103:02 14821179                  /usr/lib/librt.so.1
+7fe20be68000-7fe20be69000 r-xp 00001000 103:02 14821179                  /usr/lib/librt.so.1
+7fe20be69000-7fe20be6a000 r--p 00002000 103:02 14821179                  /usr/lib/librt.so.1
+7fe20be6a000-7fe20be6b000 r--p 00002000 103:02 14821179                  /usr/lib/librt.so.1
+7fe20be6b000-7fe20be6c000 rw-p 00003000 103:02 14821179                  /usr/lib/librt.so.1
+7fe20be6c000-7fe20be6e000 r--p 00000000 103:02 14817395                  /usr/lib/libXfixes.so.3.1.0
+7fe20be6e000-7fe20be71000 r-xp 00002000 103:02 14817395                  /usr/lib/libXfixes.so.3.1.0
+7fe20be71000-7fe20be72000 r--p 00005000 103:02 14817395                  /usr/lib/libXfixes.so.3.1.0
+7fe20be72000-7fe20be73000 ---p 00006000 103:02 14817395                  /usr/lib/libXfixes.so.3.1.0
+7fe20be73000-7fe20be74000 r--p 00006000 103:02 14817395                  /usr/lib/libXfixes.so.3.1.0
+7fe20be74000-7fe20be75000 rw-p 00007000 103:02 14817395                  /usr/lib/libXfixes.so.3.1.0
+7fe20be75000-7fe20be77000 r--p 00000000 103:02 14827542                  /usr/lib/libXrender.so.1.3.0
+7fe20be77000-7fe20be7e000 r-xp 00002000 103:02 14827542                  /usr/lib/libXrender.so.1.3.0
+7fe20be7e000-7fe20be80000 r--p 00009000 103:02 14827542                  /usr/lib/libXrender.so.1.3.0
+7fe20be80000-7fe20be81000 r--p 0000a000 103:02 14827542                  /usr/lib/libXrender.so.1.3.0
+7fe20be81000-7fe20be82000 rw-p 0000b000 103:02 14827542                  /usr/lib/libXrender.so.1.3.0
+7fe20be82000-7fe20be85000 r--p 00000000 103:02 14829088                  /usr/lib/libXcursor.so.1.0.2
+7fe20be85000-7fe20be8a000 r-xp 00003000 103:02 14829088                  /usr/lib/libXcursor.so.1.0.2
+7fe20be8a000-7fe20be8c000 r--p 00008000 103:02 14829088                  /usr/lib/libXcursor.so.1.0.2
+7fe20be8c000-7fe20be8d000 r--p 00009000 103:02 14829088                  /usr/lib/libXcursor.so.1.0.2
+7fe20be8d000-7fe20be8e000 rw-p 0000a000 103:02 14829088                  /usr/lib/libXcursor.so.1.0.2
+7fe20be8e000-7fe20be90000 r--p 00000000 103:02 14817393                  /usr/lib/libXdmcp.so.6.0.0
+7fe20be90000-7fe20be92000 r-xp 00002000 103:02 14817393                  /usr/lib/libXdmcp.so.6.0.0
+7fe20be92000-7fe20be94000 r--p 00004000 103:02 14817393                  /usr/lib/libXdmcp.so.6.0.0
+7fe20be94000-7fe20be95000 r--p 00005000 103:02 14817393                  /usr/lib/libXdmcp.so.6.0.0
+7fe20be95000-7fe20be96000 rw-p 00006000 103:02 14817393                  /usr/lib/libXdmcp.so.6.0.0
+7fe20be96000-7fe20be97000 r--p 00000000 103:02 14817391                  /usr/lib/libXau.so.6.0.0
+7fe20be97000-7fe20be98000 r-xp 00001000 103:02 14817391                  /usr/lib/libXau.so.6.0.0
+7fe20be98000-7fe20be99000 r--p 00002000 103:02 14817391                  /usr/lib/libXau.so.6.0.0
+7fe20be99000-7fe20be9a000 r--p 00002000 103:02 14817391                  /usr/lib/libXau.so.6.0.0
+7fe20be9a000-7fe20be9b000 rw-p 00003000 103:02 14817391                  /usr/lib/libXau.so.6.0.0
+7fe20be9b000-7fe20bea7000 r--p 00000000 103:02 14821713                  /usr/lib/libxcb.so.1.1.0
+7fe20bea7000-7fe20bebb000 r-xp 0000c000 103:02 14821713                  /usr/lib/libxcb.so.1.1.0
+7fe20bebb000-7fe20bec4000 r--p 00020000 103:02 14821713                  /usr/lib/libxcb.so.1.1.0
+7fe20bec4000-7fe20bec5000 r--p 00028000 103:02 14821713                  /usr/lib/libxcb.so.1.1.0
+7fe20bec5000-7fe20bec6000 rw-p 00029000 103:02 14821713                  /usr/lib/libxcb.so.1.1.0
+7fe20bec6000-7fe20beca000 r--p 00000000 103:02 14817394                  /usr/lib/libXext.so.6.4.0
+7fe20beca000-7fe20bed5000 r-xp 00004000 103:02 14817394                  /usr/lib/libXext.so.6.4.0
+7fe20bed5000-7fe20bed9000 r--p 0000f000 103:02 14817394                  /usr/lib/libXext.so.6.4.0
+7fe20bed9000-7fe20beda000 r--p 00012000 103:02 14817394                  /usr/lib/libXext.so.6.4.0
+7fe20beda000-7fe20bedb000 rw-p 00013000 103:02 14817394                  /usr/lib/libXext.so.6.4.0
+7fe20bedb000-7fe20bedd000 rw-p 00000000 00:00 0 
+7fe20bedd000-7fe20bede000 r--p 00000000 103:02 14821151                  /usr/lib/libdl.so.2
+7fe20bede000-7fe20bedf000 r-xp 00001000 103:02 14821151                  /usr/lib/libdl.so.2
+7fe20bedf000-7fe20bee0000 r--p 00002000 103:02 14821151                  /usr/lib/libdl.so.2
+7fe20bee0000-7fe20bee1000 r--p 00002000 103:02 14821151                  /usr/lib/libdl.so.2
+7fe20bee1000-7fe20bee2000 rw-p 00003000 103:02 14821151                  /usr/lib/libdl.so.2
+7fe20bee2000-7fe20bee3000 r--p 00000000 103:02 14821174                  /usr/lib/libpthread.so.0
+7fe20bee3000-7fe20bee4000 r-xp 00001000 103:02 14821174                  /usr/lib/libpthread.so.0
+7fe20bee4000-7fe20bee5000 r--p 00002000 103:02 14821174                  /usr/lib/libpthread.so.0
+7fe20bee5000-7fe20bee6000 r--p 00002000 103:02 14821174                  /usr/lib/libpthread.so.0
+7fe20bee6000-7fe20bee7000 rw-p 00003000 103:02 14821174                  /usr/lib/libpthread.so.0
+7fe20bee7000-7fe20bee8000 r--s 0000a000 103:02 1186829                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/asm-3.1.jar
+7fe20bee8000-7fe20bee9000 r--s 00002000 103:02 1186900                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/TableLayout.jar
+7fe20bee9000-7fe20beeb000 r--s 00009000 103:02 1186818                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/commons-pool.jar
+7fe20beeb000-7fe20beed000 r--s 00008000 103:02 1186770                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/commons-logging.jar
+7fe20beed000-7fe20bef0000 r--s 0001f000 103:02 1186771                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/commons-beanutils.jar
+7fe20bef0000-7fe20befd000 r--s 0007c000 103:02 1186786                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/commons-collections.jar
+7fe20befd000-7fe20bf00000 r--s 00018000 103:02 1186886                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/commons-digester.jar
+7fe20bf00000-7fe20bf04000 r--s 00036000 103:02 1186842                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/QuickServer.jar
+7fe20bf04000-7fe20bf05000 r--s 0000d000 103:02 1186782                   /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/Nlview.jar
+7fe20bf05000-7fe20bf0d000 rw-s 00000000 00:21 2796                       /tmp/hsperfdata_ishaan/59004
+7fe20bf0d000-7fe20bf10000 rw-p 00000000 00:00 0 
+7fe20bf10000-7fe20bf12000 r--p 00000000 103:02 14821137                  /usr/lib/ld-linux-x86-64.so.2
+7fe20bf12000-7fe20bf39000 r-xp 00002000 103:02 14821137                  /usr/lib/ld-linux-x86-64.so.2
+7fe20bf39000-7fe20bf44000 r--p 00029000 103:02 14821137                  /usr/lib/ld-linux-x86-64.so.2
+7fe20bf44000-7fe20bf45000 r--p 00000000 00:00 0 
+7fe20bf45000-7fe20bf47000 r--p 00034000 103:02 14821137                  /usr/lib/ld-linux-x86-64.so.2
+7fe20bf47000-7fe20bf49000 rw-p 00036000 103:02 14821137                  /usr/lib/ld-linux-x86-64.so.2
+7fffe82df000-7fffe8304000 rw-p 00000000 00:00 0                          [stack]
+7fffe8345000-7fffe8349000 r--p 00000000 00:00 0                          [vvar]
+7fffe8349000-7fffe834b000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+
+VM Arguments:
+jvm_args: -Xmx1500M -XX:+UseSerialGC 
+java_command: com.altera.ipedit.QsysEditorApp --project-dir=/home/ishaan/projects/Vision/Verilog_Quartus_Project/DE10_LITE_D8M_VIP_16/ --family=MAX 10 --part=10M50DAF484C7G --host-controller
+java_class_path (initial): /home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/Nlview.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/QuickServer.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/TableLayout.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/appframework-1.03.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/asm-3.1.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/asm-commons-3.1.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/basicmodel.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/beansbinding-1.2.1.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/binding-2.0.6.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.componenteditor2.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.app_lib.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.editor.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.elements.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.plugin.core.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.plugin.hal.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.plugin.lwhal.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.schema.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.bsp.scripting.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.commandline.jar:/home/ishaan/intelFPGA_lite/18.1/quartus/sopc_builder/model/lib/com.altera.embeddedsw.cpexample.jar:/home/ishaan/intelFPGA_li
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=/home/ishaan/intelFPGA_lite/18.1/quartus/linux64:/home/ishaan/intelFPGA_lite/18.1/quartus/adm:/home/ishaan/intelFPGA_lite/18.1/quartus/linux64:/home/ishaan/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/var/lib/snapd/snap/bin:/home/ishaan/intelFPGA_lite/18.1/nios2eds/bin/:/home/ishaan/intelFPGA_lite/18.1/nios2eds/bin/gnu/H-x86_64-pc-linux-gnu/bin/:/home/ishaan/intelFPGA_lite/18.1/nios2eds/sdk2/bin/:/home/ishaan/intelFPGA_lite/18.1/quartus/bin/
+LD_LIBRARY_PATH=/home/ishaan/intelFPGA_lite/18.1/quartus/linux64:/home/ishaan/intelFPGA_lite/18.1/quartus/linux64:
+SHELL=/bin/bash
+DISPLAY=:0
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0xa2fc90], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGBUS: [libjvm.so+0xa2fc90], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGFPE: [libjvm.so+0x89b4b0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGPIPE: SIG_IGN, sa_mask[0]=0x00001000, sa_flags=0x10000000
+SIGXFSZ: SIG_IGN, sa_mask[0]=0x01000000, sa_flags=0x10000000
+SIGILL: [libjvm.so+0x89b4b0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGUSR1: SIG_DFL, sa_mask[0]=0x00000000, sa_flags=0x00000000
+SIGUSR2: [libjvm.so+0x89cc50], sa_mask[0]=0x00000000, sa_flags=0x10000004
+SIGHUP: [libjvm.so+0x89df00], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGINT: [libcusp181_parser.so+0x13ffa0], sa_mask[0]=0x00000002, sa_flags=0x10000000
+SIGTERM: [libcusp181_parser.so+0x13ffa0], sa_mask[0]=0x00004000, sa_flags=0x10000000
+SIGQUIT: [libjvm.so+0x89df00], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+
+
+---------------  S Y S T E M  ---------------
+
+OS:DISTRIB_ID=ManjaroLinux
+DISTRIB_RELEASE=21.2.6
+DISTRIB_CODENAME=Qonos
+DISTRIB_DESCRIPTION="Manjaro Linux"
+
+uname:Linux 5.15.41-1-MANJARO #1 SMP PREEMPT Wed May 18 09:20:01 UTC 2022 x86_64
+libc:glibc 2.35 NPTL 2.35 
+rlimit: STACK 10240k, CORE infinity, NPROC 61297, NOFILE 524288, AS infinity
+load average:0.75 0.95 0.90
+
+/proc/meminfo:
+MemTotal:       15774400 kB
+MemFree:          372720 kB
+MemAvailable:    4128844 kB
+Buffers:          184288 kB
+Cached:          4218576 kB
+SwapCached:            0 kB
+Active:          3020924 kB
+Inactive:       10248648 kB
+Active(anon):      39356 kB
+Inactive(anon):  9505820 kB
+Active(file):    2981568 kB
+Inactive(file):   742828 kB
+Unevictable:         112 kB
+Mlocked:             112 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:              3684 kB
+Writeback:             0 kB
+AnonPages:       8867004 kB
+Mapped:          2377196 kB
+Shmem:            686324 kB
+KReclaimable:     367256 kB
+Slab:             563176 kB
+SReclaimable:     367256 kB
+SUnreclaim:       195920 kB
+KernelStack:       36368 kB
+PageTables:        91468 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     7887200 kB
+Committed_AS:   22061040 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:      142596 kB
+VmallocChunk:          0 kB
+Percpu:            14528 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+FileHugePages:         0 kB
+FilePmdMapped:         0 kB
+CmaTotal:              0 kB
+CmaFree:               0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+Hugetlb:               0 kB
+DirectMap4k:     2263648 kB
+DirectMap2M:    11732992 kB
+DirectMap1G:     3145728 kB
+
+
+CPU:total 16 (16 cores per cpu, 1 threads per core) family 25 model 80 stepping 0, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, mmxext, 3dnowpref, lzcnt, sse4a, tsc, tscinvbit
+
+/proc/cpuinfo:
+processor	: 0
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 2748.541
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 0
+cpu cores	: 8
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 1
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 0
+cpu cores	: 8
+apicid		: 1
+initial apicid	: 1
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 2
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 2209.689
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 1
+cpu cores	: 8
+apicid		: 2
+initial apicid	: 2
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 3
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 1
+cpu cores	: 8
+apicid		: 3
+initial apicid	: 3
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 4
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 3200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 2
+cpu cores	: 8
+apicid		: 4
+initial apicid	: 4
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 5
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 2
+cpu cores	: 8
+apicid		: 5
+initial apicid	: 5
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 6
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 2858.191
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 3
+cpu cores	: 8
+apicid		: 6
+initial apicid	: 6
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 7
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 3
+cpu cores	: 8
+apicid		: 7
+initial apicid	: 7
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 8
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1992.070
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 4
+cpu cores	: 8
+apicid		: 8
+initial apicid	: 8
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 9
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 2894.140
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 4
+cpu cores	: 8
+apicid		: 9
+initial apicid	: 9
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 10
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 5
+cpu cores	: 8
+apicid		: 10
+initial apicid	: 10
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 11
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1942.428
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 5
+cpu cores	: 8
+apicid		: 11
+initial apicid	: 11
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 12
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 3200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 6
+cpu cores	: 8
+apicid		: 12
+initial apicid	: 12
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 13
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 6
+cpu cores	: 8
+apicid		: 13
+initial apicid	: 13
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 14
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 7
+cpu cores	: 8
+apicid		: 14
+initial apicid	: 14
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+processor	: 15
+vendor_id	: AuthenticAMD
+cpu family	: 25
+model		: 80
+model name	: AMD Ryzen 7 5800H with Radeon Graphics
+stepping	: 0
+microcode	: 0xa50000c
+cpu MHz		: 1200.000
+cache size	: 512 KB
+physical id	: 0
+siblings	: 16
+core id		: 7
+cpu cores	: 8
+apicid		: 15
+initial apicid	: 15
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 16
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm
+bugs		: sysret_ss_attrs spectre_v1 spectre_v2 spec_store_bypass
+bogomips	: 6390.09
+TLB size	: 2560 4K pages
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 48 bits physical, 48 bits virtual
+power management: ts ttp tm hwpstate cpb eff_freq_ro [13] [14]
+
+
+
+Memory: 4k page, physical 15774400k(372424k free), swap 0k(0k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.5-b02) for linux-amd64 JRE (1.8.0_05-b13), built on Mar 18 2014 00:29:27 by "java_re" with gcc 4.3.0 20080428 (Red Hat 4.3.0-8)
+
+time: Wed Jun  8 17:32:25 2022
+elapsed time: 9029 seconds
+

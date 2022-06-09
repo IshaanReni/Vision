@@ -16,11 +16,6 @@
          value = "18";
          type = "int";
       }
-      datum sopceditor_expanded
-      {
-         value = "0";
-         type = "boolean";
-      }
    }
    element Qsys
    {
@@ -42,7 +37,23 @@
    {
       datum _originalDeviceFamily
       {
+         value = "MAX 10";
+         type = "String";
+      }
+   }
+   element Qsys
+   {
+      datum _originalDeviceFamily
+      {
          value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element Qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "MAX 10";
          type = "String";
       }
    }
@@ -55,7 +66,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "0";
+         value = "1";
          type = "boolean";
       }
    }
@@ -76,7 +87,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "0";
+         value = "1";
          type = "boolean";
       }
    }
@@ -89,7 +100,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "0";
+         value = "1";
          type = "boolean";
       }
    }
@@ -107,7 +118,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "0";
+         value = "1";
          type = "boolean";
       }
    }
@@ -120,7 +131,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "0";
+         value = "1";
          type = "boolean";
       }
    }
@@ -138,6 +149,58 @@
       {
          value = "0";
          type = "int";
+      }
+   }
+   element fifo_1
+   {
+      datum _sortIndex
+      {
+         value = "21";
+         type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
+      }
+   }
+   element fifo_2
+   {
+      datum _sortIndex
+      {
+         value = "22";
+         type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
+      }
+   }
+   element fifo_3
+   {
+      datum _sortIndex
+      {
+         value = "23";
+         type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
+      }
+   }
+   element fifo_4
+   {
+      datum _sortIndex
+      {
+         value = "24";
+         type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
       }
    }
    element i2c_opencores_camera
@@ -293,7 +356,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "0";
+         value = "1";
          type = "boolean";
       }
    }
@@ -417,7 +480,9 @@
  <interface name="d8m_xclkin" internal="altpll_0.c4" type="clock" dir="start" />
  <interface
    name="eee_imgproc_0_conduit_mode"
-   internal="EEE_IMGPROC_0.conduit_mode" />
+   internal="EEE_IMGPROC_0.conduit_mode"
+   type="conduit"
+   dir="end" />
  <interface
    name="i2c_opencores_camera_export"
    internal="i2c_opencores_camera.export"
@@ -470,7 +535,13 @@
    internal="uart_0.external_connection"
    type="conduit"
    dir="end" />
- <module name="EEE_IMGPROC_0" kind="EEE_IMGPROC" version="1.0" enabled="1" />
+ <module name="EEE_IMGPROC_0" kind="EEE_IMGPROC" version="1.0" enabled="1">
+  <parameter name="BB_COL_DEFAULT" value="65280" />
+  <parameter name="IMAGE_H" value="480" />
+  <parameter name="IMAGE_W" value="640" />
+  <parameter name="MESSAGE_BUF_MAX" value="256" />
+  <parameter name="MSG_INTERVAL" value="6" />
+ </module>
  <module
    name="TERASIC_AUTO_FOCUS_0"
    kind="TERASIC_AUTO_FOCUS"
@@ -700,6 +771,90 @@
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
+ <module name="fifo_1" kind="altera_avalon_fifo" version="18.1" enabled="1">
+  <parameter name="avalonMMAvalonMMDataWidth" value="32" />
+  <parameter name="avalonMMAvalonSTDataWidth" value="32" />
+  <parameter name="bitsPerSymbol" value="8" />
+  <parameter name="channelWidth" value="1" />
+  <parameter name="deviceFamilyString" value="MAX 10" />
+  <parameter name="errorWidth" value="0" />
+  <parameter name="fifoDepth" value="512" />
+  <parameter name="fifoInputInterfaceOptions" value="AVALONST_SINK" />
+  <parameter name="fifoOutputInterfaceOptions" value="AVALONST_SOURCE" />
+  <parameter name="showHiddenFeatures" value="false" />
+  <parameter name="singleClockMode" value="true" />
+  <parameter name="singleResetMode" value="false" />
+  <parameter name="symbolsPerBeat" value="4" />
+  <parameter name="useBackpressure" value="true" />
+  <parameter name="useIRQ" value="true" />
+  <parameter name="usePacket" value="true" />
+  <parameter name="useReadControl" value="false" />
+  <parameter name="useRegister" value="false" />
+  <parameter name="useWriteControl" value="true" />
+ </module>
+ <module name="fifo_2" kind="altera_avalon_fifo" version="18.1" enabled="1">
+  <parameter name="avalonMMAvalonMMDataWidth" value="32" />
+  <parameter name="avalonMMAvalonSTDataWidth" value="32" />
+  <parameter name="bitsPerSymbol" value="8" />
+  <parameter name="channelWidth" value="1" />
+  <parameter name="deviceFamilyString" value="MAX 10" />
+  <parameter name="errorWidth" value="0" />
+  <parameter name="fifoDepth" value="512" />
+  <parameter name="fifoInputInterfaceOptions" value="AVALONST_SINK" />
+  <parameter name="fifoOutputInterfaceOptions" value="AVALONST_SOURCE" />
+  <parameter name="showHiddenFeatures" value="false" />
+  <parameter name="singleClockMode" value="true" />
+  <parameter name="singleResetMode" value="false" />
+  <parameter name="symbolsPerBeat" value="4" />
+  <parameter name="useBackpressure" value="true" />
+  <parameter name="useIRQ" value="true" />
+  <parameter name="usePacket" value="true" />
+  <parameter name="useReadControl" value="false" />
+  <parameter name="useRegister" value="false" />
+  <parameter name="useWriteControl" value="true" />
+ </module>
+ <module name="fifo_3" kind="altera_avalon_fifo" version="18.1" enabled="1">
+  <parameter name="avalonMMAvalonMMDataWidth" value="32" />
+  <parameter name="avalonMMAvalonSTDataWidth" value="32" />
+  <parameter name="bitsPerSymbol" value="8" />
+  <parameter name="channelWidth" value="1" />
+  <parameter name="deviceFamilyString" value="MAX 10" />
+  <parameter name="errorWidth" value="0" />
+  <parameter name="fifoDepth" value="512" />
+  <parameter name="fifoInputInterfaceOptions" value="AVALONST_SINK" />
+  <parameter name="fifoOutputInterfaceOptions" value="AVALONST_SOURCE" />
+  <parameter name="showHiddenFeatures" value="false" />
+  <parameter name="singleClockMode" value="true" />
+  <parameter name="singleResetMode" value="false" />
+  <parameter name="symbolsPerBeat" value="4" />
+  <parameter name="useBackpressure" value="true" />
+  <parameter name="useIRQ" value="true" />
+  <parameter name="usePacket" value="true" />
+  <parameter name="useReadControl" value="false" />
+  <parameter name="useRegister" value="false" />
+  <parameter name="useWriteControl" value="true" />
+ </module>
+ <module name="fifo_4" kind="altera_avalon_fifo" version="18.1" enabled="1">
+  <parameter name="avalonMMAvalonMMDataWidth" value="32" />
+  <parameter name="avalonMMAvalonSTDataWidth" value="32" />
+  <parameter name="bitsPerSymbol" value="8" />
+  <parameter name="channelWidth" value="1" />
+  <parameter name="deviceFamilyString" value="MAX 10" />
+  <parameter name="errorWidth" value="0" />
+  <parameter name="fifoDepth" value="512" />
+  <parameter name="fifoInputInterfaceOptions" value="AVALONST_SINK" />
+  <parameter name="fifoOutputInterfaceOptions" value="AVALONST_SOURCE" />
+  <parameter name="showHiddenFeatures" value="false" />
+  <parameter name="singleClockMode" value="true" />
+  <parameter name="singleResetMode" value="false" />
+  <parameter name="symbolsPerBeat" value="4" />
+  <parameter name="useBackpressure" value="true" />
+  <parameter name="useIRQ" value="true" />
+  <parameter name="usePacket" value="true" />
+  <parameter name="useReadControl" value="false" />
+  <parameter name="useRegister" value="false" />
+  <parameter name="useWriteControl" value="true" />
+ </module>
  <module
    name="i2c_opencores_camera"
    kind="i2c_opencores"
@@ -813,7 +968,7 @@
   <parameter name="dataAddrWidth" value="19" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x20000' end='0x40000' type='altera_avalon_onchip_memory2.s1' /><slave name='nios2_gen2.debug_mem_slave' start='0x40800' end='0x41000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='timer.s1' start='0x41000' end='0x41020' type='altera_avalon_timer.s1' /><slave name='TERASIC_AUTO_FOCUS_0.mm_ctrl' start='0x41020' end='0x41040' type='TERASIC_AUTO_FOCUS.mm_ctrl' /><slave name='i2c_opencores_camera.avalon_slave_0' start='0x41040' end='0x41060' type='i2c_opencores.avalon_slave_0' /><slave name='i2c_opencores_mipi.avalon_slave_0' start='0x41060' end='0x41080' type='i2c_opencores.avalon_slave_0' /><slave name='mipi_pwdn_n.s1' start='0x41080' end='0x41090' type='altera_avalon_pio.s1' /><slave name='mipi_reset_n.s1' start='0x41090' end='0x410A0' type='altera_avalon_pio.s1' /><slave name='key.s1' start='0x410A0' end='0x410B0' type='altera_avalon_pio.s1' /><slave name='sw.s1' start='0x410B0' end='0x410C0' type='altera_avalon_pio.s1' /><slave name='led.s1' start='0x410C0' end='0x410D0' type='altera_avalon_pio.s1' /><slave name='altpll_0.pll_slave' start='0x410D0' end='0x410E0' type='altpll.pll_slave' /><slave name='sysid_qsys.control_slave' start='0x410E0' end='0x410E8' type='altera_avalon_sysid_qsys.control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x410E8' end='0x410F0' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='uart_0.s1' start='0x42020' end='0x42040' type='altera_avalon_uart.s1' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x20000' end='0x40000' type='altera_avalon_onchip_memory2.s1' /><slave name='nios2_gen2.debug_mem_slave' start='0x40800' end='0x41000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='timer.s1' start='0x41000' end='0x41020' type='altera_avalon_timer.s1' /><slave name='TERASIC_AUTO_FOCUS_0.mm_ctrl' start='0x41020' end='0x41040' type='TERASIC_AUTO_FOCUS.mm_ctrl' /><slave name='i2c_opencores_camera.avalon_slave_0' start='0x41040' end='0x41060' type='i2c_opencores.avalon_slave_0' /><slave name='i2c_opencores_mipi.avalon_slave_0' start='0x41060' end='0x41080' type='i2c_opencores.avalon_slave_0' /><slave name='mipi_pwdn_n.s1' start='0x41080' end='0x41090' type='altera_avalon_pio.s1' /><slave name='mipi_reset_n.s1' start='0x41090' end='0x410A0' type='altera_avalon_pio.s1' /><slave name='key.s1' start='0x410A0' end='0x410B0' type='altera_avalon_pio.s1' /><slave name='sw.s1' start='0x410B0' end='0x410C0' type='altera_avalon_pio.s1' /><slave name='led.s1' start='0x410C0' end='0x410D0' type='altera_avalon_pio.s1' /><slave name='altpll_0.pll_slave' start='0x410D0' end='0x410E0' type='altpll.pll_slave' /><slave name='sysid_qsys.control_slave' start='0x410E0' end='0x410E8' type='altera_avalon_sysid_qsys.control_slave' /><slave name='jtag_uart.avalon_jtag_slave' start='0x410E8' end='0x410F0' type='altera_avalon_jtag_uart.avalon_jtag_slave' /><slave name='EEE_IMGPROC_0.s1' start='0x42000' end='0x42020' type='EEE_IMGPROC.s1' /><slave name='uart_0.s1' start='0x42020' end='0x42040' type='altera_avalon_uart.s1' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -859,7 +1014,7 @@
   <parameter name="instruction_master_high_performance_paddr_size" value="0" />
   <parameter name="instruction_master_paddr_base" value="0" />
   <parameter name="instruction_master_paddr_size" value="0" />
-  <parameter name="internalIrqMaskSystemInfo" value="31" />
+  <parameter name="internalIrqMaskSystemInfo" value="511" />
   <parameter name="io_regionbase" value="0" />
   <parameter name="io_regionsize" value="0" />
   <parameter name="master_addr_map" value="false" />
@@ -1211,18 +1366,18 @@
    kind="avalon"
    version="18.1"
    start="nios2_gen2.data_master"
-   end="EEE_IMGPROC_0.s1">
+   end="uart_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00042000" />
+  <parameter name="baseAddress" value="0x00042020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="18.1"
    start="nios2_gen2.data_master"
-   end="uart_0.s1">
+   end="EEE_IMGPROC_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00042020" />
+  <parameter name="baseAddress" value="0x00042000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1274,6 +1429,26 @@
  <connection
    kind="avalon_streaming"
    version="18.1"
+   start="EEE_IMGPROC_0.avalon_streaming_source_1"
+   end="fifo_1.in" />
+ <connection
+   kind="avalon_streaming"
+   version="18.1"
+   start="EEE_IMGPROC_0.avalon_streaming_source_2"
+   end="fifo_2.in" />
+ <connection
+   kind="avalon_streaming"
+   version="18.1"
+   start="EEE_IMGPROC_0.avalon_streaming_source_3"
+   end="fifo_3.in" />
+ <connection
+   kind="avalon_streaming"
+   version="18.1"
+   start="EEE_IMGPROC_0.avalon_streaming_source_4"
+   end="fifo_4.in" />
+ <connection
+   kind="avalon_streaming"
+   version="18.1"
    start="TERASIC_AUTO_FOCUS_0.dout"
    end="EEE_IMGPROC_0.avalon_streaming_sink" />
  <connection
@@ -1281,7 +1456,31 @@
    version="18.1"
    start="alt_vip_vfb_0.dout"
    end="TERASIC_AUTO_FOCUS_0.din" />
+ <connection
+   kind="avalon_streaming"
+   version="18.1"
+   start="fifo_1.out"
+   end="EEE_IMGPROC_0.avalon_streaming_sink_1" />
+ <connection
+   kind="avalon_streaming"
+   version="18.1"
+   start="fifo_2.out"
+   end="EEE_IMGPROC_0.avalon_streaming_sink_2" />
+ <connection
+   kind="avalon_streaming"
+   version="18.1"
+   start="fifo_3.out"
+   end="EEE_IMGPROC_0.avalon_streaming_sink_3" />
+ <connection
+   kind="avalon_streaming"
+   version="18.1"
+   start="fifo_4.out"
+   end="EEE_IMGPROC_0.avalon_streaming_sink_4" />
  <connection kind="clock" version="18.1" start="altpll_0.c2" end="sdram.clk" />
+ <connection kind="clock" version="18.1" start="altpll_0.c2" end="fifo_2.clk_in" />
+ <connection kind="clock" version="18.1" start="altpll_0.c2" end="fifo_3.clk_in" />
+ <connection kind="clock" version="18.1" start="altpll_0.c2" end="fifo_4.clk_in" />
+ <connection kind="clock" version="18.1" start="altpll_0.c2" end="fifo_1.clk_in" />
  <connection
    kind="clock"
    version="18.1"
@@ -1337,6 +1536,34 @@
    version="18.1"
    start="clk_50.clk"
    end="altpll_0.inclk_interface" />
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="nios2_gen2.irq"
+   end="fifo_1.in_irq">
+  <parameter name="irqNumber" value="5" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="nios2_gen2.irq"
+   end="fifo_2.in_irq">
+  <parameter name="irqNumber" value="6" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="nios2_gen2.irq"
+   end="fifo_3.in_irq">
+  <parameter name="irqNumber" value="7" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="18.1"
+   start="nios2_gen2.irq"
+   end="fifo_4.in_irq">
+  <parameter name="irqNumber" value="8" />
+ </connection>
  <connection
    kind="interrupt"
    version="18.1"
@@ -1449,17 +1676,37 @@
    kind="reset"
    version="18.1"
    start="clk_50.clk_reset"
-   end="EEE_IMGPROC_0.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_50.clk_reset"
    end="uart_0.reset" />
  <connection
    kind="reset"
    version="18.1"
    start="clk_50.clk_reset"
+   end="EEE_IMGPROC_0.reset" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_50.clk_reset"
    end="onchip_memory2_0.reset1" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_50.clk_reset"
+   end="fifo_1.reset_in" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_50.clk_reset"
+   end="fifo_2.reset_in" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_50.clk_reset"
+   end="fifo_3.reset_in" />
+ <connection
+   kind="reset"
+   version="18.1"
+   start="clk_50.clk_reset"
+   end="fifo_4.reset_in" />
  <connection
    kind="reset"
    version="18.1"
@@ -1544,12 +1791,12 @@
    kind="reset"
    version="18.1"
    start="nios2_gen2.debug_reset_request"
-   end="EEE_IMGPROC_0.reset" />
+   end="uart_0.reset" />
  <connection
    kind="reset"
    version="18.1"
    start="nios2_gen2.debug_reset_request"
-   end="uart_0.reset" />
+   end="EEE_IMGPROC_0.reset" />
  <connection
    kind="reset"
    version="18.1"

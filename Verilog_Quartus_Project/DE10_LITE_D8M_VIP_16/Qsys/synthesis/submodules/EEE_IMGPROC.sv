@@ -1,3 +1,34 @@
+// synthesis VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
+
+extern module RING_BUFFER #(
+    parameter DATA_WIDTH = 27,
+    parameter CAPACITY   = 640
+) (
+	  input logic clk,
+    input logic rst_n,
+    input logic ready_in,
+    input logic valid_in,
+    input logic [DATA_WIDTH-1:0] data_in,
+    output logic ready_out,
+    output logic valid_out,
+    output logic [DATA_WIDTH-1:0] data_out
+);
+
+extern module SHIFT_REGGAE #(
+    parameter NO_STAGES  = 9,
+    parameter DATA_WIDTH = 26
+) (
+    //control signals
+    input logic clk,
+    input logic rst_n,
+    input logic valid_in,
+
+    //data signals 
+    input  logic [DATA_WIDTH-1:0] data_in,
+    output logic [DATA_WIDTH-1:0] data_out
+);
+
+
 module EEE_IMGPROC #(
     parameter IMAGE_W = 11'd640,
     parameter IMAGE_H = 11'd480,
@@ -32,6 +63,66 @@ module EEE_IMGPROC #(
     output logic source_sop,
     output logic source_eop,
 
+
+    // streaming sink fifo1
+    input logic [31:0] sink_data_fifo1,
+    input logic sink_valid_fifo1,
+    output logic sink_ready_fifo1,
+    input logic sink_sop_fifo1,
+    input logic sink_eop_fifo1,
+
+    // streaming source fifo1
+    output logic [31:0] source_data_fifo1,
+    output logic source_valid_fifo1,
+    input logic source_ready_fifo1,
+    output logic source_sop_fifo1,
+    output logic source_eop_fifo1,
+
+
+    // streaming sink fifo2
+    input logic [31:0] sink_data_fifo2,
+    input logic sink_valid_fifo2,
+    output logic sink_ready_fifo2,
+    input logic sink_sop_fifo2,
+    input logic sink_eop_fifo2,
+
+    // streaming source fifo2
+    output logic [31:0] source_data_fifo2,
+    output logic source_valid_fifo2,
+    input logic source_ready_fifo2,
+    output logic source_sop_fifo2,
+    output logic source_eop_fifo2,
+
+
+    // streaming sink fifo3
+    input logic [31:0] sink_data_fifo3,
+    input logic sink_valid_fifo3,
+    output logic sink_ready_fifo3,
+    input logic sink_sop_fifo3,
+    input logic sink_eop_fifo3,
+
+    // streaming source fifo3
+    output logic [31:0] source_data_fifo3,
+    output logic source_valid_fifo3,
+    input logic source_ready_fifo3,
+    output logic source_sop_fifo3,
+    output logic source_eop_fifo3,
+
+
+    // streaming sink fifo4
+    input logic [31:0] sink_data_fifo4,
+    input logic sink_valid_fifo4,
+    output logic sink_ready_fifo4,
+    input logic sink_sop_fifo4,
+    input logic sink_eop_fifo4,
+
+    // streaming source fifo4
+    output logic [31:0] source_data_fifo4,
+    output logic source_valid_fifo4,
+    input logic source_ready_fifo4,
+    output logic source_sop_fifo4,
+    output logic source_eop_fifo4,
+
     // conduit export
     input logic mode
 );
@@ -55,7 +146,7 @@ module EEE_IMGPROC #(
   assign red_high = red_detect ? {8'hff, 8'h0, 8'h0} : {grey, grey, grey}; //if red is detected - we put red on that pixel
 
   // Show bounding box
-  logic [3:0] new_image;
+  logic [23:0] new_image;
   logic bb_active;
   assign bb_active = (x == left) | (x == right) | (y == top) | (y == bottom); //bb_active if pixel is on any boundary line (on x or y axis)
   assign new_image = bb_active ? bb_col : red_high; //if we are on a boundary pixel; we set the colour to blue, if not; we set it to the computed highlighted (red_high) pixel colour
@@ -69,11 +160,11 @@ module EEE_IMGPROC #(
   //Count valid pixels to tget the image coordinates. Reset and detect packet type on Start of Packet.
   logic [10:0] x, y;
 
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (sop) begin  //if we have the start of packet header - we set x and y coordinates to 0
       x <= 11'h0;
       y <= 11'h0;
-      packet_video <= (blue[3:0] == 3'h0);  //if the 4 LSB of blue are 0 we have a packet? IDK 
+      packet_video <= (blue[3:0] == 3'h0);  //if the 4 LSB of blue are 0 we have a packet? IDK
     end else if (in_valid) begin
       if (x == IMAGE_W - 1) begin
         x <= 11'h0;
@@ -87,8 +178,8 @@ module EEE_IMGPROC #(
 
   //PERSO Addition
   //Solid Kernel relying on delay line
-  integer k_halfwidth = 4;
-  integer k_tot_size = (2 * k_halfwidth + 1) * (2 * k_halfwidth + 1);  //this is 9x9 kernel
+  //integer k_halfwidth = 4;
+  //integer k_tot_size = (2 * k_halfwidth + 1) * (2 * k_halfwidth + 1);  //this is 9x9 kernel
 
 
   //NB : coordinates are [y][x] in JLS code
@@ -121,7 +212,7 @@ endgenerate
 
   //Find first and last red pixels
   logic [10:0] x_min, y_min, x_max, y_max;
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (red_detect & in_valid) begin  //Update bounds when the pixel is red
       if (x < x_min) x_min <= x;
       if (x > x_max) x_max <= x;
@@ -140,7 +231,7 @@ endgenerate
   logic [1:0] msg_state;
   logic [10:0] left, right, top, bottom;
   logic [7:0] frame_count;
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (eop & in_valid & packet_video) begin  //Ignore non-video packets
 
       //Latch edges for display overlay on next frame
@@ -173,7 +264,7 @@ endgenerate
 
   `define RED_BOX_MSG_ID "RBB"
 
-  always @(*) begin  //Write words to FIFO as state machine advances
+  always_ff @(*) begin  //Write words to FIFO as state machine advances
     case (msg_state)
       2'b00: begin
         msg_buf_in = 32'b0;
@@ -212,46 +303,113 @@ endgenerate
 
 
   //Streaming registers to buffer video signal
-  STREAM_REG #(
-      .DATA_WIDTH(26)
-  ) in_reg (
-      .clk(clk),
-      .rst_n(reset_n),
-      .ready_out(sink_ready),
-      .valid_out(in_valid),
-      .data_out({red, green, blue, sop, eop}),
-      .ready_in(out_ready),
-      .valid_in(sink_valid),
-      .data_in({sink_data, sink_sop, sink_eop})
+  // feeds into the ring buffer
+  //Streaming registers to buffer video signal
+  STREAM_REG #(.DATA_WIDTH(26)) in_reg (
+    .clk(clk),
+    .rst_n(reset_n),
+    .ready_out(sink_ready),
+    .valid_out(in_valid),
+    .data_out({red,green,blue,sop,eop}),
+    .ready_in(out_ready),
+    .valid_in(sink_valid),
+    .data_in({sink_data,sink_sop,sink_eop})
   );
 
-  STREAM_REG #(
-      .DATA_WIDTH(26)
-  ) out_reg (
-      .clk(clk),
-      .rst_n(reset_n),
-      .ready_out(out_ready),
-      .valid_out(source_valid),
-      .data_out({source_data, source_sop, source_eop}),
-      .ready_in(source_ready),
-      .valid_in(in_valid),
-      .data_in({red_out, green_out, blue_out, sop, eop})
+  logic [23:0] source_data_intermediate_step1;
+  logic source_sop_intermediate_step1, source_eop_intermediate_step1;
+
+  logic [23:0] source_data_intermediate_step2;
+  logic source_sop_intermediate_step2, source_eop_intermediate_step2;
+
+  STREAM_REG #(.DATA_WIDTH(26)) out_reg (
+    .clk(clk),
+    .rst_n(reset_n),
+    .ready_out(out_ready),
+    .valid_out(source_valid),
+    .data_out({source_data_intermediate_step1, source_sop_intermediate_step1, source_eop_intermediate_step1}),
+    .ready_in(source_ready),
+    .valid_in(in_valid),
+    .data_in({red_out, green_out, blue_out, sop, eop})
   );
 
-  logic [23:0] img_buffer_array[639:0];
-  logic [31:0] head;
-
-  RING_BUFFER #(
-      .CAPACITY  (640),
-      .DATA_WIDTH(24)
-  ) ring_buf (
-      .clk(clk),
-      .rst_n(reset_n),
-      .data_in(source_data),
-      .data_new_in(in_valid),
-      .head_out(head),
-      .buffer_array_out(img_buffer_array)
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_1 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_intermediate_step1, source_sop_intermediate_step1, source_eop_intermediate_step1}),
+    .data_out({source_data_fifo1, source_sop_fifo1, source_eop_fifo1})
   );
+
+  assign source_valid_fifo1 = source_valid;
+  assign sink_ready_fifo1 = source_valid;
+  //input source_ready_fifo1 is unassigned
+  //input sink_valid_fifo1 is unassigned too
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_2 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({sink_data_fifo1, sink_sop_fifo1, sink_eop_fifo1}),
+    .data_out({source_data_fifo2, source_sop_fifo2, source_eop_fifo2})
+  );
+
+  assign source_valid_fifo2 = source_valid;
+  assign sink_ready_fifo2 = source_valid;
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_3 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({sink_data_fifo2, sink_sop_fifo2, sink_eop_fifo2}),
+    .data_out({source_data_fifo3, source_sop_fifo3, source_eop_fifo3})
+  );
+
+  assign source_valid_fifo3 = source_valid;
+  assign sink_ready_fifo3 = source_valid;
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_4 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({sink_data_fifo3, sink_sop_fifo3, sink_eop_fifo3}),
+    .data_out({source_data_fifo4, source_sop_fifo4, source_eop_fifo4})
+  );
+
+  assign source_valid_fifo4 = source_valid;
+  assign sink_ready_fifo4 = source_valid;
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_5 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({sink_data_fifo4, sink_sop_fifo4, sink_eop_fifo4}),
+    .data_out({source_data, source_sop, source_eop})
+  );
+
+  // assign source_valid_fifo5 = source_valid;
+  // assign sink_ready_fifo5 = source_valid;
+
+  // SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(128)) shift_reg_6 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in({sink_data_fifo5, sink_sop_fifo5, sink_eop_fifo5}),
+  //   .data_out({source_data_fifo6, source_sop_fifo6, source_eop_fifo6})
+  // );
+
+  // assign source_valid_fifo6 = source_valid;
+  // assign sink_ready_fifo6 = source_valid;
+
+  // SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(128)) shift_reg_7 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in({sink_data_fifo6, sink_sop_fifo6, sink_eop_fifo6}),
+  //   .data_out({source_data, source_sop, source_eop})
+  // );
+
+
 
 
   /////////////////////////////////
@@ -277,7 +435,7 @@ endgenerate
   logic [ 7:0] reg_status;
   logic [23:0] bb_col;
 
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (~reset_n) begin
       reg_status <= 8'b0;
       bb_col <= BB_COL_DEFAULT;
@@ -298,7 +456,7 @@ endgenerate
   logic read_d;  //Store the read signal for correct updating of the message buffer
 
   // Copy the requested word to the output port when there is a read.
-  always @(posedge clk) begin
+  always_ff @(posedge clk) begin
     if (~reset_n) begin
       s_readdata <= {32'b0};
       read_d <= 1'b0;

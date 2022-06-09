@@ -14,7 +14,7 @@ extern module RING_BUFFER #(
     output logic [DATA_WIDTH-1:0] data_out
 );
 
-extern module SHIFT_REG #(
+extern module SHIFT_REGGAE #(
     parameter NO_STAGES  = 9,
     parameter DATA_WIDTH = 26
 ) (
@@ -25,6 +25,22 @@ extern module SHIFT_REG #(
 
     //data signals 
     input  logic [DATA_WIDTH-1:0] data_in,
+    output logic [DATA_WIDTH-1:0] data_out
+);
+
+extern module SHIFT_EXPOSED #(
+    parameter NO_STAGES  = 5,
+    parameter DATA_WIDTH = 26
+
+) (
+    //control signals
+    input logic clk,
+    input logic rst_n,
+    input logic valid_in,
+
+    //data signals 
+    input  logic [DATA_WIDTH-1:0] data_in,
+    output logic [DATA_WIDTH-1:0] internal_out[NO_STAGES-1:0],
     output logic [DATA_WIDTH-1:0] data_out
 );
 
@@ -62,6 +78,66 @@ module EEE_IMGPROC #(
     input logic source_ready,
     output logic source_sop,
     output logic source_eop,
+
+
+    // streaming sink fifo1
+    input logic [31:0] sink_data_fifo1,
+    input logic sink_valid_fifo1,
+    output logic sink_ready_fifo1,
+    input logic sink_sop_fifo1,
+    input logic sink_eop_fifo1,
+
+    // streaming source fifo1
+    output logic [31:0] source_data_fifo1,
+    output logic source_valid_fifo1,
+    input logic source_ready_fifo1,
+    output logic source_sop_fifo1,
+    output logic source_eop_fifo1,
+
+
+    // streaming sink fifo2
+    input logic [31:0] sink_data_fifo2,
+    input logic sink_valid_fifo2,
+    output logic sink_ready_fifo2,
+    input logic sink_sop_fifo2,
+    input logic sink_eop_fifo2,
+
+    // streaming source fifo2
+    output logic [31:0] source_data_fifo2,
+    output logic source_valid_fifo2,
+    input logic source_ready_fifo2,
+    output logic source_sop_fifo2,
+    output logic source_eop_fifo2,
+
+
+    // streaming sink fifo3
+    input logic [31:0] sink_data_fifo3,
+    input logic sink_valid_fifo3,
+    output logic sink_ready_fifo3,
+    input logic sink_sop_fifo3,
+    input logic sink_eop_fifo3,
+
+    // streaming source fifo3
+    output logic [31:0] source_data_fifo3,
+    output logic source_valid_fifo3,
+    input logic source_ready_fifo3,
+    output logic source_sop_fifo3,
+    output logic source_eop_fifo3,
+
+
+    // streaming sink fifo4
+    input logic [31:0] sink_data_fifo4,
+    input logic sink_valid_fifo4,
+    output logic sink_ready_fifo4,
+    input logic sink_sop_fifo4,
+    input logic sink_eop_fifo4,
+
+    // streaming source fifo4
+    output logic [31:0] source_data_fifo4,
+    output logic source_valid_fifo4,
+    input logic source_ready_fifo4,
+    output logic source_sop_fifo4,
+    output logic source_eop_fifo4,
 
     // conduit export
     input logic mode
@@ -256,37 +332,222 @@ endgenerate
     .data_in({sink_data,sink_sop,sink_eop})
   );
 
-  logic [23:0] source_data_intermediate;
-  logic source_sop_intermediate, source_eop_intermediate;
+  logic [23:0] source_data_intermediate_step1;
+  logic source_sop_intermediate_step1, source_eop_intermediate_step1;
+  logic [23:0] source_data_exposed_step1;
+  logic source_sop_exposed_step1, source_eop_exposed_step1;
+  logic [25:0] row_1_data [4:0];
+
+
+  logic [23:0] source_data_intermediate_step2;
+  logic source_sop_intermediate_step2, source_eop_intermediate_step2;
+  logic [23:0] source_data_exposed_step2;
+  logic source_sop_exposed_step2, source_eop_exposed_step2;
+  logic [25:0] row_2_data [4:0];
+
+  logic [23:0] source_data_intermediate_step3;
+  logic source_sop_intermediate_step3, source_eop_intermediate_step3;
+  logic [23:0] source_data_exposed_step3;
+  logic source_sop_exposed_step3, source_eop_exposed_step3;
+  logic [25:0] row_3_data [4:0];
+
+  logic [23:0] source_data_intermediate_step4;
+  logic source_sop_intermediate_step4, source_eop_intermediate_step4;
+  logic [23:0] source_data_exposed_step4;
+  logic source_sop_exposed_step4, source_eop_exposed_step4;
+  logic [25:0] row_4_data [4:0];
+
+  logic [25:0] row_5_data [4:0];
+  logic [23:0] source_data_intermediate_step5;
+  logic source_sop_intermediate_step5, source_eop_intermediate_step5;
 
   STREAM_REG #(.DATA_WIDTH(26)) out_reg (
     .clk(clk),
     .rst_n(reset_n),
     .ready_out(out_ready),
     .valid_out(source_valid),
-    .data_out({source_data_intermediate, source_sop_intermediate, source_eop_intermediate}),
+    .data_out({source_data_intermediate_step1, source_sop_intermediate_step1, source_eop_intermediate_step1}),
     .ready_in(source_ready),
     .valid_in(in_valid),
     .data_in({red_out, green_out, blue_out, sop, eop})
   );
 
-  SHIFT_REG #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_1 (
+  // STAGE 1
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(5)) shift_exposed_1 (
     .clk(clk),
     .rst_n(reset_n),
-    .valid_in(source_ready),
-    .data_in({source_data_intermediate, source_sop_intermediate, source_eop_intermediate}),
-    .data_out({source_data, source_sop, source_eop})
+    .valid_in(source_valid),
+    .data_in({source_data_intermediate_step1, source_sop_intermediate_step1, source_eop_intermediate_step1}),
+    .internal_out(row_1_data),
+    .data_out({source_data_exposed_step1,source_sop_exposed_step1,source_eop_exposed_step1})
+  );
+  
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(123)) shift_reg_1 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_exposed_step1, source_sop_exposed_step1, source_eop_exposed_step1}),
+    .data_out({source_data_fifo1, source_sop_fifo1, source_eop_fifo1})
+  );
+
+  assign source_valid_fifo1 = source_valid;
+  assign sink_ready_fifo1 = source_valid;
+  //input source_ready_fifo1 is unassigned
+  //input sink_valid_fifo1 is unassigned too
+
+  // STAGE 2
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(5)) shift_exposed_2 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({sink_data_fifo1, sink_sop_fifo1, sink_eop_fifo1}),
+    .internal_out(row_2_data),
+    .data_out({source_data_exposed_step2, source_sop_exposed_step2, source_eop_exposed_step2})
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(123)) shift_reg_2 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_exposed_step2, source_sop_exposed_step2, source_eop_exposed_step2}),
+    .data_out({source_data_fifo2, source_sop_fifo2, source_eop_fifo2})
+  );
+
+  assign source_valid_fifo2 = source_valid;
+  assign sink_ready_fifo2 = source_valid;
+
+  // STAGE 3
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(5)) shift_exposed_3 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_fifo2, source_sop_fifo2, source_eop_fifo2}),
+    .internal_out(row_3_data),
+    .data_out({source_data_exposed_step3, source_sop_exposed_step3, source_eop_exposed_step3})
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(123)) shift_reg_3 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_exposed_step3, source_sop_exposed_step3, source_eop_exposed_step3}),
+    .data_out({source_data_fifo3, source_sop_fifo3, source_eop_fifo3})
+  );
+
+  assign source_valid_fifo3 = source_valid;
+  assign sink_ready_fifo3 = source_valid;
+  
+  // STAGE 4
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(5)) shift_exposed_4 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_fifo3, source_sop_fifo3, source_eop_fifo3}),
+    .internal_out(row_4_data),
+    .data_out({source_data_exposed_step4, source_sop_exposed_step4, source_eop_exposed_step4})
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(123)) shift_reg_4 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_exposed_step4, source_sop_exposed_step4, source_eop_exposed_step4}),
+    .data_out({source_data_fifo4, source_sop_fifo4, source_eop_fifo4})
+  );
+
+  assign source_valid_fifo4 = source_valid;
+  assign sink_ready_fifo4 = source_valid;
+
+  // STAGE 5
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(5)) shift_exposed_5 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_fifo4, source_sop_fifo4, source_eop_fifo4}),
+    .internal_out(row_5_data),
+    .data_out({source_data_intermediate_step5, source_sop_intermediate_step5, source_eop_intermediate_step5})
   );
 
 
-  always_ff @(posedge clk) begin
-    source_data <= source_data_intermediate;
-    source_sop <= source_sop_intermediate;
-    source_eop <= source_eop_intermediate;
-  end
+
+  //CODE FOR Gaussian Blur Kernel
 
   
+  logic [7:0] centre_pixel_r = 8'b0;
+  logic [7:0] centre_pixel_g = 8'b0;
+  logic [7:0] centre_pixel_b = 8'b0;
+  integer i;
 
+  logic found_eop_or_sop;
+  always_comb begin
+
+    found_eop_or_sop = 0;
+
+    for( i = 0; i < 5; i = i + 1) begin
+      if(row_5_data[i][0] | row_5_data[i][1] | row_4_data[i][0] | row_4_data[i][1] | row_3_data[i][0] | row_3_data[i][1] | row_2_data[i][0] | row_2_data[i][1] | row_1_data[i][0] | row_1_data[i][1]) begin 
+        found_eop_or_sop = 1;
+      end
+    end
+
+  end
+
+  // assign centre_pixel_b = ((1*(row_1_data[4][9:2]+row_1_data[0][9:2]+row_5_data[4][9:2]+row_5_data[0][9:2])) 
+  // + (4*(row_5_data[1][9:2] + row_5_data[3][9:2] + row_4_data[0][9:2] + row_4_data[4][9:2] + row_2_data[0][9:2] + row_2_data[4][9:2] + row_1_data[1][9:2] + row_1_data[3][9:2] ))
+  // + (7*(row_1_data[2][9:2] + row_3_data[0][9:2] + row_3_data[4][9:2] + row_5_data[2][9:2]))
+  // + (16*(row_2_data[1][9:2] + row_2_data[3][9:2] + row_4_data[1][9:2] + row_4_data[3][9:2]))
+  // + (26*(row_2_data[2][9:2] + row_3_data[1][9:2] + row_3_data[3][9:2] + row_4_data[2][9:2]))
+  // + (41*(row_3_data[2][9:2]))
+  // )/273;
+
+  // assign centre_pixel_g = ((1*(row_1_data[4][17:10]+row_1_data[0][17:10]+row_5_data[4][17:10]+row_5_data[0][17:10])) 
+  // + (4*(row_5_data[1][17:10] + row_5_data[3][17:10] + row_4_data[0][17:10] + row_4_data[4][17:10] + row_2_data[0][17:10] + row_2_data[4][17:10] + row_1_data[1][17:10] + row_1_data[3][17:10] ))
+  // + (7*(row_1_data[2][17:10] + row_3_data[0][17:10] + row_3_data[4][17:10] + row_5_data[2][17:10]))
+  // + (16*(row_2_data[1][17:10] + row_2_data[3][17:10] + row_4_data[1][17:10] + row_4_data[3][17:10]))
+  // + (26*(row_2_data[2][17:10] + row_3_data[1][17:10] + row_3_data[3][17:10] + row_4_data[2][17:10]))
+  // + (41*(row_3_data[2][17:10]))
+  // )/273;
+
+  // assign centre_pixel_r = ((1*(row_1_data[4][25:18]+row_1_data[0][25:18]+row_5_data[4][25:18]+row_5_data[0][25:18])) 
+  // + (4*(row_5_data[1][25:18] + row_5_data[3][25:18] + row_4_data[0][25:18] + row_4_data[4][25:18] + row_2_data[0][25:18] + row_2_data[4][25:18] + row_1_data[1][25:18] + row_1_data[3][25:18] ))
+  // + (7*(row_1_data[2][25:18] + row_3_data[0][25:18] + row_3_data[4][25:18] + row_5_data[2][25:18]))
+  // + (16*(row_2_data[1][25:18] + row_2_data[3][25:18] + row_4_data[1][25:18] + row_4_data[3][25:18]))
+  // + (26*(row_2_data[2][25:18] + row_3_data[1][25:18] + row_3_data[3][25:18] + row_4_data[2][25:18]))
+  // + (41*(row_3_data[2][25:18]))
+  // )/273;
+
+
+  assign source_data = row_3_data[2][25:2];
+  //assign source_data = found_eop_or_sop ? 24'b0 : {centre_pixel_r, centre_pixel_g, centre_pixel_b};
+  assign source_sop = row_3_data[2][1];
+  assign source_eop = row_3_data[2][0];
+  
+
+
+  
+  
+  
+
+  // assign source_valid_fifo5 = source_valid;
+  // assign sink_ready_fifo5 = source_valid;
+
+  // SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(128)) shift_reg_6 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in({sink_data_fifo5, sink_sop_fifo5, sink_eop_fifo5}),
+  //   .data_out({source_data_fifo6, source_sop_fifo6, source_eop_fifo6})
+  // );
+
+  // assign source_valid_fifo6 = source_valid;
+  // assign sink_ready_fifo6 = source_valid;
+
+  // SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(128)) shift_reg_7 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in({sink_data_fifo6, sink_sop_fifo6, sink_eop_fifo6}),
+  //   .data_out({source_data, source_sop, source_eop})
+  // );
 
 
 
