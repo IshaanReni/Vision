@@ -1,6 +1,6 @@
 #include "color_operations.h"
 
-u8 *rgb_to_hue(u8 *data, i32 x, i32 y, i32 n, i32 bin_count)
+u8 *rgb_to_hue(u8 *data, i32 x, i32 y, i32 n)
 {
 	if (n != 3)
 	{
@@ -74,7 +74,7 @@ u8 *rgb_to_hue(u8 *data, i32 x, i32 y, i32 n, i32 bin_count)
 			}
 		}
 
-		hue[h] = H * bin_count;
+		hue[h] = H * 255;
 		// printf("%f %f %f, %f %i\n", R, G, B, H, hue[h]);
 
 		h++;
