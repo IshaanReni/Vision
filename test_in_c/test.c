@@ -13,7 +13,7 @@
 int main()
 {
 	i32 x, y, n;
-	RGB *rgb_data = (RGB *)stbi_load("images/alien3.png", &x, &y, &n, 0);
+	RGB *rgb_data = (RGB *)stbi_load("images/test1.png", &x, &y, &n, 0);
 	i32 bin_count = 15;
 	u8 *hue_pixels = rgb_to_hue((unsigned char *)rgb_data, x, y, n);
 
