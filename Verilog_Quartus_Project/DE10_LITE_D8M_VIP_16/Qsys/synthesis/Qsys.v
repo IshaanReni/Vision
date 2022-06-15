@@ -196,13 +196,13 @@ module Qsys (
 	wire         irq_mapper_receiver8_irq;                                          // uart_0:irq -> irq_mapper:receiver8_irq
 	wire  [31:0] nios2_gen2_irq_irq;                                                // irq_mapper:sender_irq -> nios2_gen2:irq
 	wire         irq_mapper_receiver0_irq;                                          // irq_synchronizer:sender_irq -> irq_mapper:receiver0_irq
-	wire   [0:0] irq_synchronizer_receiver_irq;                                     // fifo_1:wrclk_control_slave_irq -> irq_synchronizer:receiver_irq
+	wire   [0:0] irq_synchronizer_receiver_irq;                                     // fifo_4:wrclk_control_slave_irq -> irq_synchronizer:receiver_irq
 	wire         irq_mapper_receiver1_irq;                                          // irq_synchronizer_001:sender_irq -> irq_mapper:receiver1_irq
-	wire   [0:0] irq_synchronizer_001_receiver_irq;                                 // fifo_2:wrclk_control_slave_irq -> irq_synchronizer_001:receiver_irq
+	wire   [0:0] irq_synchronizer_001_receiver_irq;                                 // fifo_3:wrclk_control_slave_irq -> irq_synchronizer_001:receiver_irq
 	wire         irq_mapper_receiver2_irq;                                          // irq_synchronizer_002:sender_irq -> irq_mapper:receiver2_irq
-	wire   [0:0] irq_synchronizer_002_receiver_irq;                                 // fifo_3:wrclk_control_slave_irq -> irq_synchronizer_002:receiver_irq
+	wire   [0:0] irq_synchronizer_002_receiver_irq;                                 // fifo_2:wrclk_control_slave_irq -> irq_synchronizer_002:receiver_irq
 	wire         irq_mapper_receiver3_irq;                                          // irq_synchronizer_003:sender_irq -> irq_mapper:receiver3_irq
-	wire   [0:0] irq_synchronizer_003_receiver_irq;                                 // fifo_4:wrclk_control_slave_irq -> irq_synchronizer_003:receiver_irq
+	wire   [0:0] irq_synchronizer_003_receiver_irq;                                 // fifo_1:wrclk_control_slave_irq -> irq_synchronizer_003:receiver_irq
 	wire         eee_imgproc_0_avalon_streaming_source_1_valid;                     // EEE_IMGPROC_0:source_valid_fifo1 -> avalon_st_adapter:in_0_valid
 	wire  [31:0] eee_imgproc_0_avalon_streaming_source_1_data;                      // EEE_IMGPROC_0:source_data_fifo1 -> avalon_st_adapter:in_0_data
 	wire         eee_imgproc_0_avalon_streaming_source_1_ready;                     // avalon_st_adapter:in_0_ready -> EEE_IMGPROC_0:source_ready_fifo1
@@ -214,7 +214,6 @@ module Qsys (
 	wire         avalon_st_adapter_out_0_channel;                                   // avalon_st_adapter:out_0_channel -> fifo_1:avalonst_sink_channel
 	wire         avalon_st_adapter_out_0_startofpacket;                             // avalon_st_adapter:out_0_startofpacket -> fifo_1:avalonst_sink_startofpacket
 	wire         avalon_st_adapter_out_0_endofpacket;                               // avalon_st_adapter:out_0_endofpacket -> fifo_1:avalonst_sink_endofpacket
-	wire   [1:0] avalon_st_adapter_out_0_empty;                                     // avalon_st_adapter:out_0_empty -> fifo_1:avalonst_sink_empty
 	wire         eee_imgproc_0_avalon_streaming_source_2_valid;                     // EEE_IMGPROC_0:source_valid_fifo2 -> avalon_st_adapter_001:in_0_valid
 	wire  [31:0] eee_imgproc_0_avalon_streaming_source_2_data;                      // EEE_IMGPROC_0:source_data_fifo2 -> avalon_st_adapter_001:in_0_data
 	wire         eee_imgproc_0_avalon_streaming_source_2_ready;                     // avalon_st_adapter_001:in_0_ready -> EEE_IMGPROC_0:source_ready_fifo2
@@ -226,7 +225,6 @@ module Qsys (
 	wire         avalon_st_adapter_001_out_0_channel;                               // avalon_st_adapter_001:out_0_channel -> fifo_2:avalonst_sink_channel
 	wire         avalon_st_adapter_001_out_0_startofpacket;                         // avalon_st_adapter_001:out_0_startofpacket -> fifo_2:avalonst_sink_startofpacket
 	wire         avalon_st_adapter_001_out_0_endofpacket;                           // avalon_st_adapter_001:out_0_endofpacket -> fifo_2:avalonst_sink_endofpacket
-	wire   [1:0] avalon_st_adapter_001_out_0_empty;                                 // avalon_st_adapter_001:out_0_empty -> fifo_2:avalonst_sink_empty
 	wire         eee_imgproc_0_avalon_streaming_source_3_valid;                     // EEE_IMGPROC_0:source_valid_fifo3 -> avalon_st_adapter_002:in_0_valid
 	wire  [31:0] eee_imgproc_0_avalon_streaming_source_3_data;                      // EEE_IMGPROC_0:source_data_fifo3 -> avalon_st_adapter_002:in_0_data
 	wire         eee_imgproc_0_avalon_streaming_source_3_ready;                     // avalon_st_adapter_002:in_0_ready -> EEE_IMGPROC_0:source_ready_fifo3
@@ -238,7 +236,6 @@ module Qsys (
 	wire         avalon_st_adapter_002_out_0_channel;                               // avalon_st_adapter_002:out_0_channel -> fifo_3:avalonst_sink_channel
 	wire         avalon_st_adapter_002_out_0_startofpacket;                         // avalon_st_adapter_002:out_0_startofpacket -> fifo_3:avalonst_sink_startofpacket
 	wire         avalon_st_adapter_002_out_0_endofpacket;                           // avalon_st_adapter_002:out_0_endofpacket -> fifo_3:avalonst_sink_endofpacket
-	wire   [1:0] avalon_st_adapter_002_out_0_empty;                                 // avalon_st_adapter_002:out_0_empty -> fifo_3:avalonst_sink_empty
 	wire         eee_imgproc_0_avalon_streaming_source_4_valid;                     // EEE_IMGPROC_0:source_valid_fifo4 -> avalon_st_adapter_003:in_0_valid
 	wire  [31:0] eee_imgproc_0_avalon_streaming_source_4_data;                      // EEE_IMGPROC_0:source_data_fifo4 -> avalon_st_adapter_003:in_0_data
 	wire         eee_imgproc_0_avalon_streaming_source_4_ready;                     // avalon_st_adapter_003:in_0_ready -> EEE_IMGPROC_0:source_ready_fifo4
@@ -250,14 +247,12 @@ module Qsys (
 	wire         avalon_st_adapter_003_out_0_channel;                               // avalon_st_adapter_003:out_0_channel -> fifo_4:avalonst_sink_channel
 	wire         avalon_st_adapter_003_out_0_startofpacket;                         // avalon_st_adapter_003:out_0_startofpacket -> fifo_4:avalonst_sink_startofpacket
 	wire         avalon_st_adapter_003_out_0_endofpacket;                           // avalon_st_adapter_003:out_0_endofpacket -> fifo_4:avalonst_sink_endofpacket
-	wire   [1:0] avalon_st_adapter_003_out_0_empty;                                 // avalon_st_adapter_003:out_0_empty -> fifo_4:avalonst_sink_empty
 	wire         fifo_1_out_valid;                                                  // fifo_1:avalonst_source_valid -> avalon_st_adapter_004:in_0_valid
 	wire  [31:0] fifo_1_out_data;                                                   // fifo_1:avalonst_source_data -> avalon_st_adapter_004:in_0_data
 	wire         fifo_1_out_ready;                                                  // avalon_st_adapter_004:in_0_ready -> fifo_1:avalonst_source_ready
 	wire         fifo_1_out_channel;                                                // fifo_1:avalonst_source_channel -> avalon_st_adapter_004:in_0_channel
 	wire         fifo_1_out_startofpacket;                                          // fifo_1:avalonst_source_startofpacket -> avalon_st_adapter_004:in_0_startofpacket
 	wire         fifo_1_out_endofpacket;                                            // fifo_1:avalonst_source_endofpacket -> avalon_st_adapter_004:in_0_endofpacket
-	wire   [1:0] fifo_1_out_empty;                                                  // fifo_1:avalonst_source_empty -> avalon_st_adapter_004:in_0_empty
 	wire         avalon_st_adapter_004_out_0_valid;                                 // avalon_st_adapter_004:out_0_valid -> EEE_IMGPROC_0:sink_valid_fifo1
 	wire  [31:0] avalon_st_adapter_004_out_0_data;                                  // avalon_st_adapter_004:out_0_data -> EEE_IMGPROC_0:sink_data_fifo1
 	wire         avalon_st_adapter_004_out_0_ready;                                 // EEE_IMGPROC_0:sink_ready_fifo1 -> avalon_st_adapter_004:out_0_ready
@@ -269,7 +264,6 @@ module Qsys (
 	wire         fifo_2_out_channel;                                                // fifo_2:avalonst_source_channel -> avalon_st_adapter_005:in_0_channel
 	wire         fifo_2_out_startofpacket;                                          // fifo_2:avalonst_source_startofpacket -> avalon_st_adapter_005:in_0_startofpacket
 	wire         fifo_2_out_endofpacket;                                            // fifo_2:avalonst_source_endofpacket -> avalon_st_adapter_005:in_0_endofpacket
-	wire   [1:0] fifo_2_out_empty;                                                  // fifo_2:avalonst_source_empty -> avalon_st_adapter_005:in_0_empty
 	wire         avalon_st_adapter_005_out_0_valid;                                 // avalon_st_adapter_005:out_0_valid -> EEE_IMGPROC_0:sink_valid_fifo2
 	wire  [31:0] avalon_st_adapter_005_out_0_data;                                  // avalon_st_adapter_005:out_0_data -> EEE_IMGPROC_0:sink_data_fifo2
 	wire         avalon_st_adapter_005_out_0_ready;                                 // EEE_IMGPROC_0:sink_ready_fifo2 -> avalon_st_adapter_005:out_0_ready
@@ -281,7 +275,6 @@ module Qsys (
 	wire         fifo_3_out_channel;                                                // fifo_3:avalonst_source_channel -> avalon_st_adapter_006:in_0_channel
 	wire         fifo_3_out_startofpacket;                                          // fifo_3:avalonst_source_startofpacket -> avalon_st_adapter_006:in_0_startofpacket
 	wire         fifo_3_out_endofpacket;                                            // fifo_3:avalonst_source_endofpacket -> avalon_st_adapter_006:in_0_endofpacket
-	wire   [1:0] fifo_3_out_empty;                                                  // fifo_3:avalonst_source_empty -> avalon_st_adapter_006:in_0_empty
 	wire         avalon_st_adapter_006_out_0_valid;                                 // avalon_st_adapter_006:out_0_valid -> EEE_IMGPROC_0:sink_valid_fifo3
 	wire  [31:0] avalon_st_adapter_006_out_0_data;                                  // avalon_st_adapter_006:out_0_data -> EEE_IMGPROC_0:sink_data_fifo3
 	wire         avalon_st_adapter_006_out_0_ready;                                 // EEE_IMGPROC_0:sink_ready_fifo3 -> avalon_st_adapter_006:out_0_ready
@@ -293,7 +286,6 @@ module Qsys (
 	wire         fifo_4_out_channel;                                                // fifo_4:avalonst_source_channel -> avalon_st_adapter_007:in_0_channel
 	wire         fifo_4_out_startofpacket;                                          // fifo_4:avalonst_source_startofpacket -> avalon_st_adapter_007:in_0_startofpacket
 	wire         fifo_4_out_endofpacket;                                            // fifo_4:avalonst_source_endofpacket -> avalon_st_adapter_007:in_0_endofpacket
-	wire   [1:0] fifo_4_out_empty;                                                  // fifo_4:avalonst_source_empty -> avalon_st_adapter_007:in_0_empty
 	wire         avalon_st_adapter_007_out_0_valid;                                 // avalon_st_adapter_007:out_0_valid -> EEE_IMGPROC_0:sink_valid_fifo4
 	wire  [31:0] avalon_st_adapter_007_out_0_data;                                  // avalon_st_adapter_007:out_0_data -> EEE_IMGPROC_0:sink_data_fifo4
 	wire         avalon_st_adapter_007_out_0_ready;                                 // EEE_IMGPROC_0:sink_ready_fifo4 -> avalon_st_adapter_007:out_0_ready
@@ -532,21 +524,19 @@ module Qsys (
 		.avalonst_sink_channel         (avalon_st_adapter_out_0_channel),       //         .channel
 		.avalonst_sink_startofpacket   (avalon_st_adapter_out_0_startofpacket), //         .startofpacket
 		.avalonst_sink_endofpacket     (avalon_st_adapter_out_0_endofpacket),   //         .endofpacket
-		.avalonst_sink_empty           (avalon_st_adapter_out_0_empty),         //         .empty
 		.avalonst_sink_ready           (avalon_st_adapter_out_0_ready),         //         .ready
 		.avalonst_source_valid         (fifo_1_out_valid),                      //      out.valid
 		.avalonst_source_data          (fifo_1_out_data),                       //         .data
 		.avalonst_source_channel       (fifo_1_out_channel),                    //         .channel
 		.avalonst_source_startofpacket (fifo_1_out_startofpacket),              //         .startofpacket
 		.avalonst_source_endofpacket   (fifo_1_out_endofpacket),                //         .endofpacket
-		.avalonst_source_empty         (fifo_1_out_empty),                      //         .empty
 		.avalonst_source_ready         (fifo_1_out_ready),                      //         .ready
 		.wrclk_control_slave_address   (),                                      //   in_csr.address
 		.wrclk_control_slave_read      (),                                      //         .read
 		.wrclk_control_slave_writedata (),                                      //         .writedata
 		.wrclk_control_slave_write     (),                                      //         .write
 		.wrclk_control_slave_readdata  (),                                      //         .readdata
-		.wrclk_control_slave_irq       (irq_synchronizer_receiver_irq)          //   in_irq.irq
+		.wrclk_control_slave_irq       (irq_synchronizer_003_receiver_irq)      //   in_irq.irq
 	);
 
 	Qsys_fifo_1 fifo_2 (
@@ -557,21 +547,19 @@ module Qsys (
 		.avalonst_sink_channel         (avalon_st_adapter_001_out_0_channel),       //         .channel
 		.avalonst_sink_startofpacket   (avalon_st_adapter_001_out_0_startofpacket), //         .startofpacket
 		.avalonst_sink_endofpacket     (avalon_st_adapter_001_out_0_endofpacket),   //         .endofpacket
-		.avalonst_sink_empty           (avalon_st_adapter_001_out_0_empty),         //         .empty
 		.avalonst_sink_ready           (avalon_st_adapter_001_out_0_ready),         //         .ready
 		.avalonst_source_valid         (fifo_2_out_valid),                          //      out.valid
 		.avalonst_source_data          (fifo_2_out_data),                           //         .data
 		.avalonst_source_channel       (fifo_2_out_channel),                        //         .channel
 		.avalonst_source_startofpacket (fifo_2_out_startofpacket),                  //         .startofpacket
 		.avalonst_source_endofpacket   (fifo_2_out_endofpacket),                    //         .endofpacket
-		.avalonst_source_empty         (fifo_2_out_empty),                          //         .empty
 		.avalonst_source_ready         (fifo_2_out_ready),                          //         .ready
 		.wrclk_control_slave_address   (),                                          //   in_csr.address
 		.wrclk_control_slave_read      (),                                          //         .read
 		.wrclk_control_slave_writedata (),                                          //         .writedata
 		.wrclk_control_slave_write     (),                                          //         .write
 		.wrclk_control_slave_readdata  (),                                          //         .readdata
-		.wrclk_control_slave_irq       (irq_synchronizer_001_receiver_irq)          //   in_irq.irq
+		.wrclk_control_slave_irq       (irq_synchronizer_002_receiver_irq)          //   in_irq.irq
 	);
 
 	Qsys_fifo_1 fifo_3 (
@@ -582,21 +570,19 @@ module Qsys (
 		.avalonst_sink_channel         (avalon_st_adapter_002_out_0_channel),       //         .channel
 		.avalonst_sink_startofpacket   (avalon_st_adapter_002_out_0_startofpacket), //         .startofpacket
 		.avalonst_sink_endofpacket     (avalon_st_adapter_002_out_0_endofpacket),   //         .endofpacket
-		.avalonst_sink_empty           (avalon_st_adapter_002_out_0_empty),         //         .empty
 		.avalonst_sink_ready           (avalon_st_adapter_002_out_0_ready),         //         .ready
 		.avalonst_source_valid         (fifo_3_out_valid),                          //      out.valid
 		.avalonst_source_data          (fifo_3_out_data),                           //         .data
 		.avalonst_source_channel       (fifo_3_out_channel),                        //         .channel
 		.avalonst_source_startofpacket (fifo_3_out_startofpacket),                  //         .startofpacket
 		.avalonst_source_endofpacket   (fifo_3_out_endofpacket),                    //         .endofpacket
-		.avalonst_source_empty         (fifo_3_out_empty),                          //         .empty
 		.avalonst_source_ready         (fifo_3_out_ready),                          //         .ready
 		.wrclk_control_slave_address   (),                                          //   in_csr.address
 		.wrclk_control_slave_read      (),                                          //         .read
 		.wrclk_control_slave_writedata (),                                          //         .writedata
 		.wrclk_control_slave_write     (),                                          //         .write
 		.wrclk_control_slave_readdata  (),                                          //         .readdata
-		.wrclk_control_slave_irq       (irq_synchronizer_002_receiver_irq)          //   in_irq.irq
+		.wrclk_control_slave_irq       (irq_synchronizer_001_receiver_irq)          //   in_irq.irq
 	);
 
 	Qsys_fifo_1 fifo_4 (
@@ -607,21 +593,19 @@ module Qsys (
 		.avalonst_sink_channel         (avalon_st_adapter_003_out_0_channel),       //         .channel
 		.avalonst_sink_startofpacket   (avalon_st_adapter_003_out_0_startofpacket), //         .startofpacket
 		.avalonst_sink_endofpacket     (avalon_st_adapter_003_out_0_endofpacket),   //         .endofpacket
-		.avalonst_sink_empty           (avalon_st_adapter_003_out_0_empty),         //         .empty
 		.avalonst_sink_ready           (avalon_st_adapter_003_out_0_ready),         //         .ready
 		.avalonst_source_valid         (fifo_4_out_valid),                          //      out.valid
 		.avalonst_source_data          (fifo_4_out_data),                           //         .data
 		.avalonst_source_channel       (fifo_4_out_channel),                        //         .channel
 		.avalonst_source_startofpacket (fifo_4_out_startofpacket),                  //         .startofpacket
 		.avalonst_source_endofpacket   (fifo_4_out_endofpacket),                    //         .endofpacket
-		.avalonst_source_empty         (fifo_4_out_empty),                          //         .empty
 		.avalonst_source_ready         (fifo_4_out_ready),                          //         .ready
 		.wrclk_control_slave_address   (),                                          //   in_csr.address
 		.wrclk_control_slave_read      (),                                          //         .read
 		.wrclk_control_slave_writedata (),                                          //         .writedata
 		.wrclk_control_slave_write     (),                                          //         .write
 		.wrclk_control_slave_readdata  (),                                          //         .readdata
-		.wrclk_control_slave_irq       (irq_synchronizer_003_receiver_irq)          //   in_irq.irq
+		.wrclk_control_slave_irq       (irq_synchronizer_receiver_irq)              //   in_irq.irq
 	);
 
 	i2c_opencores i2c_opencores_camera (
@@ -1006,7 +990,7 @@ module Qsys (
 	);
 
 	Qsys_avalon_st_adapter #(
-		.inBitsPerSymbol (8),
+		.inBitsPerSymbol (32),
 		.inUsePackets    (1),
 		.inDataWidth     (32),
 		.inChannelWidth  (0),
@@ -1018,7 +1002,7 @@ module Qsys (
 		.outDataWidth    (32),
 		.outChannelWidth (1),
 		.outErrorWidth   (0),
-		.outUseEmptyPort (1),
+		.outUseEmptyPort (0),
 		.outUseValid     (1),
 		.outUseReady     (1),
 		.outReadyLatency (1)
@@ -1035,12 +1019,11 @@ module Qsys (
 		.out_0_ready         (avalon_st_adapter_out_0_ready),                         //         .ready
 		.out_0_startofpacket (avalon_st_adapter_out_0_startofpacket),                 //         .startofpacket
 		.out_0_endofpacket   (avalon_st_adapter_out_0_endofpacket),                   //         .endofpacket
-		.out_0_empty         (avalon_st_adapter_out_0_empty),                         //         .empty
 		.out_0_channel       (avalon_st_adapter_out_0_channel)                        //         .channel
 	);
 
 	Qsys_avalon_st_adapter #(
-		.inBitsPerSymbol (8),
+		.inBitsPerSymbol (32),
 		.inUsePackets    (1),
 		.inDataWidth     (32),
 		.inChannelWidth  (0),
@@ -1052,7 +1035,7 @@ module Qsys (
 		.outDataWidth    (32),
 		.outChannelWidth (1),
 		.outErrorWidth   (0),
-		.outUseEmptyPort (1),
+		.outUseEmptyPort (0),
 		.outUseValid     (1),
 		.outUseReady     (1),
 		.outReadyLatency (1)
@@ -1069,12 +1052,11 @@ module Qsys (
 		.out_0_ready         (avalon_st_adapter_001_out_0_ready),                     //         .ready
 		.out_0_startofpacket (avalon_st_adapter_001_out_0_startofpacket),             //         .startofpacket
 		.out_0_endofpacket   (avalon_st_adapter_001_out_0_endofpacket),               //         .endofpacket
-		.out_0_empty         (avalon_st_adapter_001_out_0_empty),                     //         .empty
 		.out_0_channel       (avalon_st_adapter_001_out_0_channel)                    //         .channel
 	);
 
 	Qsys_avalon_st_adapter #(
-		.inBitsPerSymbol (8),
+		.inBitsPerSymbol (32),
 		.inUsePackets    (1),
 		.inDataWidth     (32),
 		.inChannelWidth  (0),
@@ -1086,7 +1068,7 @@ module Qsys (
 		.outDataWidth    (32),
 		.outChannelWidth (1),
 		.outErrorWidth   (0),
-		.outUseEmptyPort (1),
+		.outUseEmptyPort (0),
 		.outUseValid     (1),
 		.outUseReady     (1),
 		.outReadyLatency (1)
@@ -1103,12 +1085,11 @@ module Qsys (
 		.out_0_ready         (avalon_st_adapter_002_out_0_ready),                     //         .ready
 		.out_0_startofpacket (avalon_st_adapter_002_out_0_startofpacket),             //         .startofpacket
 		.out_0_endofpacket   (avalon_st_adapter_002_out_0_endofpacket),               //         .endofpacket
-		.out_0_empty         (avalon_st_adapter_002_out_0_empty),                     //         .empty
 		.out_0_channel       (avalon_st_adapter_002_out_0_channel)                    //         .channel
 	);
 
 	Qsys_avalon_st_adapter #(
-		.inBitsPerSymbol (8),
+		.inBitsPerSymbol (32),
 		.inUsePackets    (1),
 		.inDataWidth     (32),
 		.inChannelWidth  (0),
@@ -1120,7 +1101,7 @@ module Qsys (
 		.outDataWidth    (32),
 		.outChannelWidth (1),
 		.outErrorWidth   (0),
-		.outUseEmptyPort (1),
+		.outUseEmptyPort (0),
 		.outUseValid     (1),
 		.outUseReady     (1),
 		.outReadyLatency (1)
@@ -1137,17 +1118,16 @@ module Qsys (
 		.out_0_ready         (avalon_st_adapter_003_out_0_ready),                     //         .ready
 		.out_0_startofpacket (avalon_st_adapter_003_out_0_startofpacket),             //         .startofpacket
 		.out_0_endofpacket   (avalon_st_adapter_003_out_0_endofpacket),               //         .endofpacket
-		.out_0_empty         (avalon_st_adapter_003_out_0_empty),                     //         .empty
 		.out_0_channel       (avalon_st_adapter_003_out_0_channel)                    //         .channel
 	);
 
 	Qsys_avalon_st_adapter_004 #(
-		.inBitsPerSymbol (8),
+		.inBitsPerSymbol (32),
 		.inUsePackets    (1),
 		.inDataWidth     (32),
 		.inChannelWidth  (1),
 		.inErrorWidth    (0),
-		.inUseEmptyPort  (1),
+		.inUseEmptyPort  (0),
 		.inUseValid      (1),
 		.inUseReady      (1),
 		.inReadyLatency  (1),
@@ -1166,7 +1146,6 @@ module Qsys (
 		.in_0_ready          (fifo_1_out_ready),                          //         .ready
 		.in_0_startofpacket  (fifo_1_out_startofpacket),                  //         .startofpacket
 		.in_0_endofpacket    (fifo_1_out_endofpacket),                    //         .endofpacket
-		.in_0_empty          (fifo_1_out_empty),                          //         .empty
 		.in_0_channel        (fifo_1_out_channel),                        //         .channel
 		.out_0_data          (avalon_st_adapter_004_out_0_data),          //    out_0.data
 		.out_0_valid         (avalon_st_adapter_004_out_0_valid),         //         .valid
@@ -1176,12 +1155,12 @@ module Qsys (
 	);
 
 	Qsys_avalon_st_adapter_004 #(
-		.inBitsPerSymbol (8),
+		.inBitsPerSymbol (32),
 		.inUsePackets    (1),
 		.inDataWidth     (32),
 		.inChannelWidth  (1),
 		.inErrorWidth    (0),
-		.inUseEmptyPort  (1),
+		.inUseEmptyPort  (0),
 		.inUseValid      (1),
 		.inUseReady      (1),
 		.inReadyLatency  (1),
@@ -1200,7 +1179,6 @@ module Qsys (
 		.in_0_ready          (fifo_2_out_ready),                          //         .ready
 		.in_0_startofpacket  (fifo_2_out_startofpacket),                  //         .startofpacket
 		.in_0_endofpacket    (fifo_2_out_endofpacket),                    //         .endofpacket
-		.in_0_empty          (fifo_2_out_empty),                          //         .empty
 		.in_0_channel        (fifo_2_out_channel),                        //         .channel
 		.out_0_data          (avalon_st_adapter_005_out_0_data),          //    out_0.data
 		.out_0_valid         (avalon_st_adapter_005_out_0_valid),         //         .valid
@@ -1210,12 +1188,12 @@ module Qsys (
 	);
 
 	Qsys_avalon_st_adapter_004 #(
-		.inBitsPerSymbol (8),
+		.inBitsPerSymbol (32),
 		.inUsePackets    (1),
 		.inDataWidth     (32),
 		.inChannelWidth  (1),
 		.inErrorWidth    (0),
-		.inUseEmptyPort  (1),
+		.inUseEmptyPort  (0),
 		.inUseValid      (1),
 		.inUseReady      (1),
 		.inReadyLatency  (1),
@@ -1234,7 +1212,6 @@ module Qsys (
 		.in_0_ready          (fifo_3_out_ready),                          //         .ready
 		.in_0_startofpacket  (fifo_3_out_startofpacket),                  //         .startofpacket
 		.in_0_endofpacket    (fifo_3_out_endofpacket),                    //         .endofpacket
-		.in_0_empty          (fifo_3_out_empty),                          //         .empty
 		.in_0_channel        (fifo_3_out_channel),                        //         .channel
 		.out_0_data          (avalon_st_adapter_006_out_0_data),          //    out_0.data
 		.out_0_valid         (avalon_st_adapter_006_out_0_valid),         //         .valid
@@ -1244,12 +1221,12 @@ module Qsys (
 	);
 
 	Qsys_avalon_st_adapter_004 #(
-		.inBitsPerSymbol (8),
+		.inBitsPerSymbol (32),
 		.inUsePackets    (1),
 		.inDataWidth     (32),
 		.inChannelWidth  (1),
 		.inErrorWidth    (0),
-		.inUseEmptyPort  (1),
+		.inUseEmptyPort  (0),
 		.inUseValid      (1),
 		.inUseReady      (1),
 		.inReadyLatency  (1),
@@ -1268,7 +1245,6 @@ module Qsys (
 		.in_0_ready          (fifo_4_out_ready),                          //         .ready
 		.in_0_startofpacket  (fifo_4_out_startofpacket),                  //         .startofpacket
 		.in_0_endofpacket    (fifo_4_out_endofpacket),                    //         .endofpacket
-		.in_0_empty          (fifo_4_out_empty),                          //         .empty
 		.in_0_channel        (fifo_4_out_channel),                        //         .channel
 		.out_0_data          (avalon_st_adapter_007_out_0_data),          //    out_0.data
 		.out_0_valid         (avalon_st_adapter_007_out_0_valid),         //         .valid

@@ -13,7 +13,8 @@
 int main()
 {
 
-	for (i32 p = 1; p <= 8; p++) {
+	for (i32 p = 1; p <= 8; p++)
+	{
 		i32 x, y, n;
 		char buf[100];
 		snprintf(buf, 100, "images/test%i.png", p);
@@ -27,65 +28,78 @@ int main()
 			// if (hsv_data[i].hue < 20)
 			// {
 			// 	rgb_data[i] = {255, 0, 0};
-			// } 
-			if (hsv_data[i].hue < 20 || hsv_data[i].hue > 250) //red
-			{
-				rgb_data[i] = {255, 0, 0};
-			} else if (hsv_data[i].hue < 60 && hsv_data[i].hue > 50) //yellow
-			{
-				rgb_data[i] = {252, 252, 3};
-			} else if (hsv_data[i].hue < 230 && hsv_data[i].hue > 220) // pink
-			{
-				rgb_data[i] = {168, 50, 153};
-			} else if (hsv_data[i].hue < 35 && hsv_data[i].hue > 21) // orangey background
-			{
-				rgb_data[i] = {168, 97, 50};
-			}
-			// else 
+			// }
+			// if ((hsv_data[i].hue < 15 || hsv_data[i].hue > 250) && hsv_data[i].val > 57) // red
 			// {
-				// rgb_data[i] = {0, 0, 0};
+			// 	rgb_data[i] = {255, 0, 0};
+			// }
+			if ((hsv_data[i].hue < 45 && hsv_data[i].hue > 38) && (hsv_data[i].val > 160 && hsv_data[i].val < 210)) // top half yellow
+			{
+				rgb_data[i] = {255, 255, 0};
+			}
+			// else if (hsv_data[i].hue < 230 && hsv_data[i].hue > 220) // pink
+			// {
+			// 	rgb_data[i] = {168, 50, 153};
+			// }
+			// else if (hsv_data[i].hue < 220 && hsv_data[i].hue > 150 && hsv_data[i].val > 20) // Dark blue
+			// {
+			// 	rgb_data[i] = {0, 0, 255};
+			// }
+			// else if (hsv_data[i].hue < 85 && hsv_data[i].hue > 75 && hsv_data[i].val > 130) // light green
+			// {
+			// 	rgb_data[i] = {0, 255, 0};
+			// }
+			// // else if (hsv_data[i].hue < 85 && hsv_data[i].hue > 75 && hsv_data[i].val > 120) // teal
+			// {
+			// 	rgb_data[i] = {0, 255, 0};
+			// }
+			// else if (hsv_data[i].hue < 35 && hsv_data[i].hue > 21) // orangey background
+			// {
+			// 	rgb_data[i] = {168, 97, 50};
+			// }
+			// else
+			// {
+			// rgb_data[i] = {0, 0, 0};
 			// }
 		}
 		snprintf(buf, 100, "images/results/test%i_result.png", p);
 		stbi_write_png(buf, x, y, n, rgb_data, x * n * sizeof(u8));
 	}
-	
-
 }
-	
-	/*
-	u8 hue_counts[bin_count] = {0};
-	for (i32 i = 0; i < x * y; i++)
+
+/*
+u8 hue_counts[bin_count] = {0};
+for (i32 i = 0; i < x * y; i++)
+{
+	hue_counts[hue_pixels[i]] += 1;
+}
+
+for (i32 h = 0; h < bin_count; h++)
+{
+	printf("%i %i\n", h, hue_counts[h]);
+	if (hue_counts[h] < 50)
 	{
-		hue_counts[hue_pixels[i]] += 1;
+		continue;
 	}
 
-	for (i32 h = 0; h < bin_count; h++)
+	u8 *hue_blob = (u8 *)malloc(x * y * sizeof(u8));
+	memset(hue_blob, 0, x * y * sizeof(u8));
+
+	for (i32 p = 0; p < x * y; p++)
 	{
-		printf("%i %i\n", h, hue_counts[h]);
-		if (hue_counts[h] < 50)
+		if (hue_pixels[p] == h)
 		{
-			continue;
+			hue_blob[p] = 120;
+			// printf("%i ", p);
 		}
-
-		u8 *hue_blob = (u8 *)malloc(x * y * sizeof(u8));
-		memset(hue_blob, 0, x * y * sizeof(u8));
-
-		for (i32 p = 0; p < x * y; p++)
-		{
-			if (hue_pixels[p] == h)
-			{
-				hue_blob[p] = 120;
-				// printf("%i ", p);
-			}
-		}
-		kernel_operation(hue_blob, x, y, 1, GaussianBlur);
-		kernel_operation(hue_blob, x, y, 1, Solid);
-		// kernel_operation(hue_blob, x, y, 1, Sobel);
-
-		char buf[100];
-		snprintf(buf, 100, "images/results/hue_blob%i.png", h);
-
-		stbi_write_png(buf, x, y, 1, hue_blob, x * sizeof(u8));
 	}
-	*/
+	kernel_operation(hue_blob, x, y, 1, GaussianBlur);
+	kernel_operation(hue_blob, x, y, 1, Solid);
+	// kernel_operation(hue_blob, x, y, 1, Sobel);
+
+	char buf[100];
+	snprintf(buf, 100, "images/results/hue_blob%i.png", h);
+
+	stbi_write_png(buf, x, y, 1, hue_blob, x * sizeof(u8));
+}
+*/

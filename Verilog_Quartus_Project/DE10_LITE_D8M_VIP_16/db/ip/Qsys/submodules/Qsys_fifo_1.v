@@ -36,18 +36,18 @@ module Qsys_fifo_1_single_clock_fifo (
 
   output           empty;
   output           full;
-  output  [ 36: 0] q;
+  output  [ 34: 0] q;
   output  [  8: 0] usedw;
   input            aclr;
   input            clock;
-  input   [ 36: 0] data;
+  input   [ 34: 0] data;
   input            rdreq;
   input            wrreq;
 
 
 wire             empty;
 wire             full;
-wire    [ 36: 0] q;
+wire    [ 34: 0] q;
 wire    [  8: 0] usedw;
   scfifo single_clock_fifo
     (
@@ -67,7 +67,7 @@ wire    [  8: 0] usedw;
            single_clock_fifo.lpm_numwords = 512,
            single_clock_fifo.lpm_showahead = "OFF",
            single_clock_fifo.lpm_type = "scfifo",
-           single_clock_fifo.lpm_width = 37,
+           single_clock_fifo.lpm_width = 35,
            single_clock_fifo.lpm_widthu = 9,
            single_clock_fifo.overflow_checking = "ON",
            single_clock_fifo.underflow_checking = "ON",
@@ -110,11 +110,11 @@ module Qsys_fifo_1_scfifo_with_controls (
   output           empty;
   output           full;
   output  [  9: 0] level;
-  output  [ 36: 0] q;
+  output  [ 34: 0] q;
   output           wrclk_control_slave_irq;
   output  [ 31: 0] wrclk_control_slave_readdata;
   input            clock;
-  input   [ 36: 0] data;
+  input   [ 34: 0] data;
   input            rdreq;
   input            reset_n;
   input   [  2: 0] wrclk_control_slave_address;
@@ -128,7 +128,7 @@ wire             empty;
 wire             full;
 wire    [  9: 0] level;
 wire             overflow;
-wire    [ 36: 0] q;
+wire    [ 34: 0] q;
 wire             underflow;
 wire    [  8: 0] usedw;
 reg              wrclk_control_slave_almostempty_n_reg;
@@ -466,7 +466,6 @@ module Qsys_fifo_1 (
                      // inputs:
                       avalonst_sink_channel,
                       avalonst_sink_data,
-                      avalonst_sink_empty,
                       avalonst_sink_endofpacket,
                       avalonst_sink_startofpacket,
                       avalonst_sink_valid,
@@ -482,7 +481,6 @@ module Qsys_fifo_1 (
                       avalonst_sink_ready,
                       avalonst_source_channel,
                       avalonst_source_data,
-                      avalonst_source_empty,
                       avalonst_source_endofpacket,
                       avalonst_source_startofpacket,
                       avalonst_source_valid,
@@ -494,7 +492,6 @@ module Qsys_fifo_1 (
   output           avalonst_sink_ready;
   output           avalonst_source_channel;
   output  [ 31: 0] avalonst_source_data;
-  output  [  1: 0] avalonst_source_empty;
   output           avalonst_source_endofpacket;
   output           avalonst_source_startofpacket;
   output           avalonst_source_valid;
@@ -502,7 +499,6 @@ module Qsys_fifo_1 (
   output  [ 31: 0] wrclk_control_slave_readdata;
   input            avalonst_sink_channel;
   input   [ 31: 0] avalonst_sink_data;
-  input   [  1: 0] avalonst_sink_empty;
   input            avalonst_sink_endofpacket;
   input            avalonst_sink_startofpacket;
   input            avalonst_sink_valid;
@@ -516,22 +512,21 @@ module Qsys_fifo_1 (
 
 
 wire             avalonst_sink_ready;
-wire    [ 36: 0] avalonst_sink_signals;
+wire    [ 34: 0] avalonst_sink_signals;
 wire             avalonst_source_channel;
 wire    [ 31: 0] avalonst_source_data;
-wire    [  1: 0] avalonst_source_empty;
 wire             avalonst_source_endofpacket;
-wire    [ 36: 0] avalonst_source_signals;
+wire    [ 34: 0] avalonst_source_signals;
 wire             avalonst_source_startofpacket;
 reg              avalonst_source_valid;
 wire             clock;
-wire    [ 36: 0] data;
+wire    [ 34: 0] data;
 wire             empty;
 wire             full;
 wire    [  9: 0] level;
 wire             no_stop_write;
 reg              no_stop_write_d1;
-wire    [ 36: 0] q;
+wire    [ 34: 0] q;
 wire             rdreq;
 wire             ready_1;
 wire             ready_selector;
@@ -562,13 +557,11 @@ wire             wrreq;
   //out, which is an e_atlantic_master
   assign avalonst_sink_signals = {avalonst_sink_startofpacket,
     avalonst_sink_endofpacket,
-    avalonst_sink_empty,
     avalonst_sink_channel,
     avalonst_sink_data};
 
   assign {avalonst_source_startofpacket,
 avalonst_source_endofpacket,
-avalonst_source_empty,
 avalonst_source_channel,
 avalonst_source_data} = avalonst_source_signals;
   assign no_stop_write = ready_selector & ready_1;

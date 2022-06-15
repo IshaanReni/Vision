@@ -400,7 +400,7 @@ endgenerate
   );
 
   assign source_valid_fifo1 = source_valid;
-  assign sink_ready_fifo1 = source_valid;
+  assign sink_ready_fifo1 =source_valid;
   //input source_ready_fifo1 is unassigned
   //input sink_valid_fifo1 is unassigned too
 
@@ -423,7 +423,7 @@ endgenerate
   );
 
   assign source_valid_fifo2 = source_valid;
-  assign sink_ready_fifo2 = source_valid;
+  assign sink_ready_fifo2 =source_valid;
 
   // STAGE 3
   SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_3 (
@@ -444,7 +444,7 @@ endgenerate
   );
 
   assign source_valid_fifo3 = source_valid;
-  assign sink_ready_fifo3 = source_valid;
+  assign sink_ready_fifo3 =source_valid;
   
   // STAGE 4
   SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_4 (
@@ -465,7 +465,7 @@ endgenerate
   );
 
   assign source_valid_fifo4 = source_valid;
-  assign sink_ready_fifo4 = source_valid;
+  assign sink_ready_fifo4 =source_valid;
 
   // STAGE 5
   SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_5 (

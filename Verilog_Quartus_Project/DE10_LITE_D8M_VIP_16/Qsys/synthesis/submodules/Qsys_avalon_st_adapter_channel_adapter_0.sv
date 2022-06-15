@@ -46,8 +46,8 @@
 //   error_width:         0
 //   use_ready:           true
 //   use_packets:         true
-//   use_empty:           1
-//   empty_width:         2
+//   use_empty:           0
+//   empty_width:         0
 
 // ------------------------------------------
 
@@ -60,7 +60,6 @@ module Qsys_avalon_st_adapter_channel_adapter_0
  input     [32-1: 0] in_data,
  input              in_startofpacket,
  input              in_endofpacket,
- input [2-1: 0] in_empty,
  // Interface: out
  input               out_ready,
  output reg          out_valid,
@@ -68,7 +67,6 @@ module Qsys_avalon_st_adapter_channel_adapter_0
  output reg          out_channel,
  output reg          out_startofpacket,
  output reg          out_endofpacket,
- output reg [2-1: 0] out_empty,
   // Interface: clk
  input              clk,
  // Interface: reset
@@ -88,7 +86,6 @@ module Qsys_avalon_st_adapter_channel_adapter_0
       out_data = in_data;
       out_startofpacket = in_startofpacket;
       out_endofpacket = in_endofpacket;
-      out_empty = in_empty;
 
       out_channel = 0;
       out_channel = in_channel;

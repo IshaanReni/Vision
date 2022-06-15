@@ -21,15 +21,7 @@
    {
       datum _originalDeviceFamily
       {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element Qsys
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
+         value = "MAX 10";
          type = "String";
       }
    }
@@ -54,6 +46,22 @@
       datum _originalDeviceFamily
       {
          value = "MAX 10";
+         type = "String";
+      }
+   }
+   element Qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element Qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
          type = "String";
       }
    }
@@ -774,7 +782,7 @@
  <module name="fifo_1" kind="altera_avalon_fifo" version="18.1" enabled="1">
   <parameter name="avalonMMAvalonMMDataWidth" value="32" />
   <parameter name="avalonMMAvalonSTDataWidth" value="32" />
-  <parameter name="bitsPerSymbol" value="8" />
+  <parameter name="bitsPerSymbol" value="32" />
   <parameter name="channelWidth" value="1" />
   <parameter name="deviceFamilyString" value="MAX 10" />
   <parameter name="errorWidth" value="0" />
@@ -784,7 +792,7 @@
   <parameter name="showHiddenFeatures" value="false" />
   <parameter name="singleClockMode" value="true" />
   <parameter name="singleResetMode" value="false" />
-  <parameter name="symbolsPerBeat" value="4" />
+  <parameter name="symbolsPerBeat" value="1" />
   <parameter name="useBackpressure" value="true" />
   <parameter name="useIRQ" value="true" />
   <parameter name="usePacket" value="true" />
@@ -795,7 +803,7 @@
  <module name="fifo_2" kind="altera_avalon_fifo" version="18.1" enabled="1">
   <parameter name="avalonMMAvalonMMDataWidth" value="32" />
   <parameter name="avalonMMAvalonSTDataWidth" value="32" />
-  <parameter name="bitsPerSymbol" value="8" />
+  <parameter name="bitsPerSymbol" value="32" />
   <parameter name="channelWidth" value="1" />
   <parameter name="deviceFamilyString" value="MAX 10" />
   <parameter name="errorWidth" value="0" />
@@ -805,7 +813,7 @@
   <parameter name="showHiddenFeatures" value="false" />
   <parameter name="singleClockMode" value="true" />
   <parameter name="singleResetMode" value="false" />
-  <parameter name="symbolsPerBeat" value="4" />
+  <parameter name="symbolsPerBeat" value="1" />
   <parameter name="useBackpressure" value="true" />
   <parameter name="useIRQ" value="true" />
   <parameter name="usePacket" value="true" />
@@ -816,7 +824,7 @@
  <module name="fifo_3" kind="altera_avalon_fifo" version="18.1" enabled="1">
   <parameter name="avalonMMAvalonMMDataWidth" value="32" />
   <parameter name="avalonMMAvalonSTDataWidth" value="32" />
-  <parameter name="bitsPerSymbol" value="8" />
+  <parameter name="bitsPerSymbol" value="32" />
   <parameter name="channelWidth" value="1" />
   <parameter name="deviceFamilyString" value="MAX 10" />
   <parameter name="errorWidth" value="0" />
@@ -826,7 +834,7 @@
   <parameter name="showHiddenFeatures" value="false" />
   <parameter name="singleClockMode" value="true" />
   <parameter name="singleResetMode" value="false" />
-  <parameter name="symbolsPerBeat" value="4" />
+  <parameter name="symbolsPerBeat" value="1" />
   <parameter name="useBackpressure" value="true" />
   <parameter name="useIRQ" value="true" />
   <parameter name="usePacket" value="true" />
@@ -837,7 +845,7 @@
  <module name="fifo_4" kind="altera_avalon_fifo" version="18.1" enabled="1">
   <parameter name="avalonMMAvalonMMDataWidth" value="32" />
   <parameter name="avalonMMAvalonSTDataWidth" value="32" />
-  <parameter name="bitsPerSymbol" value="8" />
+  <parameter name="bitsPerSymbol" value="32" />
   <parameter name="channelWidth" value="1" />
   <parameter name="deviceFamilyString" value="MAX 10" />
   <parameter name="errorWidth" value="0" />
@@ -847,7 +855,7 @@
   <parameter name="showHiddenFeatures" value="false" />
   <parameter name="singleClockMode" value="true" />
   <parameter name="singleResetMode" value="false" />
-  <parameter name="symbolsPerBeat" value="4" />
+  <parameter name="symbolsPerBeat" value="1" />
   <parameter name="useBackpressure" value="true" />
   <parameter name="useIRQ" value="true" />
   <parameter name="usePacket" value="true" />
@@ -1540,28 +1548,28 @@
    kind="interrupt"
    version="18.1"
    start="nios2_gen2.irq"
-   end="fifo_1.in_irq">
+   end="fifo_4.in_irq">
   <parameter name="irqNumber" value="5" />
  </connection>
  <connection
    kind="interrupt"
    version="18.1"
    start="nios2_gen2.irq"
-   end="fifo_2.in_irq">
+   end="fifo_3.in_irq">
   <parameter name="irqNumber" value="6" />
  </connection>
  <connection
    kind="interrupt"
    version="18.1"
    start="nios2_gen2.irq"
-   end="fifo_3.in_irq">
+   end="fifo_2.in_irq">
   <parameter name="irqNumber" value="7" />
  </connection>
  <connection
    kind="interrupt"
    version="18.1"
    start="nios2_gen2.irq"
-   end="fifo_4.in_irq">
+   end="fifo_1.in_irq">
   <parameter name="irqNumber" value="8" />
  </connection>
  <connection

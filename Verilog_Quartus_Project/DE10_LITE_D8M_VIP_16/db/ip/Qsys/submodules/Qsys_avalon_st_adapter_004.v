@@ -7,12 +7,12 @@
 
 `timescale 1 ps / 1 ps
 module Qsys_avalon_st_adapter_004 #(
-		parameter inBitsPerSymbol = 8,
+		parameter inBitsPerSymbol = 32,
 		parameter inUsePackets    = 1,
 		parameter inDataWidth     = 32,
 		parameter inChannelWidth  = 1,
 		parameter inErrorWidth    = 0,
-		parameter inUseEmptyPort  = 1,
+		parameter inUseEmptyPort  = 0,
 		parameter inUseValid      = 1,
 		parameter inUseReady      = 1,
 		parameter inReadyLatency  = 1,
@@ -31,7 +31,6 @@ module Qsys_avalon_st_adapter_004 #(
 		output wire        in_0_ready,          //         .ready
 		input  wire        in_0_startofpacket,  //         .startofpacket
 		input  wire        in_0_endofpacket,    //         .endofpacket
-		input  wire [1:0]  in_0_empty,          //         .empty
 		input  wire        in_0_channel,        //         .channel
 		output wire [31:0] out_0_data,          //    out_0.data
 		output wire        out_0_valid,         //         .valid
@@ -40,17 +39,11 @@ module Qsys_avalon_st_adapter_004 #(
 		output wire        out_0_endofpacket    //         .endofpacket
 	);
 
-	wire         data_format_adapter_0_out_valid;         // data_format_adapter_0:out_valid -> channel_adapter_0:in_valid
-	wire  [31:0] data_format_adapter_0_out_data;          // data_format_adapter_0:out_data -> channel_adapter_0:in_data
-	wire         data_format_adapter_0_out_ready;         // channel_adapter_0:in_ready -> data_format_adapter_0:out_ready
-	wire         data_format_adapter_0_out_channel;       // data_format_adapter_0:out_channel -> channel_adapter_0:in_channel
-	wire         data_format_adapter_0_out_startofpacket; // data_format_adapter_0:out_startofpacket -> channel_adapter_0:in_startofpacket
-	wire         data_format_adapter_0_out_endofpacket;   // data_format_adapter_0:out_endofpacket -> channel_adapter_0:in_endofpacket
-	wire         channel_adapter_0_out_valid;             // channel_adapter_0:out_valid -> timing_adapter_0:in_valid
-	wire  [31:0] channel_adapter_0_out_data;              // channel_adapter_0:out_data -> timing_adapter_0:in_data
-	wire         channel_adapter_0_out_ready;             // timing_adapter_0:in_ready -> channel_adapter_0:out_ready
-	wire         channel_adapter_0_out_startofpacket;     // channel_adapter_0:out_startofpacket -> timing_adapter_0:in_startofpacket
-	wire         channel_adapter_0_out_endofpacket;       // channel_adapter_0:out_endofpacket -> timing_adapter_0:in_endofpacket
+	wire         channel_adapter_0_out_valid;         // channel_adapter_0:out_valid -> timing_adapter_0:in_valid
+	wire  [31:0] channel_adapter_0_out_data;          // channel_adapter_0:out_data -> timing_adapter_0:in_data
+	wire         channel_adapter_0_out_ready;         // timing_adapter_0:in_ready -> channel_adapter_0:out_ready
+	wire         channel_adapter_0_out_startofpacket; // channel_adapter_0:out_startofpacket -> timing_adapter_0:in_startofpacket
+	wire         channel_adapter_0_out_endofpacket;   // channel_adapter_0:out_endofpacket -> timing_adapter_0:in_endofpacket
 
 	generate
 		// If any of the display statements (or deliberately broken
@@ -58,7 +51,7 @@ module Qsys_avalon_st_adapter_004 #(
 		// has been instantiated this module with a set of parameters different
 		// from those it was generated for.  This will usually result in a
 		// non-functioning system.
-		if (inBitsPerSymbol != 8)
+		if (inBitsPerSymbol != 32)
 		begin
 			initial begin
 				$display("Generated module instantiated with wrong parameters");
@@ -103,7 +96,7 @@ module Qsys_avalon_st_adapter_004 #(
 			instantiated_with_wrong_parameters_error_see_comment_above
 					inerrorwidth_check ( .error(1'b1) );
 		end
-		if (inUseEmptyPort != 1)
+		if (inUseEmptyPort != 0)
 		begin
 			initial begin
 				$display("Generated module instantiated with wrong parameters");
@@ -204,38 +197,20 @@ module Qsys_avalon_st_adapter_004 #(
 		end
 	endgenerate
 
-	Qsys_avalon_st_adapter_004_data_format_adapter_0 data_format_adapter_0 (
-		.clk               (in_clk_0_clk),                            //   clk.clk
-		.reset_n           (~in_rst_0_reset),                         // reset.reset_n
-		.in_data           (in_0_data),                               //    in.data
-		.in_valid          (in_0_valid),                              //      .valid
-		.in_ready          (in_0_ready),                              //      .ready
-		.in_startofpacket  (in_0_startofpacket),                      //      .startofpacket
-		.in_endofpacket    (in_0_endofpacket),                        //      .endofpacket
-		.in_empty          (in_0_empty),                              //      .empty
-		.in_channel        (in_0_channel),                            //      .channel
-		.out_data          (data_format_adapter_0_out_data),          //   out.data
-		.out_valid         (data_format_adapter_0_out_valid),         //      .valid
-		.out_ready         (data_format_adapter_0_out_ready),         //      .ready
-		.out_startofpacket (data_format_adapter_0_out_startofpacket), //      .startofpacket
-		.out_endofpacket   (data_format_adapter_0_out_endofpacket),   //      .endofpacket
-		.out_channel       (data_format_adapter_0_out_channel)        //      .channel
-	);
-
 	Qsys_avalon_st_adapter_004_channel_adapter_0 channel_adapter_0 (
-		.clk               (in_clk_0_clk),                            //   clk.clk
-		.reset_n           (~in_rst_0_reset),                         // reset.reset_n
-		.in_data           (data_format_adapter_0_out_data),          //    in.data
-		.in_valid          (data_format_adapter_0_out_valid),         //      .valid
-		.in_ready          (data_format_adapter_0_out_ready),         //      .ready
-		.in_startofpacket  (data_format_adapter_0_out_startofpacket), //      .startofpacket
-		.in_endofpacket    (data_format_adapter_0_out_endofpacket),   //      .endofpacket
-		.in_channel        (data_format_adapter_0_out_channel),       //      .channel
-		.out_data          (channel_adapter_0_out_data),              //   out.data
-		.out_valid         (channel_adapter_0_out_valid),             //      .valid
-		.out_ready         (channel_adapter_0_out_ready),             //      .ready
-		.out_startofpacket (channel_adapter_0_out_startofpacket),     //      .startofpacket
-		.out_endofpacket   (channel_adapter_0_out_endofpacket)        //      .endofpacket
+		.clk               (in_clk_0_clk),                        //   clk.clk
+		.reset_n           (~in_rst_0_reset),                     // reset.reset_n
+		.in_data           (in_0_data),                           //    in.data
+		.in_valid          (in_0_valid),                          //      .valid
+		.in_ready          (in_0_ready),                          //      .ready
+		.in_startofpacket  (in_0_startofpacket),                  //      .startofpacket
+		.in_endofpacket    (in_0_endofpacket),                    //      .endofpacket
+		.in_channel        (in_0_channel),                        //      .channel
+		.out_data          (channel_adapter_0_out_data),          //   out.data
+		.out_valid         (channel_adapter_0_out_valid),         //      .valid
+		.out_ready         (channel_adapter_0_out_ready),         //      .ready
+		.out_startofpacket (channel_adapter_0_out_startofpacket), //      .startofpacket
+		.out_endofpacket   (channel_adapter_0_out_endofpacket)    //      .endofpacket
 	);
 
 	Qsys_avalon_st_adapter_004_timing_adapter_0 timing_adapter_0 (

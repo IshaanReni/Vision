@@ -28,6 +28,32 @@ extern module SHIFT_REGGAE #(
     output logic [DATA_WIDTH-1:0] data_out
 );
 
+extern module SHIFT_EXPOSED #(
+    parameter NO_STAGES  = 5,
+    parameter DATA_WIDTH = 26
+
+) (
+    //control signals
+    input logic clk,
+    input logic rst_n,
+    input logic valid_in,
+
+    //data signals 
+    input  logic [DATA_WIDTH-1:0] data_in,
+    output logic [DATA_WIDTH-1:0] internal_out[NO_STAGES-1:0],
+    output logic [DATA_WIDTH-1:0] data_out
+);
+
+
+extern module RGB_TO_HSV (
+    input logic clk,
+    input logic rst_n,
+    input logic valid_in,
+
+    input  logic [23:0] rgb_in,
+    output logic [ 7:0] hue
+
+);
 
 module EEE_IMGPROC #(
     parameter IMAGE_W = 11'd640,
@@ -62,7 +88,6 @@ module EEE_IMGPROC #(
     input logic source_ready,
     output logic source_sop,
     output logic source_eop,
-
 
     // streaming sink fifo1
     input logic [31:0] sink_data_fifo1,
@@ -318,9 +343,32 @@ endgenerate
 
   logic [23:0] source_data_intermediate_step1;
   logic source_sop_intermediate_step1, source_eop_intermediate_step1;
+  logic [23:0] source_data_exposed_step1;
+  logic source_sop_exposed_step1, source_eop_exposed_step1;
+  logic [25:0] row_1_data [15:0];
+
 
   logic [23:0] source_data_intermediate_step2;
   logic source_sop_intermediate_step2, source_eop_intermediate_step2;
+  logic [23:0] source_data_exposed_step2;
+  logic source_sop_exposed_step2, source_eop_exposed_step2;
+  logic [25:0] row_2_data [15:0];
+
+  logic [23:0] source_data_intermediate_step3;
+  logic source_sop_intermediate_step3, source_eop_intermediate_step3;
+  logic [23:0] source_data_exposed_step3;
+  logic source_sop_exposed_step3, source_eop_exposed_step3;
+  logic [25:0] row_3_data [15:0];
+
+  logic [23:0] source_data_intermediate_step4;
+  logic source_sop_intermediate_step4, source_eop_intermediate_step4;
+  logic [23:0] source_data_exposed_step4;
+  logic source_sop_exposed_step4, source_eop_exposed_step4;
+  logic [25:0] row_4_data [15:0];
+
+  logic [25:0] row_5_data [15:0];
+  logic [23:0] source_data_intermediate_step5;
+  logic source_sop_intermediate_step5, source_eop_intermediate_step5;
 
   STREAM_REG #(.DATA_WIDTH(26)) out_reg (
     .clk(clk),
@@ -333,59 +381,374 @@ endgenerate
     .data_in({red_out, green_out, blue_out, sop, eop})
   );
 
-  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_1 (
+  // STAGE 1
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_1 (
     .clk(clk),
     .rst_n(reset_n),
     .valid_in(source_valid),
     .data_in({source_data_intermediate_step1, source_sop_intermediate_step1, source_eop_intermediate_step1}),
+    .internal_out(row_1_data),
+    .data_out({source_data_exposed_step1,source_sop_exposed_step1,source_eop_exposed_step1})
+  );
+  
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(112)) shift_reg_1 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_exposed_step1, source_sop_exposed_step1, source_eop_exposed_step1}),
     .data_out({source_data_fifo1, source_sop_fifo1, source_eop_fifo1})
   );
 
   assign source_valid_fifo1 = source_valid;
-  assign sink_ready_fifo1 = source_valid;
+  assign sink_ready_fifo1 =source_valid;
   //input source_ready_fifo1 is unassigned
   //input sink_valid_fifo1 is unassigned too
 
-  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_2 (
+  // STAGE 2
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_2 (
     .clk(clk),
     .rst_n(reset_n),
     .valid_in(source_valid),
     .data_in({sink_data_fifo1, sink_sop_fifo1, sink_eop_fifo1}),
+    .internal_out(row_2_data),
+    .data_out({source_data_exposed_step2, source_sop_exposed_step2, source_eop_exposed_step2})
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(112)) shift_reg_2 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_exposed_step2, source_sop_exposed_step2, source_eop_exposed_step2}),
     .data_out({source_data_fifo2, source_sop_fifo2, source_eop_fifo2})
   );
 
   assign source_valid_fifo2 = source_valid;
-  assign sink_ready_fifo2 = source_valid;
+  assign sink_ready_fifo2 =source_valid;
 
-  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_3 (
+  // STAGE 3
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_3 (
     .clk(clk),
     .rst_n(reset_n),
     .valid_in(source_valid),
-    .data_in({sink_data_fifo2, sink_sop_fifo2, sink_eop_fifo2}),
+    .data_in({source_data_fifo2, source_sop_fifo2, source_eop_fifo2}),
+    .internal_out(row_3_data),
+    .data_out({source_data_exposed_step3, source_sop_exposed_step3, source_eop_exposed_step3})
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(112)) shift_reg_3 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_exposed_step3, source_sop_exposed_step3, source_eop_exposed_step3}),
     .data_out({source_data_fifo3, source_sop_fifo3, source_eop_fifo3})
   );
 
   assign source_valid_fifo3 = source_valid;
-  assign sink_ready_fifo3 = source_valid;
-
-  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_4 (
+  assign sink_ready_fifo3 =source_valid;
+  
+  // STAGE 4
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_4 (
     .clk(clk),
     .rst_n(reset_n),
     .valid_in(source_valid),
-    .data_in({sink_data_fifo3, sink_sop_fifo3, sink_eop_fifo3}),
+    .data_in({source_data_fifo3, source_sop_fifo3, source_eop_fifo3}),
+    .internal_out(row_4_data),
+    .data_out({source_data_exposed_step4, source_sop_exposed_step4, source_eop_exposed_step4})
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(112)) shift_reg_4 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({source_data_exposed_step4, source_sop_exposed_step4, source_eop_exposed_step4}),
     .data_out({source_data_fifo4, source_sop_fifo4, source_eop_fifo4})
   );
 
   assign source_valid_fifo4 = source_valid;
-  assign sink_ready_fifo4 = source_valid;
+  assign sink_ready_fifo4 =source_valid;
 
-  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(9)) shift_reg_5 (
+  // STAGE 5
+  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_5 (
     .clk(clk),
     .rst_n(reset_n),
     .valid_in(source_valid),
-    .data_in({sink_data_fifo4, sink_sop_fifo4, sink_eop_fifo4}),
-    .data_out({source_data, source_sop, source_eop})
+    .data_in({source_data_fifo4, source_sop_fifo4, source_eop_fifo4}),
+    .internal_out(row_5_data),
+    .data_out({source_data_intermediate_step5, source_sop_intermediate_step5, source_eop_intermediate_step5})
   );
+
+
+
+  //CODE FOR Gaussian Blur Kernel
+  logic [15:0] out_pixel_r = 16'b0;
+  logic [15:0] out_pixel_g = 16'b0;
+  logic [15:0] out_pixel_b = 16'b0;
+  logic [25:0] centre_pixel;
+
+  logic [15:0] out_pixel_r_s0 = 16'b0;
+  logic [15:0] out_pixel_g_s0 = 16'b0;
+  logic [15:0] out_pixel_b_s0 = 16'b0;
+  
+  logic [15:0] out_pixel_r_s1 = 16'b0;
+  logic [15:0] out_pixel_g_s1 = 16'b0;
+  logic [15:0] out_pixel_b_s1 = 16'b0;
+  
+  logic [15:0] out_pixel_r_s2 = 16'b0;
+  logic [15:0] out_pixel_g_s2 = 16'b0;
+  logic [15:0] out_pixel_b_s2 = 16'b0;
+  
+  logic [15:0] out_pixel_r_s3 = 16'b0;
+  logic [15:0] out_pixel_g_s3 = 16'b0;
+  logic [15:0] out_pixel_b_s3 = 16'b0;
+
+  logic [15:0] out_pixel_r_s4 = 16'b0;
+  logic [15:0] out_pixel_g_s4 = 16'b0;
+  logic [15:0] out_pixel_b_s4 = 16'b0;
+
+
+  
+  logic found_eop_or_sop;
+
+  always_comb begin
+    found_eop_or_sop = 0;
+
+    for(integer i = 0; i < 16; i = i + 1) begin
+      if(row_5_data[i][0] | row_5_data[i][1] | 
+        row_4_data[i][0] | row_4_data[i][1] | 
+        row_3_data[i][0] | row_3_data[i][1] |
+        row_2_data[i][0] | row_2_data[i][1] | 
+        row_1_data[i][0] | row_1_data[i][1])
+        begin 
+        found_eop_or_sop = 1;
+      end
+    end
+  end
+  
+
+  assign centre_pixel = row_3_data[7];
+  assign source_data = found_eop_or_sop ? centre_pixel[25:2] : {out_pixel_r[7:0], out_pixel_g[7:0], out_pixel_b[7:0]};
+  assign source_sop = centre_pixel[1];
+  assign source_eop = centre_pixel[0];
+  
+
+  integer p_offset = 9;
+  always_ff @(posedge clk) begin
+    
+    if(source_valid) begin 
+      p_offset = 9;
+      
+      out_pixel_b <= (row_2_data[0][9:2] + row_3_data[0][9:2] /*+ row_3_data[1][9:2] + row_3_data[2][9:2] + row_3_data[3][9:2] + row_3_data[4][9:2]*/)>>1;
+      out_pixel_g <= (row_2_data[0][17:10] + row_3_data[0][17:10] /*+ row_3_data[1][17:10] + row_3_data[2][17:10] + row_3_data[3][17:10] + row_3_data[4][17:10]*/)>> 1;
+      out_pixel_r <= (row_2_data[0][25:18] + row_3_data[0][25:18] /*+ row_3_data[1][25:18] + row_3_data[2][25:18] + row_3_data[3][25:18] + row_3_data[4][25:18]*/)>> 1;
+      
+      // out_pixel_b_s0 <= (row_2_data[p_offset + 1][9:2] + row_2_data[p_offset + 2][9:2] + row_2_data[p_offset + 3][9:2]);
+      // out_pixel_g_s0 <= (row_2_data[p_offset + 1][17:10] + row_2_data[p_offset + 2][17:10] + row_2_data[p_offset + 3][17:10]);
+      // out_pixel_r_s0 <= (row_2_data[p_offset + 1][25:18] + row_2_data[p_offset + 2][25:18] + row_2_data[p_offset + 3][25:18]);
+
+      // p_offset = p_offset - 1;
+      // out_pixel_b_s1 <= out_pixel_b_s0 + (row_3_data[p_offset + 1][9:2] + row_3_data[p_offset + 2][9:2] + row_3_data[p_offset + 3][9:2]);
+      // out_pixel_g_s1 <= out_pixel_g_s0 + (row_3_data[p_offset + 1][17:10] + row_3_data[p_offset + 2][17:10] + row_3_data[p_offset + 3][17:10]);
+      // out_pixel_r_s1 <= out_pixel_r_s0 + (row_3_data[p_offset + 1][25:18] + row_3_data[p_offset + 2][25:18] + row_3_data[p_offset + 3][25:18]);
+      
+      // p_offset = p_offset - 1;
+      // out_pixel_b_s2 <= (out_pixel_b_s1 + (row_4_data[p_offset + 1][9:2] + row_4_data[p_offset + 2][9:2] + row_4_data[p_offset + 3][9:2]))>>4;
+      // out_pixel_g_s2 <= (out_pixel_g_s1 + (row_4_data[p_offset + 1][17:10] + row_4_data[p_offset + 2][17:10] + row_4_data[p_offset + 3][17:10]))>>4;
+      // out_pixel_r_s2 <= (out_pixel_r_s1 + (row_4_data[p_offset + 1][25:18] + row_4_data[p_offset + 2][25:18] + row_4_data[p_offset + 3][25:18]))>>4;
+    
+      
+      // out_pixel_b <= (row_2_data[1][9:2] + row_2_data[2][9:2] + row_2_data[3][9:2] + row_3_data[1][9:2] + row_3_data[2][9:2] + row_3_data[3][9:2] + row_4_data[1][9:2] + row_4_data[2][9:2] + row_4_data[3][9:2])>>4;
+      // out_pixel_g <= (row_2_data[1][17:10] + row_2_data[2][17:10] + row_2_data[3][17:10] + row_3_data[1][17:10] + row_3_data[2][17:10] + row_3_data[3][17:10] + row_4_data[1][17:10] + row_4_data[2][17:10] + row_4_data[3][17:10])>>4;
+      // out_pixel_r <= (row_2_data[1][25:18] + row_2_data[2][25:18] + row_2_data[3][25:18] + row_3_data[1][25:18] + row_3_data[2][25:18] + row_3_data[3][25:18] + row_4_data[1][25:18] + row_4_data[2][25:18] + row_4_data[3][25:18])>>4;
+
+      /*
+      out_pixel_b <= (((row_1_data[4][9:2]+row_1_data[0][9:2]+row_5_data[4][9:2]+row_5_data[0][9:2])) 
+      + ((row_5_data[1][9:2] + row_5_data[3][9:2] + row_4_data[0][9:2] + row_4_data[4][9:2] + row_2_data[0][9:2] + row_2_data[4][9:2] + row_1_data[1][9:2] + row_1_data[3][9:2] )<<2)
+      + (6*(row_1_data[2][9:2] + row_3_data[0][9:2] + row_3_data[4][9:2] + row_5_data[2][9:2]))
+      + ((row_2_data[1][9:2] + row_2_data[3][9:2] + row_4_data[1][9:2] + row_4_data[3][9:2])<<5)
+      + (24*(row_2_data[2][9:2] + row_3_data[1][9:2] + row_3_data[3][9:2] + row_4_data[2][9:2]))
+      + (36*(row_3_data[2][9:2]))
+      ) >> 8;
+
+      out_pixel_g <= (((row_1_data[4][17:10]+row_1_data[0][17:10]+row_5_data[4][17:10]+row_5_data[0][17:10])) 
+      + ((row_5_data[1][17:10] + row_5_data[3][17:10] + row_4_data[0][17:10] + row_4_data[4][17:10] + row_2_data[0][17:10] + row_2_data[4][17:10] + row_1_data[1][17:10] + row_1_data[3][17:10] )<<2)
+      + (6*(row_1_data[2][17:10] + row_3_data[0][17:10] + row_3_data[4][17:10] + row_5_data[2][17:10]))
+      + ((row_2_data[1][17:10] + row_2_data[3][17:10] + row_4_data[1][17:10] + row_4_data[3][17:10])<<5)
+      + (24*(row_2_data[2][17:10] + row_3_data[1][17:10] + row_3_data[3][17:10] + row_4_data[2][17:10]))
+      + (36*(row_3_data[2][17:10]))
+      ) >> 8;
+
+      out_pixel_r <= (((row_1_data[4][25:18]+row_1_data[0][25:18]+row_5_data[4][25:18]+row_5_data[0][25:18])) 
+      + ((row_5_data[1][25:18] + row_5_data[3][25:18] + row_4_data[0][25:18] + row_4_data[4][25:18] + row_2_data[0][25:18] + row_2_data[4][25:18] + row_1_data[1][25:18] + row_1_data[3][25:18] )<<2)
+      + (6*(row_1_data[2][25:18] + row_3_data[0][25:18] + row_3_data[4][25:18] + row_5_data[2][25:18])<<5)
+      + ((row_2_data[1][25:18] + row_2_data[3][25:18] + row_4_data[1][25:18] + row_4_data[3][25:18]))
+      + (24*(row_2_data[2][25:18] + row_3_data[1][25:18] + row_3_data[3][25:18] + row_4_data[2][25:18]))
+      + (36*(row_3_data[2][25:18]))
+      ) >> 8;
+      */
+
+    end
+  end
+
+  
+
+
+  // assign out_pixel_b = (row_3_data[2][9:2] + row_3_data[3][9:2] )>>1;
+  // assign out_pixel_g = (row_3_data[2][17:10] + row_3_data[3][17:10] )>> 1;
+  // assign out_pixel_r = ( row_3_data[2][25:18] + row_3_data[3][25:18] ) >> 1;
+
+  // assign out_pixel_b = (((row_1_data[4][9:2]+row_1_data[0][9:2]+row_5_data[4][9:2]+row_5_data[0][9:2])) 
+  // + ((row_5_data[1][9:2] + row_5_data[3][9:2] + row_4_data[0][9:2] + row_4_data[4][9:2] + row_2_data[0][9:2] + row_2_data[4][9:2] + row_1_data[1][9:2] + row_1_data[3][9:2] ))
+  // + ((row_1_data[2][9:2] + row_3_data[0][9:2] + row_3_data[4][9:2] + row_5_data[2][9:2]))
+  // + ((row_2_data[1][9:2] + row_2_data[3][9:2] + row_4_data[1][9:2] + row_4_data[3][9:2]))
+  // + ((row_2_data[2][9:2] + row_3_data[1][9:2] + row_3_data[3][9:2] + row_4_data[2][9:2]))
+  // + ((row_3_data[2][9:2]))
+  // ) >> 6;
+
+  // assign out_pixel_g = (((row_1_data[4][17:10]+row_1_data[0][17:10]+row_5_data[4][17:10]+row_5_data[0][17:10])) 
+  // + ((row_5_data[1][17:10] + row_5_data[3][17:10] + row_4_data[0][17:10] + row_4_data[4][17:10] + row_2_data[0][17:10] + row_2_data[4][17:10] + row_1_data[1][17:10] + row_1_data[3][17:10] ))
+  // + ((row_1_data[2][17:10] + row_3_data[0][17:10] + row_3_data[4][17:10] + row_5_data[2][17:10]))
+  // + ((row_2_data[1][17:10] + row_2_data[3][17:10] + row_4_data[1][17:10] + row_4_data[3][17:10]))
+  // + ((row_2_data[2][17:10] + row_3_data[1][17:10] + row_3_data[3][17:10] + row_4_data[2][17:10]))
+  // + ((row_3_data[2][17:10]))
+  // ) >>6;
+
+  // assign out_pixel_r = (((row_1_data[4][25:18]+row_1_data[0][25:18]+row_5_data[4][25:18]+row_5_data[0][25:18])) 
+  // + ((row_5_data[1][25:18] + row_5_data[3][25:18] + row_4_data[0][25:18] + row_4_data[4][25:18] + row_2_data[0][25:18] + row_2_data[4][25:18] + row_1_data[1][25:18] + row_1_data[3][25:18] ))
+  // + ((row_1_data[2][25:18] + row_3_data[0][25:18] + row_3_data[4][25:18] + row_5_data[2][25:18]))
+  // + ((row_2_data[1][25:18] + row_2_data[3][25:18] + row_4_data[1][25:18] + row_4_data[3][25:18]))
+  // + ((row_2_data[2][25:18] + row_3_data[1][25:18] + row_3_data[3][25:18] + row_4_data[2][25:18]))
+  // + ((row_3_data[2][25:18]))
+  // ) >>6;
+
+  
+  /*
+  logic [15:0] out_pixel_r_s0 = 16'b0;
+  logic [15:0] out_pixel_g_s0 = 16'b0;
+  logic [15:0] out_pixel_b_s0 = 16'b0;
+  
+  logic [15:0] out_pixel_r_s1 = 16'b0;
+  logic [15:0] out_pixel_g_s1 = 16'b0;
+  logic [15:0] out_pixel_b_s1 = 16'b0;
+  
+  logic [15:0] out_pixel_r_s2 = 16'b0;
+  logic [15:0] out_pixel_g_s2 = 16'b0;
+  logic [15:0] out_pixel_b_s2 = 16'b0;
+  
+  logic [15:0] out_pixel_r_s3 = 16'b0;
+  logic [15:0] out_pixel_g_s3 = 16'b0;
+  logic [15:0] out_pixel_b_s3 = 16'b0;
+
+  logic [15:0] out_pixel_r_s4 = 16'b0;
+  logic [15:0] out_pixel_g_s4 = 16'b0;
+  logic [15:0] out_pixel_b_s4 = 16'b0;
+  
+  logic found_eop_or_sops1 = 0;
+  logic found_eop_or_sops2 = 0; 
+  logic found_eop_or_sops3 = 0;
+  logic found_eop_or_sops4 = 0;
+
+  logic source_sops = 0;
+  logic source_sops2 = 0;
+  logic source_sops3 = 0;
+  logic source_sops4 = 0;
+  logic source_sops5 = 0;
+
+  logic source_eops1 = 0;
+  logic source_eops2 = 0;
+  logic source_eops3 = 0;
+  logic source_eops4 = 0;
+  logic source_eops5 = 0;
+
+  SHIFT_REGGAE #(.DATA_WIDTH(2), .NO_STAGES(5)) shift_reg_6 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(1'b1),
+    .data_in({source_data_exposed_step4, source_sop_exposed_step4, source_eop_exposed_step4}),
+    .data_out({source_data_fifo4, source_sop_fifo4, source_eop_fifo4})
+  );
+
+  always_ff @(posedge clk) begin
+    // Clk 1: Add row 1
+
+    out_pixel_r_s0 <= row_1_data[0][25:18]+row_1_data[1][25:18]+row_1_data[2][25:18]+row_1_data[3][25:18] + row_1_data[4][25:18];
+    out_pixel_g_s0 <= row_1_data[0][17:10]+row_1_data[1][17:10]+row_1_data[2][17:10]+row_1_data[3][17:10] + row_1_data[4][17:10];
+    out_pixel_b_s0 <= row_1_data[0][9:2]+row_1_data[1][9:2]+row_1_data[2][9:2]+row_1_data[3][9:2] + row_1_data[4][9:2];
+
+    // Clk 2: Add Row 2
+    out_pixel_r_s1 <= (out_pixel_r_s0 + row_2_data[0][25:18]+row_2_data[1][25:18]+row_2_data[2][25:18]+row_2_data[3][25:18] + row_2_data[4][25:18]);
+    out_pixel_g_s1 <= (out_pixel_g_s0 + row_2_data[0][17:10]+row_2_data[1][17:10]+row_2_data[2][17:10]+row_2_data[3][17:10] + row_2_data[4][17:10]);
+    out_pixel_b_s1 <= (out_pixel_b_s0 + row_2_data[0][9:2]+row_2_data[1][9:2]+row_2_data[2][9:2]+row_2_data[3][9:2] + row_2_data[4][9:2]);
+
+    // Clk 3: Add Row 3
+    out_pixel_r_s2 <= (out_pixel_r_s1 + row_3_data[0][25:18]+row_3_data[1][25:18]+row_3_data[2][25:18]+row_3_data[3][25:18] + row_3_data[4][25:18]);
+    out_pixel_g_s2 <= (out_pixel_g_s1 + row_3_data[0][17:10]+row_3_data[1][17:10]+row_3_data[2][17:10]+row_3_data[3][17:10] + row_3_data[4][17:10]);
+    out_pixel_b_s2 <= (out_pixel_b_s1 + row_3_data[0][9:2]+row_3_data[1][9:2]+row_3_data[2][9:2]+row_3_data[3][9:2] + row_3_data[4][9:2]);
+    
+    // Clk 4: Add Row 4
+    out_pixel_r_s3 <= (out_pixel_r_s2 + row_4_data[0][25:18]+row_4_data[1][25:18]+row_4_data[2][25:18]+row_4_data[3][25:18] + row_4_data[4][25:18]);
+    out_pixel_g_s3 <= (out_pixel_g_s2 + row_4_data[0][17:10]+row_4_data[1][17:10]+row_4_data[2][17:10]+row_4_data[3][17:10] + row_4_data[4][17:10]);
+    out_pixel_b_s3 <= (out_pixel_b_s2 + row_4_data[0][9:2]+row_4_data[1][9:2]+row_4_data[2][9:2]+row_4_data[3][9:2] + row_4_data[4][9:2]);
+
+    // Clk 5: Add Row 5
+    out_pixel_r_s4 <= (out_pixel_r_s3 + row_5_data[0][25:18]+row_5_data[1][25:18]+row_5_data[2][25:18]+row_5_data[3][25:18] + row_5_data[4][25:18]);
+    out_pixel_g_s4 <= (out_pixel_g_s3 + row_5_data[0][17:10]+row_5_data[1][17:10]+row_5_data[2][17:10]+row_5_data[3][17:10] + row_5_data[4][17:10]);
+    out_pixel_b_s4 <= (out_pixel_b_s3 + row_5_data[0][9:2]+row_5_data[1][9:2]+row_5_data[2][9:2]+row_5_data[3][9:2] + row_5_data[4][9:2]);
+  end
+  */
+  
+  // logic [25:0] centre_pixel_d20;
+  // logic found_eop_or_sop_d20;
+
+  // SHIFT_REGGAE #(.DATA_WIDTH(27), .NO_STAGES(20)) shift_reg_centre_pixel (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in({found_eop_or_sop, row_3_data[2]}),
+  //   .data_out({found_eop_or_sop_d20, centre_pixel_d20})
+  // );
+
+  // logic [7:0] hue_d20;
+  // RGB_TO_HSV hsv_converter (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .rgb_in(row_3_data[2][25:2]),
+  //   .hue(hue_d20)
+  // );
+
+  // logic [23:0] hue_thresholded;
+
+  // always_comb begin
+  //   if(hue_d20 < 6 || hue_d20 >=249) begin
+  //     hue_thresholded = {8'd255, 8'd0, 8'd0}; //red
+  //   end else if (hue_d20 < 40 && hue_d20>=20) begin //orange
+  //     hue_thresholded = {8'd255, 8'd213, 8'd84}; 
+  //   end else if (hue_d20 < 233 && hue_d20>= 227) begin
+  //     hue_thresholded = {8'd255, 8'd117, 8'd198}; // Pink
+  //   end else if (hue_d20 < 150 && hue_d20>= 130) begin
+  //     hue_thresholded = {8'd178, 8'd216, 8'd237}; //blue
+  //   end
+  //   else begin
+  //     hue_thresholded = centre_pixel_d20[25:2];
+  //   end
+  // end
+
+  // assign source_data = found_eop_or_sop ? centre_pixel : {out_pixel_r_s4[13:6], out_pixel_g_s4[13:6], out_pixel_b_s4[13:6]};
+  // assign source_data = found_eop_or_sop_d20 ? centre_pixel_d20[25:2] : hue_thresholded;
+  
+  //assign source_data = centre_pixel_d20[25:2];
+  // assign source_sop = centre_pixel_d20[1];
+  // assign source_eop = centre_pixel_d20[0];
+
+  // assign source_data = row_3_data[2][25:2];
+
+  
+  
+
+
+  
+  
+  
 
   // assign source_valid_fifo5 = source_valid;
   // assign sink_ready_fifo5 = source_valid;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="Qsys" kind="system" version="18.1" fabric="QSYS">
  <!-- Format version 18.1 625 (Future versions may contain additional information.) -->
- <!-- 2022.06.12.19:19:45 -->
+ <!-- 2022.06.15.18:27:05 -->
  <!-- A collection of modules and connections -->
  <parameter name="clockCrossingAdapter">
   <type>com.altera.sopcmodel.ensemble.EClockAdapter</type>
@@ -53,7 +53,7 @@
  </parameter>
  <parameter name="generationId">
   <type>int</type>
-  <value>1655057961</value>
+  <value>1655313999</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>true</visible>
@@ -1053,7 +1053,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -1205,7 +1205,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -1357,7 +1357,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -1509,7 +1509,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -1661,7 +1661,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -1813,7 +1813,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -1965,7 +1965,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -2117,7 +2117,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -8020,7 +8020,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.BITS_PER_SYMBOL</name>
-   <value>8</value>
+   <value>32</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.CHANNEL_WIDTH</name>
@@ -8040,7 +8040,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.SYMBOLS_PER_BEAT</name>
-   <value>4</value>
+   <value>1</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.USE_AVALONMM_READ_SLAVE</name>
@@ -8100,7 +8100,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="bitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -8172,7 +8172,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="symbolsPerBeat">
    <type>int</type>
-   <value>4</value>
+   <value>1</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -8411,7 +8411,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -8475,7 +8475,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -8530,12 +8530,6 @@ parameters are a RESULT of the module parameters. -->
     <role>endofpacket</role>
    </port>
    <port>
-    <name>avalonst_sink_empty</name>
-    <direction>Input</direction>
-    <width>2</width>
-    <role>empty</role>
-   </port>
-   <port>
     <name>avalonst_sink_ready</name>
     <direction>Output</direction>
     <width>1</width>
@@ -8572,7 +8566,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -8636,7 +8630,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -8689,12 +8683,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>1</width>
     <role>endofpacket</role>
-   </port>
-   <port>
-    <name>avalonst_source_empty</name>
-    <direction>Output</direction>
-    <width>2</width>
-    <role>empty</role>
    </port>
    <port>
     <name>avalonst_source_ready</name>
@@ -9159,7 +9147,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.BITS_PER_SYMBOL</name>
-   <value>8</value>
+   <value>32</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.CHANNEL_WIDTH</name>
@@ -9179,7 +9167,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.SYMBOLS_PER_BEAT</name>
-   <value>4</value>
+   <value>1</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.USE_AVALONMM_READ_SLAVE</name>
@@ -9239,7 +9227,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="bitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -9311,7 +9299,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="symbolsPerBeat">
    <type>int</type>
-   <value>4</value>
+   <value>1</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -9550,7 +9538,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -9614,7 +9602,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -9669,12 +9657,6 @@ parameters are a RESULT of the module parameters. -->
     <role>endofpacket</role>
    </port>
    <port>
-    <name>avalonst_sink_empty</name>
-    <direction>Input</direction>
-    <width>2</width>
-    <role>empty</role>
-   </port>
-   <port>
     <name>avalonst_sink_ready</name>
     <direction>Output</direction>
     <width>1</width>
@@ -9711,7 +9693,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -9775,7 +9757,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -9828,12 +9810,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>1</width>
     <role>endofpacket</role>
-   </port>
-   <port>
-    <name>avalonst_source_empty</name>
-    <direction>Output</direction>
-    <width>2</width>
-    <role>empty</role>
    </port>
    <port>
     <name>avalonst_source_ready</name>
@@ -10298,7 +10274,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.BITS_PER_SYMBOL</name>
-   <value>8</value>
+   <value>32</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.CHANNEL_WIDTH</name>
@@ -10318,7 +10294,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.SYMBOLS_PER_BEAT</name>
-   <value>4</value>
+   <value>1</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.USE_AVALONMM_READ_SLAVE</name>
@@ -10378,7 +10354,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="bitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -10450,7 +10426,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="symbolsPerBeat">
    <type>int</type>
-   <value>4</value>
+   <value>1</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -10689,7 +10665,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -10753,7 +10729,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -10808,12 +10784,6 @@ parameters are a RESULT of the module parameters. -->
     <role>endofpacket</role>
    </port>
    <port>
-    <name>avalonst_sink_empty</name>
-    <direction>Input</direction>
-    <width>2</width>
-    <role>empty</role>
-   </port>
-   <port>
     <name>avalonst_sink_ready</name>
     <direction>Output</direction>
     <width>1</width>
@@ -10850,7 +10820,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -10914,7 +10884,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -10967,12 +10937,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>1</width>
     <role>endofpacket</role>
-   </port>
-   <port>
-    <name>avalonst_source_empty</name>
-    <direction>Output</direction>
-    <width>2</width>
-    <role>empty</role>
    </port>
    <port>
     <name>avalonst_source_ready</name>
@@ -11437,7 +11401,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.BITS_PER_SYMBOL</name>
-   <value>8</value>
+   <value>32</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.CHANNEL_WIDTH</name>
@@ -11457,7 +11421,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.SYMBOLS_PER_BEAT</name>
-   <value>4</value>
+   <value>1</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.USE_AVALONMM_READ_SLAVE</name>
@@ -11517,7 +11481,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="bitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -11589,7 +11553,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="symbolsPerBeat">
    <type>int</type>
-   <value>4</value>
+   <value>1</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -11828,7 +11792,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -11892,7 +11856,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -11947,12 +11911,6 @@ parameters are a RESULT of the module parameters. -->
     <role>endofpacket</role>
    </port>
    <port>
-    <name>avalonst_sink_empty</name>
-    <direction>Input</direction>
-    <width>2</width>
-    <role>empty</role>
-   </port>
-   <port>
     <name>avalonst_sink_ready</name>
     <direction>Output</direction>
     <width>1</width>
@@ -11989,7 +11947,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -12053,7 +12011,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -12106,12 +12064,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>1</width>
     <role>endofpacket</role>
-   </port>
-   <port>
-    <name>avalonst_source_empty</name>
-    <direction>Output</direction>
-    <width>2</width>
-    <role>empty</role>
    </port>
    <port>
     <name>avalonst_source_ready</name>
@@ -23460,7 +23412,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.TIMESTAMP</name>
-   <value>1655057961</value>
+   <value>1655313999</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.compatible</name>
@@ -23480,7 +23432,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.dts.params.timestamp</name>
-   <value>1655057961</value>
+   <value>1655313999</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.vendor</name>
@@ -23496,7 +23448,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="timestamp">
    <type>int</type>
-   <value>1655057961</value>
+   <value>1655313999</value>
    <derived>true</derived>
    <enabled>false</enabled>
    <visible>false</visible>
@@ -34129,9 +34081,9 @@ parameters are a RESULT of the module parameters. -->
    </port>
    <interrupt>
     <isBridge>false</isBridge>
-    <moduleName>fifo_1</moduleName>
+    <moduleName>fifo_4</moduleName>
     <slaveName>in_irq</slaveName>
-    <name>fifo_1.in_irq</name>
+    <name>fifo_4.in_irq</name>
     <interruptNumber>0</interruptNumber>
    </interrupt>
   </interface>
@@ -34504,9 +34456,9 @@ parameters are a RESULT of the module parameters. -->
    </port>
    <interrupt>
     <isBridge>false</isBridge>
-    <moduleName>fifo_2</moduleName>
+    <moduleName>fifo_3</moduleName>
     <slaveName>in_irq</slaveName>
-    <name>fifo_2.in_irq</name>
+    <name>fifo_3.in_irq</name>
     <interruptNumber>0</interruptNumber>
    </interrupt>
   </interface>
@@ -34879,9 +34831,9 @@ parameters are a RESULT of the module parameters. -->
    </port>
    <interrupt>
     <isBridge>false</isBridge>
-    <moduleName>fifo_3</moduleName>
+    <moduleName>fifo_2</moduleName>
     <slaveName>in_irq</slaveName>
-    <name>fifo_3.in_irq</name>
+    <name>fifo_2.in_irq</name>
     <interruptNumber>0</interruptNumber>
    </interrupt>
   </interface>
@@ -35254,9 +35206,9 @@ parameters are a RESULT of the module parameters. -->
    </port>
    <interrupt>
     <isBridge>false</isBridge>
-    <moduleName>fifo_4</moduleName>
+    <moduleName>fifo_1</moduleName>
     <slaveName>in_irq</slaveName>
-    <name>fifo_4.in_irq</name>
+    <name>fifo_1.in_irq</name>
     <interruptNumber>0</interruptNumber>
    </interrupt>
   </interface>
@@ -35347,7 +35299,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="inBitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -35411,7 +35363,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -35483,7 +35435,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outUseEmptyPort">
    <type>int</type>
-   <value>1</value>
+   <value>0</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -35491,7 +35443,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -35685,7 +35637,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -35749,7 +35701,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -35834,7 +35786,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -35898,7 +35850,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -35951,12 +35903,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>1</width>
     <role>endofpacket</role>
-   </port>
-   <port>
-    <name>out_0_empty</name>
-    <direction>Output</direction>
-    <width>2</width>
-    <role>empty</role>
    </port>
    <port>
     <name>out_0_channel</name>
@@ -35975,7 +35921,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="inBitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -36039,7 +35985,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -36111,7 +36057,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outUseEmptyPort">
    <type>int</type>
-   <value>1</value>
+   <value>0</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -36119,7 +36065,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -36313,7 +36259,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -36377,7 +36323,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -36462,7 +36408,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -36526,7 +36472,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -36579,12 +36525,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>1</width>
     <role>endofpacket</role>
-   </port>
-   <port>
-    <name>out_0_empty</name>
-    <direction>Output</direction>
-    <width>2</width>
-    <role>empty</role>
    </port>
    <port>
     <name>out_0_channel</name>
@@ -36603,7 +36543,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="inBitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -36667,7 +36607,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -36739,7 +36679,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outUseEmptyPort">
    <type>int</type>
-   <value>1</value>
+   <value>0</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -36747,7 +36687,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -36941,7 +36881,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -37005,7 +36945,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -37090,7 +37030,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -37154,7 +37094,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -37207,12 +37147,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>1</width>
     <role>endofpacket</role>
-   </port>
-   <port>
-    <name>out_0_empty</name>
-    <direction>Output</direction>
-    <width>2</width>
-    <role>empty</role>
    </port>
    <port>
     <name>out_0_channel</name>
@@ -37231,7 +37165,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="inBitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -37295,7 +37229,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -37367,7 +37301,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outUseEmptyPort">
    <type>int</type>
-   <value>1</value>
+   <value>0</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -37375,7 +37309,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -37569,7 +37503,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -37633,7 +37567,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -37718,7 +37652,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -37782,7 +37716,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -37837,12 +37771,6 @@ parameters are a RESULT of the module parameters. -->
     <role>endofpacket</role>
    </port>
    <port>
-    <name>out_0_empty</name>
-    <direction>Output</direction>
-    <width>2</width>
-    <role>empty</role>
-   </port>
-   <port>
     <name>out_0_channel</name>
     <direction>Output</direction>
     <width>1</width>
@@ -37859,7 +37787,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="inBitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -37915,7 +37843,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inUseEmptyPort">
    <type>int</type>
-   <value>1</value>
+   <value>0</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -37923,7 +37851,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -38003,7 +37931,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -38197,7 +38125,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -38261,7 +38189,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -38314,12 +38242,6 @@ parameters are a RESULT of the module parameters. -->
     <direction>Input</direction>
     <width>1</width>
     <role>endofpacket</role>
-   </port>
-   <port>
-    <name>in_0_empty</name>
-    <direction>Input</direction>
-    <width>2</width>
-    <role>empty</role>
    </port>
    <port>
     <name>in_0_channel</name>
@@ -38358,7 +38280,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -38422,7 +38344,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -38487,7 +38409,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="inBitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -38543,7 +38465,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inUseEmptyPort">
    <type>int</type>
-   <value>1</value>
+   <value>0</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -38551,7 +38473,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -38631,7 +38553,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -38825,7 +38747,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -38889,7 +38811,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -38944,12 +38866,6 @@ parameters are a RESULT of the module parameters. -->
     <role>endofpacket</role>
    </port>
    <port>
-    <name>in_0_empty</name>
-    <direction>Input</direction>
-    <width>2</width>
-    <role>empty</role>
-   </port>
-   <port>
     <name>in_0_channel</name>
     <direction>Input</direction>
     <width>1</width>
@@ -38986,7 +38902,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -39050,7 +38966,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -39115,7 +39031,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="inBitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39171,7 +39087,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inUseEmptyPort">
    <type>int</type>
-   <value>1</value>
+   <value>0</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39179,7 +39095,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39259,7 +39175,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39453,7 +39369,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -39517,7 +39433,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -39572,12 +39488,6 @@ parameters are a RESULT of the module parameters. -->
     <role>endofpacket</role>
    </port>
    <port>
-    <name>in_0_empty</name>
-    <direction>Input</direction>
-    <width>2</width>
-    <role>empty</role>
-   </port>
-   <port>
     <name>in_0_channel</name>
     <direction>Input</direction>
     <width>1</width>
@@ -39614,7 +39524,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -39678,7 +39588,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -39743,7 +39653,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="inBitsPerSymbol">
    <type>int</type>
-   <value>8</value>
+   <value>32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39799,7 +39709,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inUseEmptyPort">
    <type>int</type>
-   <value>1</value>
+   <value>0</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39807,7 +39717,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="inEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -39887,7 +39797,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="outEmptyWidth">
    <type>int</type>
-   <value>2</value>
+   <value>1</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -40081,7 +39991,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -40145,7 +40055,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -40200,12 +40110,6 @@ parameters are a RESULT of the module parameters. -->
     <role>endofpacket</role>
    </port>
    <port>
-    <name>in_0_empty</name>
-    <direction>Input</direction>
-    <width>2</width>
-    <role>empty</role>
-   </port>
-   <port>
     <name>in_0_channel</name>
     <direction>Input</direction>
     <width>1</width>
@@ -40242,7 +40146,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="dataBitsPerSymbol">
     <type>int</type>
-    <value>8</value>
+    <value>32</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -40306,7 +40210,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="symbolsPerBeat">
     <type>int</type>
-    <value>4</value>
+    <value>1</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -44161,11 +44065,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>sender</endConnectionPoint>
  </connection>
  <connection
-   name="irq_synchronizer.receiver/fifo_1.in_irq"
+   name="irq_synchronizer.receiver/fifo_4.in_irq"
    kind="interrupt"
    version="18.1"
    start="irq_synchronizer.receiver"
-   end="fifo_1.in_irq">
+   end="fifo_4.in_irq">
   <parameter name="irqNumber">
    <type>int</type>
    <value>0</value>
@@ -44192,7 +44096,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <startModule>irq_synchronizer</startModule>
   <startConnectionPoint>receiver</startConnectionPoint>
-  <endModule>fifo_1</endModule>
+  <endModule>fifo_4</endModule>
   <endConnectionPoint>in_irq</endConnectionPoint>
  </connection>
  <connection
@@ -44285,11 +44189,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>sender</endConnectionPoint>
  </connection>
  <connection
-   name="irq_synchronizer_001.receiver/fifo_2.in_irq"
+   name="irq_synchronizer_001.receiver/fifo_3.in_irq"
    kind="interrupt"
    version="18.1"
    start="irq_synchronizer_001.receiver"
-   end="fifo_2.in_irq">
+   end="fifo_3.in_irq">
   <parameter name="irqNumber">
    <type>int</type>
    <value>0</value>
@@ -44316,7 +44220,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <startModule>irq_synchronizer_001</startModule>
   <startConnectionPoint>receiver</startConnectionPoint>
-  <endModule>fifo_2</endModule>
+  <endModule>fifo_3</endModule>
   <endConnectionPoint>in_irq</endConnectionPoint>
  </connection>
  <connection
@@ -44409,11 +44313,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>sender</endConnectionPoint>
  </connection>
  <connection
-   name="irq_synchronizer_002.receiver/fifo_3.in_irq"
+   name="irq_synchronizer_002.receiver/fifo_2.in_irq"
    kind="interrupt"
    version="18.1"
    start="irq_synchronizer_002.receiver"
-   end="fifo_3.in_irq">
+   end="fifo_2.in_irq">
   <parameter name="irqNumber">
    <type>int</type>
    <value>0</value>
@@ -44440,7 +44344,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <startModule>irq_synchronizer_002</startModule>
   <startConnectionPoint>receiver</startConnectionPoint>
-  <endModule>fifo_3</endModule>
+  <endModule>fifo_2</endModule>
   <endConnectionPoint>in_irq</endConnectionPoint>
  </connection>
  <connection
@@ -44533,11 +44437,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>sender</endConnectionPoint>
  </connection>
  <connection
-   name="irq_synchronizer_003.receiver/fifo_4.in_irq"
+   name="irq_synchronizer_003.receiver/fifo_1.in_irq"
    kind="interrupt"
    version="18.1"
    start="irq_synchronizer_003.receiver"
-   end="fifo_4.in_irq">
+   end="fifo_1.in_irq">
   <parameter name="irqNumber">
    <type>int</type>
    <value>0</value>
@@ -44564,7 +44468,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <startModule>irq_synchronizer_003</startModule>
   <startConnectionPoint>receiver</startConnectionPoint>
-  <endModule>fifo_4</endModule>
+  <endModule>fifo_1</endModule>
   <endConnectionPoint>in_irq</endConnectionPoint>
  </connection>
  <connection
@@ -47582,5 +47486,5 @@ parameters are a RESULT of the module parameters. -->
   <version>18.1</version>
  </plugin>
  <reportVersion>18.1 625</reportVersion>
- <uniqueIdentifier>80B655D961A60000018159246213</uniqueIdentifier>
+ <uniqueIdentifier>80B655D961A600000181686738D5</uniqueIdentifier>
 </EnsembleReport>
