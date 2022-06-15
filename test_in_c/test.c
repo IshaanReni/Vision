@@ -19,10 +19,28 @@ int main()
 
 	for (i32 i = 0; i < x * y; i++)
 	{
-		if (hsv_data[i].hue < 20)
+		// if (hsv_data[i].hue < 20)
+		// {
+		// 	rgb_data[i] = {255, 0, 0};
+		// } 
+		if (hue_pixels[i] < 20 || hue_pixels[i] > 250) //red
 		{
 			rgb_data[i] = {255, 0, 0};
+		} else if (hue_pixels[i] < 60 && hue_pixels[i] > 50) //yellow
+		{
+			rgb_data[i] = {252, 252, 3};
+		} else if (hue_pixels[i] < 230 && hue_pixels[i] > 220) // pink
+		{
+			rgb_data[i] = {168, 50, 153};
+		} else if (hue_pixels[i] < 35 && hue_pixels[i] > 21) // orangey background
+		{
+			rgb_data[i] = {168, 97, 50};
 		}
+		// else 
+		// {
+			// rgb_data[i] = {0, 0, 0};
+		// }
+	}
 	}
 	stbi_write_png("images/results/hue_thresholded.png", x, y, n, rgb_data, x * n * sizeof(u8));
 
