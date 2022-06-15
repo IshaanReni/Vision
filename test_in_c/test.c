@@ -37,14 +37,22 @@ int main()
 			// {
 			// 	rgb_data[i] = {255, 0, 0};
 			// }
+<<<<<<< HEAD
 			// else if ((hsv_data[i].hue < 50 && hsv_data[i].hue > 35) && (hsv_data[i].val > 160 && hsv_data[i].val < 210) && (hsv_data[i].sat > 130 && hsv_data[i].sat < 200)) // top half yellow
 			// {
 			// 	rgb_data[i] = {255, 255, 0};
 			// }
+=======
+			//if ((hsv_data[i].hue < 45 && hsv_data[i].hue > 38) && (hsv_data[i].val > 160 && hsv_data[i].val < 210)) // top half yellow
+			//{
+			//	rgb_data[i] = {255, 255, 0};
+			//}
+>>>>>>> eb464311c402b6123c86980ac5854909134b0f32
 			// else if (hsv_data[i].hue < 230 && hsv_data[i].hue > 220) // pink
 			// {
 			// 	rgb_data[i] = {168, 50, 153};
 			// }
+<<<<<<< HEAD
 			// else if ((hsv_data[i].hue < 155 && hsv_data[i].hue > 113) && (hsv_data[i].val > 25 && hsv_data[i].val < 50)) // && hsv_data[i].sat > 100) // Dark blue
 			//{
 			//	rgb_data[i] = {0, 0, 255};
@@ -53,6 +61,16 @@ int main()
 			{
 				rgb_data[i] = {0, 255, 0};
 			}
+=======
+			  if (hsv_data[i].hue < 130 && hsv_data[i].hue > 100 && hsv_data[i].val > 20 && hsv_data[i].val < 90 && hsv_data[i].sat >100) // Dark blue
+			 {
+			 	rgb_data[i] = {0, 0, 255};
+			 }
+			// else if (hsv_data[i].hue < 85 && hsv_data[i].hue > 75 && hsv_data[i].val > 130) // light green
+			// {
+			// 	rgb_data[i] = {0, 255, 0};
+			// }
+>>>>>>> eb464311c402b6123c86980ac5854909134b0f32
 			// // else if (hsv_data[i].hue < 85 && hsv_data[i].hue > 75 && hsv_data[i].val > 120) // teal
 			// {
 			// 	rgb_data[i] = {0, 255, 0};

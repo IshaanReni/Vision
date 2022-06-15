@@ -300,11 +300,11 @@
 					"strict" : false
 				},
 				{
-					"name" : "MIPI_PIXEL_CLK",
+					"name" : "SW[0]",
 					"strict" : false
 				},
 				{
-					"name" : "SW[0]",
+					"name" : "MIPI_PIXEL_CLK",
 					"strict" : false
 				},
 				{

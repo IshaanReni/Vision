@@ -465,7 +465,7 @@ endgenerate
   );
 
   assign source_valid_fifo4 = source_valid;
-  assign sink_ready_fifo4 =source_valid;
+  assign sink_ready_fifo4 = source_valid;
 
   // STAGE 5
   SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_5 (
@@ -525,7 +525,7 @@ endgenerate
   end
   
 
-  assign centre_pixel = row_3_data[7];
+  assign centre_pixel = row_1_data[0];
   assign source_data = found_eop_or_sop ? centre_pixel[25:2] : {out_pixel_r[7:0], out_pixel_g[7:0], out_pixel_b[7:0]};
   assign source_sop = centre_pixel[1];
   assign source_eop = centre_pixel[0];
@@ -535,11 +535,11 @@ endgenerate
   always_ff @(posedge clk) begin
     
     if(source_valid) begin 
-      p_offset = 9;
+      //p_offset = 9;
       
-      out_pixel_b <= (row_2_data[0][9:2] + row_3_data[0][9:2] /*+ row_3_data[1][9:2] + row_3_data[2][9:2] + row_3_data[3][9:2] + row_3_data[4][9:2]*/)>>1;
-      out_pixel_g <= (row_2_data[0][17:10] + row_3_data[0][17:10] /*+ row_3_data[1][17:10] + row_3_data[2][17:10] + row_3_data[3][17:10] + row_3_data[4][17:10]*/)>> 1;
-      out_pixel_r <= (row_2_data[0][25:18] + row_3_data[0][25:18] /*+ row_3_data[1][25:18] + row_3_data[2][25:18] + row_3_data[3][25:18] + row_3_data[4][25:18]*/)>> 1;
+      out_pixel_b <= (row_1_data[0][9:2] + row_2_data[0][9:2] /*+ row_3_data[1][9:2] + row_3_data[2][9:2] + row_3_data[3][9:2] + row_3_data[4][9:2]*/)>>1;
+      out_pixel_g <= (row_1_data[0][17:10] + row_2_data[0][17:10] /*+ row_3_data[1][17:10] + row_3_data[2][17:10] + row_3_data[3][17:10] + row_3_data[4][17:10]*/)>> 1;
+      out_pixel_r <= (row_1_data[0][25:18] + row_2_data[0][25:18] /*+ row_3_data[1][25:18] + row_3_data[2][25:18] + row_3_data[3][25:18] + row_3_data[4][25:18]*/)>> 1;
       
       // out_pixel_b_s0 <= (row_2_data[p_offset + 1][9:2] + row_2_data[p_offset + 2][9:2] + row_2_data[p_offset + 3][9:2]);
       // out_pixel_g_s0 <= (row_2_data[p_offset + 1][17:10] + row_2_data[p_offset + 2][17:10] + row_2_data[p_offset + 3][17:10]);
