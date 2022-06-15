@@ -1,13 +1,15 @@
 #include "color_operations.h"
 
-u8 *rgb_to_hue(u8 *data, i32 x, i32 y, i32 n)
+HSV *rgb_to_hsv(u8 *data, i32 x, i32 y, i32 n)
 {
 	if (n != 3)
 	{
 		printf("Please only provide RBG data\n");
 		return NULL;
 	}
-	u8 *hue = (u8 *)malloc(x * y * sizeof(u8));
+
+	HSV *hsv_data = (HSV *)malloc(x * y * sizeof(HSV));
+
 	i32 h = 0;
 	for (u8 *p = data; p < (data + x * y * n); p += n)
 	{
@@ -74,11 +76,19 @@ u8 *rgb_to_hue(u8 *data, i32 x, i32 y, i32 n)
 			}
 		}
 
-		hue[h] = H * 255;
-		// printf("%f %f %f, %f %i\n", R, G, B, H, hue[h]);
+		hsv_data[h].hue = H * 255;
+		if (max > 0)
+		{
+			hsv_data[h].sat = (del_max * 255) / max;
+		}
+		else
+		{
+			hsv_data[h].sat = 255;
+		}
+		hsv_data[h].val = max * 255;
+		printf("%f %f %f, %f H: %i, S: %i, V: %i\n", R, G, B, H, hsv_data[h].hue, hsv_data[h].sat, hsv_data[h].val);
 
 		h++;
 	}
-
-	return hue;
+	return hsv_data;
 }

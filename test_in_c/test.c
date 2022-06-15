@@ -15,11 +15,11 @@ int main()
 	i32 x, y, n;
 	RGB *rgb_data = (RGB *)stbi_load("images/test1.png", &x, &y, &n, 0);
 	i32 bin_count = 15;
-	u8 *hue_pixels = rgb_to_hue((unsigned char *)rgb_data, x, y, n);
+	HSV *hsv_data = rgb_to_hsv((unsigned char *)rgb_data, x, y, n);
 
 	for (i32 i = 0; i < x * y; i++)
 	{
-		if (hue_pixels[i] < 20)
+		if (hsv_data[i].hue < 20)
 		{
 			rgb_data[i] = {255, 0, 0};
 		}

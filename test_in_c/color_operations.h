@@ -7,4 +7,9 @@ typedef struct
 	u8 r, g, b;
 } RGB;
 
-u8 *rgb_to_hue(u8 *data, i32 x, i32 y, i32 n);
+typedef struct
+{
+	u8 hue, sat, val;
+} HSV;
+
+HSV *rgb_to_hsv(u8 *data, i32 x, i32 y, i32 n);
