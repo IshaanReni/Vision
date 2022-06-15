@@ -86,7 +86,7 @@ HSV *rgb_to_hsv(u8 *data, i32 x, i32 y, i32 n)
 			hsv_data[h].sat = 255;
 		}
 		hsv_data[h].val = max * 255;
-		printf("%f %f %f, %f H: %i, S: %i, V: %i\n", R, G, B, H, hsv_data[h].hue, hsv_data[h].sat, hsv_data[h].val);
+		// printf("%f %f %f, %f H: %i, S: %i, V: %i\n", R, G, B, H, hsv_data[h].hue, hsv_data[h].sat, hsv_data[h].val);
 
 		h++;
 	}

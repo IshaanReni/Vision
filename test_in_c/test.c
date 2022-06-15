@@ -12,38 +12,47 @@
 
 int main()
 {
-	i32 x, y, n;
-	RGB *rgb_data = (RGB *)stbi_load("images/test1.png", &x, &y, &n, 0);
-	i32 bin_count = 15;
-	HSV *hsv_data = rgb_to_hsv((unsigned char *)rgb_data, x, y, n);
 
-	for (i32 i = 0; i < x * y; i++)
-	{
-		// if (hsv_data[i].hue < 20)
-		// {
-		// 	rgb_data[i] = {255, 0, 0};
-		// } 
-		if (hue_pixels[i] < 20 || hue_pixels[i] > 250) //red
+	for (i32 p = 1; p <= 8; p++) {
+		i32 x, y, n;
+		char buf[100];
+		snprintf(buf, 100, "images/test%i.png", p);
+
+		RGB *rgb_data = (RGB *)stbi_load(buf, &x, &y, &n, 0);
+		i32 bin_count = 15;
+		HSV *hsv_data = rgb_to_hsv((unsigned char *)rgb_data, x, y, n);
+
+		for (i32 i = 0; i < x * y; i++)
 		{
-			rgb_data[i] = {255, 0, 0};
-		} else if (hue_pixels[i] < 60 && hue_pixels[i] > 50) //yellow
-		{
-			rgb_data[i] = {252, 252, 3};
-		} else if (hue_pixels[i] < 230 && hue_pixels[i] > 220) // pink
-		{
-			rgb_data[i] = {168, 50, 153};
-		} else if (hue_pixels[i] < 35 && hue_pixels[i] > 21) // orangey background
-		{
-			rgb_data[i] = {168, 97, 50};
+			// if (hsv_data[i].hue < 20)
+			// {
+			// 	rgb_data[i] = {255, 0, 0};
+			// } 
+			if (hsv_data[i].hue < 20 || hsv_data[i].hue > 250) //red
+			{
+				rgb_data[i] = {255, 0, 0};
+			} else if (hsv_data[i].hue < 60 && hsv_data[i].hue > 50) //yellow
+			{
+				rgb_data[i] = {252, 252, 3};
+			} else if (hsv_data[i].hue < 230 && hsv_data[i].hue > 220) // pink
+			{
+				rgb_data[i] = {168, 50, 153};
+			} else if (hsv_data[i].hue < 35 && hsv_data[i].hue > 21) // orangey background
+			{
+				rgb_data[i] = {168, 97, 50};
+			}
+			// else 
+			// {
+				// rgb_data[i] = {0, 0, 0};
+			// }
 		}
-		// else 
-		// {
-			// rgb_data[i] = {0, 0, 0};
-		// }
+		snprintf(buf, 100, "images/results/test%i_result.png", p);
+		stbi_write_png(buf, x, y, n, rgb_data, x * n * sizeof(u8));
 	}
-	}
-	stbi_write_png("images/results/hue_thresholded.png", x, y, n, rgb_data, x * n * sizeof(u8));
+	
 
+}
+	
 	/*
 	u8 hue_counts[bin_count] = {0};
 	for (i32 i = 0; i < x * y; i++)
@@ -80,4 +89,3 @@ int main()
 		stbi_write_png(buf, x, y, 1, hue_blob, x * sizeof(u8));
 	}
 	*/
-}
