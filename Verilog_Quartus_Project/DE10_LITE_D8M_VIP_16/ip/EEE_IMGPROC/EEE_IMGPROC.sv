@@ -51,7 +51,7 @@ extern module RGB_TO_HSV (
     input logic valid_in,
 
     input  logic [23:0] rgb_in,
-    output logic [ 7:0] hue
+    output logic [23:0] hsv_out
 
 );
 
@@ -89,6 +89,7 @@ module EEE_IMGPROC #(
     output logic source_sop,
     output logic source_eop,
 
+    
     // streaming sink fifo1
     input logic [31:0] sink_data_fifo1,
     input logic sink_valid_fifo1,
@@ -148,6 +149,23 @@ module EEE_IMGPROC #(
     output logic source_sop_fifo4,
     output logic source_eop_fifo4,
 
+    /*
+    //FIFO ADDED FOR MODAL KERNEL
+
+    // streaming sink fifo5
+    input logic [31:0] sink_data_fifo4,
+    input logic sink_valid_fifo5,
+    output logic sink_ready_fifo5,
+    input logic sink_sop_fifo5,
+    input logic sink_eop_fifo5,
+
+    // streaming source fifo5
+    output logic [31:0] source_data_fifo5,
+    output logic source_valid_fifo5,
+    input logic source_ready_fifo5,
+    output logic source_sop_fifo5,
+    output logic source_eop_fifo5,
+    */
     // conduit export
     input logic mode
 );
@@ -199,41 +217,6 @@ module EEE_IMGPROC #(
       end
     end
   end
-
-
-  //PERSO Addition
-  //Solid Kernel relying on delay line
-  //integer k_halfwidth = 4;
-  //integer k_tot_size = (2 * k_halfwidth + 1) * (2 * k_halfwidth + 1);  //this is 9x9 kernel
-
-
-  //NB : coordinates are [y][x] in JLS code
-  // logic to read from buffer (from 3D coordinates):
-  // we use x,y coordinate already calculated (end of buffer and bottom right of kernel)
-  //attempt to rewrite:
-  /*
-generate
-genvar i;
-for (i=0; i< IMAGE_W; i = i + 1) begin
-	genvar j;
-	for (always< IMAGE_H; j = j + 1) begin
-		if( (x>(2*k_halfwidth+1)) && (y>(2*k_halfwidth+1)) ) begin //check we are not out of bounds
-
-			for (integer m=0; m<(2*k_halfwidth+1)) begin 
-				for(integer n=0<(2*k_halfwidth+1)) begin
-					p+= hsv_delayline[j+i*(2*k_halfwidth+1)];
-				end
-			end
-
-			p /= k_tot_size - 10; 
-			
-			
-			hsv_delayline[k_halfwidth] = p; //middle of the kernel
-		end
-	end
-end
-endgenerate
-*/
 
   //Find first and last red pixels
   logic [10:0] x_min, y_min, x_max, y_max;
@@ -326,7 +309,6 @@ endgenerate
       .empty(msg_buf_empty)
   );
 
-
   //Streaming registers to buffer video signal
   // feeds into the ring buffer
   //Streaming registers to buffer video signal
@@ -347,28 +329,15 @@ endgenerate
   logic source_sop_exposed_step1, source_eop_exposed_step1;
   logic [25:0] row_1_data [15:0];
 
+  //for modal Kernel
+
+  logic [23:0] source_data_intermediate_modal;
+  logic source_sop_intermediate_modal, source_eop_intermediate_modal;
+  logic [23:0] source_data_exposed_modal [15:0];
+  logic source_sop_exposed_modal, source_eop_exposed_modal;
+  logic [25:0] modal_data [15:0];
 
   logic [23:0] source_data_intermediate_step2;
-  logic source_sop_intermediate_step2, source_eop_intermediate_step2;
-  logic [23:0] source_data_exposed_step2;
-  logic source_sop_exposed_step2, source_eop_exposed_step2;
-  logic [25:0] row_2_data [15:0];
-
-  logic [23:0] source_data_intermediate_step3;
-  logic source_sop_intermediate_step3, source_eop_intermediate_step3;
-  logic [23:0] source_data_exposed_step3;
-  logic source_sop_exposed_step3, source_eop_exposed_step3;
-  logic [25:0] row_3_data [15:0];
-
-  logic [23:0] source_data_intermediate_step4;
-  logic source_sop_intermediate_step4, source_eop_intermediate_step4;
-  logic [23:0] source_data_exposed_step4;
-  logic source_sop_exposed_step4, source_eop_exposed_step4;
-  logic [25:0] row_4_data [15:0];
-
-  logic [25:0] row_5_data [15:0];
-  logic [23:0] source_data_intermediate_step5;
-  logic source_sop_intermediate_step5, source_eop_intermediate_step5;
 
   STREAM_REG #(.DATA_WIDTH(26)) out_reg (
     .clk(clk),
@@ -388,392 +357,259 @@ endgenerate
     .valid_in(source_valid),
     .data_in({source_data_intermediate_step1, source_sop_intermediate_step1, source_eop_intermediate_step1}),
     .internal_out(row_1_data),
-    .data_out({source_data_exposed_step1,source_sop_exposed_step1,source_eop_exposed_step1})
+    .data_out({source_data_intermediate_modal, source_sop_intermediate_modal, source_eop_intermediate_modal})
   );
-  
-  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(112)) shift_reg_1 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in({source_data_exposed_step1, source_sop_exposed_step1, source_eop_exposed_step1}),
-    .data_out({source_data_fifo1, source_sop_fifo1, source_eop_fifo1})
-  );
-
-  assign source_valid_fifo1 = source_valid;
-  assign sink_ready_fifo1 =source_valid;
-  //input source_ready_fifo1 is unassigned
-  //input sink_valid_fifo1 is unassigned too
-
-  // STAGE 2
-  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_2 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in({sink_data_fifo1, sink_sop_fifo1, sink_eop_fifo1}),
-    .internal_out(row_2_data),
-    .data_out({source_data_exposed_step2, source_sop_exposed_step2, source_eop_exposed_step2})
-  );
-
-  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(112)) shift_reg_2 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in({source_data_exposed_step2, source_sop_exposed_step2, source_eop_exposed_step2}),
-    .data_out({source_data_fifo2, source_sop_fifo2, source_eop_fifo2})
-  );
-
-  assign source_valid_fifo2 = source_valid;
-  assign sink_ready_fifo2 =source_valid;
-
-  // STAGE 3
-  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_3 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in({source_data_fifo2, source_sop_fifo2, source_eop_fifo2}),
-    .internal_out(row_3_data),
-    .data_out({source_data_exposed_step3, source_sop_exposed_step3, source_eop_exposed_step3})
-  );
-
-  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(112)) shift_reg_3 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in({source_data_exposed_step3, source_sop_exposed_step3, source_eop_exposed_step3}),
-    .data_out({source_data_fifo3, source_sop_fifo3, source_eop_fifo3})
-  );
-
-  assign source_valid_fifo3 = source_valid;
-  assign sink_ready_fifo3 =source_valid;
-  
-  // STAGE 4
-  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_4 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in({source_data_fifo3, source_sop_fifo3, source_eop_fifo3}),
-    .internal_out(row_4_data),
-    .data_out({source_data_exposed_step4, source_sop_exposed_step4, source_eop_exposed_step4})
-  );
-
-  SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(112)) shift_reg_4 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in({source_data_exposed_step4, source_sop_exposed_step4, source_eop_exposed_step4}),
-    .data_out({source_data_fifo4, source_sop_fifo4, source_eop_fifo4})
-  );
-
-  assign source_valid_fifo4 = source_valid;
-  assign sink_ready_fifo4 = source_valid;
-
-  // STAGE 5
-  SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_5 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in({source_data_fifo4, source_sop_fifo4, source_eop_fifo4}),
-    .internal_out(row_5_data),
-    .data_out({source_data_intermediate_step5, source_sop_intermediate_step5, source_eop_intermediate_step5})
-  );
-
-
-
-  //CODE FOR Gaussian Blur Kernel
-  logic [15:0] out_pixel_r = 16'b0;
-  logic [15:0] out_pixel_g = 16'b0;
-  logic [15:0] out_pixel_b = 16'b0;
-  logic [25:0] centre_pixel;
-
-  logic [15:0] out_pixel_r_s0 = 16'b0;
-  logic [15:0] out_pixel_g_s0 = 16'b0;
-  logic [15:0] out_pixel_b_s0 = 16'b0;
-  
-  logic [15:0] out_pixel_r_s1 = 16'b0;
-  logic [15:0] out_pixel_g_s1 = 16'b0;
-  logic [15:0] out_pixel_b_s1 = 16'b0;
-  
-  logic [15:0] out_pixel_r_s2 = 16'b0;
-  logic [15:0] out_pixel_g_s2 = 16'b0;
-  logic [15:0] out_pixel_b_s2 = 16'b0;
-  
-  logic [15:0] out_pixel_r_s3 = 16'b0;
-  logic [15:0] out_pixel_g_s3 = 16'b0;
-  logic [15:0] out_pixel_b_s3 = 16'b0;
-
-  logic [15:0] out_pixel_r_s4 = 16'b0;
-  logic [15:0] out_pixel_g_s4 = 16'b0;
-  logic [15:0] out_pixel_b_s4 = 16'b0;
-
-
   
   logic found_eop_or_sop;
-
   always_comb begin
     found_eop_or_sop = 0;
 
     for(integer i = 0; i < 16; i = i + 1) begin
-      if(row_5_data[i][0] | row_5_data[i][1] | 
-        row_4_data[i][0] | row_4_data[i][1] | 
-        row_3_data[i][0] | row_3_data[i][1] |
-        row_2_data[i][0] | row_2_data[i][1] | 
-        row_1_data[i][0] | row_1_data[i][1])
+      if(row_1_data[i][0] | row_1_data[i][1])
         begin 
         found_eop_or_sop = 1;
       end
     end
   end
-  
 
-  assign centre_pixel = row_1_data[0];
-  assign source_data = found_eop_or_sop ? centre_pixel[25:2] : {out_pixel_r[7:0], out_pixel_g[7:0], out_pixel_b[7:0]};
-  assign source_sop = centre_pixel[1];
-  assign source_eop = centre_pixel[0];
   
+  logic [25:0] fallback_data_d36;
+  logic found_eop_or_sop_d36;
 
-  integer p_offset = 9;
+  SHIFT_REGGAE #(.DATA_WIDTH(27), .NO_STAGES(36)) shift_reg_fallback (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({found_eop_or_sop, row_1_data[0][25:0]}),
+    .data_out({found_eop_or_sop_d36, fallback_data_d36})
+  );
+
+  logic [23:0] gaus_blur_pixel;
+  logic [31:0] gaus_intermidate_r, gaus_intermidate_g, gaus_intermidate_b;
+
   always_ff @(posedge clk) begin
-    
-    if(source_valid) begin 
-      //p_offset = 9;
-      
-      out_pixel_b <= (row_1_data[0][9:2] + row_2_data[0][9:2] /*+ row_3_data[1][9:2] + row_3_data[2][9:2] + row_3_data[3][9:2] + row_3_data[4][9:2]*/)>>1;
-      out_pixel_g <= (row_1_data[0][17:10] + row_2_data[0][17:10] /*+ row_3_data[1][17:10] + row_3_data[2][17:10] + row_3_data[3][17:10] + row_3_data[4][17:10]*/)>> 1;
-      out_pixel_r <= (row_1_data[0][25:18] + row_2_data[0][25:18] /*+ row_3_data[1][25:18] + row_3_data[2][25:18] + row_3_data[3][25:18] + row_3_data[4][25:18]*/)>> 1;
-      
-      // out_pixel_b_s0 <= (row_2_data[p_offset + 1][9:2] + row_2_data[p_offset + 2][9:2] + row_2_data[p_offset + 3][9:2]);
-      // out_pixel_g_s0 <= (row_2_data[p_offset + 1][17:10] + row_2_data[p_offset + 2][17:10] + row_2_data[p_offset + 3][17:10]);
-      // out_pixel_r_s0 <= (row_2_data[p_offset + 1][25:18] + row_2_data[p_offset + 2][25:18] + row_2_data[p_offset + 3][25:18]);
+    if(source_valid) begin
+      gaus_intermidate_r <= (
+                            {24'b0, row_1_data[0][25:18]} + 
+                            ({24'b0, row_1_data[1][25:18]} << 3) +
+                            ({24'b0, row_1_data[2][25:18]} * 28) + 
+                            ({24'b0, row_1_data[3][25:18]} * 56)  +
+                            ({24'b0, row_1_data[4][25:18]} * 70) +
+                            ({24'b0, row_1_data[5][25:18]} * 56) + 
+                            ({24'b0, row_1_data[6][25:18]} * 28) +
+                            ({24'b0, row_1_data[7][25:18]} << 3) +
+                            {24'b0, row_1_data[8][25:18]}) >> 8;
 
-      // p_offset = p_offset - 1;
-      // out_pixel_b_s1 <= out_pixel_b_s0 + (row_3_data[p_offset + 1][9:2] + row_3_data[p_offset + 2][9:2] + row_3_data[p_offset + 3][9:2]);
-      // out_pixel_g_s1 <= out_pixel_g_s0 + (row_3_data[p_offset + 1][17:10] + row_3_data[p_offset + 2][17:10] + row_3_data[p_offset + 3][17:10]);
-      // out_pixel_r_s1 <= out_pixel_r_s0 + (row_3_data[p_offset + 1][25:18] + row_3_data[p_offset + 2][25:18] + row_3_data[p_offset + 3][25:18]);
-      
-      // p_offset = p_offset - 1;
-      // out_pixel_b_s2 <= (out_pixel_b_s1 + (row_4_data[p_offset + 1][9:2] + row_4_data[p_offset + 2][9:2] + row_4_data[p_offset + 3][9:2]))>>4;
-      // out_pixel_g_s2 <= (out_pixel_g_s1 + (row_4_data[p_offset + 1][17:10] + row_4_data[p_offset + 2][17:10] + row_4_data[p_offset + 3][17:10]))>>4;
-      // out_pixel_r_s2 <= (out_pixel_r_s1 + (row_4_data[p_offset + 1][25:18] + row_4_data[p_offset + 2][25:18] + row_4_data[p_offset + 3][25:18]))>>4;
-    
-      
-      // out_pixel_b <= (row_2_data[1][9:2] + row_2_data[2][9:2] + row_2_data[3][9:2] + row_3_data[1][9:2] + row_3_data[2][9:2] + row_3_data[3][9:2] + row_4_data[1][9:2] + row_4_data[2][9:2] + row_4_data[3][9:2])>>4;
-      // out_pixel_g <= (row_2_data[1][17:10] + row_2_data[2][17:10] + row_2_data[3][17:10] + row_3_data[1][17:10] + row_3_data[2][17:10] + row_3_data[3][17:10] + row_4_data[1][17:10] + row_4_data[2][17:10] + row_4_data[3][17:10])>>4;
-      // out_pixel_r <= (row_2_data[1][25:18] + row_2_data[2][25:18] + row_2_data[3][25:18] + row_3_data[1][25:18] + row_3_data[2][25:18] + row_3_data[3][25:18] + row_4_data[1][25:18] + row_4_data[2][25:18] + row_4_data[3][25:18])>>4;
+      gaus_intermidate_g <= (
+                            {24'b0, row_1_data[0][17:10]} + 
+                            ({24'b0, row_1_data[1][17:10]} << 3)+
+                            ({24'b0, row_1_data[2][17:10]} * 28)+
+                            ({24'b0, row_1_data[3][17:10]} *56)+
+                            ({24'b0, row_1_data[4][17:10]} *70)+
+                            ({24'b0, row_1_data[5][17:10]} *56)+
+                            ({24'b0, row_1_data[6][17:10]} * 28)+
+                            ({24'b0, row_1_data[7][17:10]} << 3)+
+                            {24'b0, row_1_data[8][17:10]}) >> 8;
 
-      /*
-      out_pixel_b <= (((row_1_data[4][9:2]+row_1_data[0][9:2]+row_5_data[4][9:2]+row_5_data[0][9:2])) 
-      + ((row_5_data[1][9:2] + row_5_data[3][9:2] + row_4_data[0][9:2] + row_4_data[4][9:2] + row_2_data[0][9:2] + row_2_data[4][9:2] + row_1_data[1][9:2] + row_1_data[3][9:2] )<<2)
-      + (6*(row_1_data[2][9:2] + row_3_data[0][9:2] + row_3_data[4][9:2] + row_5_data[2][9:2]))
-      + ((row_2_data[1][9:2] + row_2_data[3][9:2] + row_4_data[1][9:2] + row_4_data[3][9:2])<<5)
-      + (24*(row_2_data[2][9:2] + row_3_data[1][9:2] + row_3_data[3][9:2] + row_4_data[2][9:2]))
-      + (36*(row_3_data[2][9:2]))
-      ) >> 8;
+      gaus_intermidate_b <= (
+                            {24'b0, row_1_data[0][9:2]} + 
+                            ({24'b0, row_1_data[1][9:2]} << 3 )+
+                            ({24'b0, row_1_data[2][9:2]} * 28 ) +
+                            ({24'b0, row_1_data[3][9:2]} * 56)+
+                            ({24'b0, row_1_data[4][9:2]} * 70 )+
+                            ({24'b0, row_1_data[5][9:2]} * 56 ) +
+                            ({24'b0, row_1_data[6][9:2]} *28)+
+                            ({24'b0, row_1_data[7][9:2]} << 3)+
+                            {24'b0, row_1_data[8][9:2]}) >> 8;
+    end
+  end 
 
-      out_pixel_g <= (((row_1_data[4][17:10]+row_1_data[0][17:10]+row_5_data[4][17:10]+row_5_data[0][17:10])) 
-      + ((row_5_data[1][17:10] + row_5_data[3][17:10] + row_4_data[0][17:10] + row_4_data[4][17:10] + row_2_data[0][17:10] + row_2_data[4][17:10] + row_1_data[1][17:10] + row_1_data[3][17:10] )<<2)
-      + (6*(row_1_data[2][17:10] + row_3_data[0][17:10] + row_3_data[4][17:10] + row_5_data[2][17:10]))
-      + ((row_2_data[1][17:10] + row_2_data[3][17:10] + row_4_data[1][17:10] + row_4_data[3][17:10])<<5)
-      + (24*(row_2_data[2][17:10] + row_3_data[1][17:10] + row_3_data[3][17:10] + row_4_data[2][17:10]))
-      + (36*(row_3_data[2][17:10]))
-      ) >> 8;
+  assign gaus_blur_pixel[23:16] = gaus_intermidate_r[7:0];
+  assign gaus_blur_pixel[15:8] = gaus_intermidate_g[7:0];
+  assign gaus_blur_pixel[7:0] = gaus_intermidate_b[7:0];
 
-      out_pixel_r <= (((row_1_data[4][25:18]+row_1_data[0][25:18]+row_5_data[4][25:18]+row_5_data[0][25:18])) 
-      + ((row_5_data[1][25:18] + row_5_data[3][25:18] + row_4_data[0][25:18] + row_4_data[4][25:18] + row_2_data[0][25:18] + row_2_data[4][25:18] + row_1_data[1][25:18] + row_1_data[3][25:18] )<<2)
-      + (6*(row_1_data[2][25:18] + row_3_data[0][25:18] + row_3_data[4][25:18] + row_5_data[2][25:18])<<5)
-      + ((row_2_data[1][25:18] + row_2_data[3][25:18] + row_4_data[1][25:18] + row_4_data[3][25:18]))
-      + (24*(row_2_data[2][25:18] + row_3_data[1][25:18] + row_3_data[3][25:18] + row_4_data[2][25:18]))
-      + (36*(row_3_data[2][25:18]))
-      ) >> 8;
-      */
+  
+  logic [23:0] hsv_d20;
+  RGB_TO_HSV hsv_converter (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .rgb_in(gaus_blur_pixel),
+    .hsv_out(hsv_d20)
+  );
 
+  logic [23:0] hsv_thresholded;
+
+  always_comb begin
+    if ((hsv_d20[23:16] < 15 || hsv_d20[23:16] > 250) && hsv_d20[7:0] > 57) begin // red
+      hsv_thresholded = {8'd255, 8'd0, 8'd0};
+    end
+    else if ((hsv_d20[23:16] < 50 && hsv_d20[23:16] > 35) && (hsv_d20[7:0] > 160 && hsv_d20[7:0] < 210) && (hsv_d20[15:8] > 130 && hsv_d20[15:8] < 200))// top half yellow 
+    begin
+      hsv_thresholded = {8'd255, 8'd255, 8'd0};
+    end
+    else if (hsv_d20[23:16] < 230 && hsv_d20[23:16] > 220) // pink
+    begin
+      hsv_thresholded = {8'd168, 8'd50, 8'd153};
+    end
+    else if ((hsv_d20[23:16] < 155 && hsv_d20[23:16] > 113) && (hsv_d20[7:0] > 25 && hsv_d20[7:0] < 50)) // && hsv_d20[15:8] > 100) // Dark blue
+    begin
+      hsv_thresholded = {8'd0, 8'd0, 8'd255};
+    end
+    else if (hsv_d20[23:16] < 80 && hsv_d20[23:16] > 70 && hsv_d20[7:0] > 130 && hsv_d20[15:8] < 200 && hsv_d20[15:8] > 120) // light green
+    begin
+      hsv_thresholded = {8'd0, 8'd255, 8'd0};
+    end
+    else if (hsv_d20[23:16] < 85 && hsv_d20[23:16] > 80 && hsv_d20[7:0] > 120) // teal
+    begin
+      hsv_thresholded = {8'd0, 8'd255, 8'd128};
+    end
+    else
+    begin
+      hsv_thresholded = {8'd0, 8'd0, 8'd0};
     end
   end
 
+
+  //______________________________Modal Kernel Below_____________________
+
+  // FOR Modal Kernel
   
-
-
-  // assign out_pixel_b = (row_3_data[2][9:2] + row_3_data[3][9:2] )>>1;
-  // assign out_pixel_g = (row_3_data[2][17:10] + row_3_data[3][17:10] )>> 1;
-  // assign out_pixel_r = ( row_3_data[2][25:18] + row_3_data[3][25:18] ) >> 1;
-
-  // assign out_pixel_b = (((row_1_data[4][9:2]+row_1_data[0][9:2]+row_5_data[4][9:2]+row_5_data[0][9:2])) 
-  // + ((row_5_data[1][9:2] + row_5_data[3][9:2] + row_4_data[0][9:2] + row_4_data[4][9:2] + row_2_data[0][9:2] + row_2_data[4][9:2] + row_1_data[1][9:2] + row_1_data[3][9:2] ))
-  // + ((row_1_data[2][9:2] + row_3_data[0][9:2] + row_3_data[4][9:2] + row_5_data[2][9:2]))
-  // + ((row_2_data[1][9:2] + row_2_data[3][9:2] + row_4_data[1][9:2] + row_4_data[3][9:2]))
-  // + ((row_2_data[2][9:2] + row_3_data[1][9:2] + row_3_data[3][9:2] + row_4_data[2][9:2]))
-  // + ((row_3_data[2][9:2]))
-  // ) >> 6;
-
-  // assign out_pixel_g = (((row_1_data[4][17:10]+row_1_data[0][17:10]+row_5_data[4][17:10]+row_5_data[0][17:10])) 
-  // + ((row_5_data[1][17:10] + row_5_data[3][17:10] + row_4_data[0][17:10] + row_4_data[4][17:10] + row_2_data[0][17:10] + row_2_data[4][17:10] + row_1_data[1][17:10] + row_1_data[3][17:10] ))
-  // + ((row_1_data[2][17:10] + row_3_data[0][17:10] + row_3_data[4][17:10] + row_5_data[2][17:10]))
-  // + ((row_2_data[1][17:10] + row_2_data[3][17:10] + row_4_data[1][17:10] + row_4_data[3][17:10]))
-  // + ((row_2_data[2][17:10] + row_3_data[1][17:10] + row_3_data[3][17:10] + row_4_data[2][17:10]))
-  // + ((row_3_data[2][17:10]))
-  // ) >>6;
-
-  // assign out_pixel_r = (((row_1_data[4][25:18]+row_1_data[0][25:18]+row_5_data[4][25:18]+row_5_data[0][25:18])) 
-  // + ((row_5_data[1][25:18] + row_5_data[3][25:18] + row_4_data[0][25:18] + row_4_data[4][25:18] + row_2_data[0][25:18] + row_2_data[4][25:18] + row_1_data[1][25:18] + row_1_data[3][25:18] ))
-  // + ((row_1_data[2][25:18] + row_3_data[0][25:18] + row_3_data[4][25:18] + row_5_data[2][25:18]))
-  // + ((row_2_data[1][25:18] + row_2_data[3][25:18] + row_4_data[1][25:18] + row_4_data[3][25:18]))
-  // + ((row_2_data[2][25:18] + row_3_data[1][25:18] + row_3_data[3][25:18] + row_4_data[2][25:18]))
-  // + ((row_3_data[2][25:18]))
-  // ) >>6;
-
-  
-  /*
-  logic [15:0] out_pixel_r_s0 = 16'b0;
-  logic [15:0] out_pixel_g_s0 = 16'b0;
-  logic [15:0] out_pixel_b_s0 = 16'b0;
-  
-  logic [15:0] out_pixel_r_s1 = 16'b0;
-  logic [15:0] out_pixel_g_s1 = 16'b0;
-  logic [15:0] out_pixel_b_s1 = 16'b0;
-  
-  logic [15:0] out_pixel_r_s2 = 16'b0;
-  logic [15:0] out_pixel_g_s2 = 16'b0;
-  logic [15:0] out_pixel_b_s2 = 16'b0;
-  
-  logic [15:0] out_pixel_r_s3 = 16'b0;
-  logic [15:0] out_pixel_g_s3 = 16'b0;
-  logic [15:0] out_pixel_b_s3 = 16'b0;
-
-  logic [15:0] out_pixel_r_s4 = 16'b0;
-  logic [15:0] out_pixel_g_s4 = 16'b0;
-  logic [15:0] out_pixel_b_s4 = 16'b0;
-  
-  logic found_eop_or_sops1 = 0;
-  logic found_eop_or_sops2 = 0; 
-  logic found_eop_or_sops3 = 0;
-  logic found_eop_or_sops4 = 0;
-
-  logic source_sops = 0;
-  logic source_sops2 = 0;
-  logic source_sops3 = 0;
-  logic source_sops4 = 0;
-  logic source_sops5 = 0;
-
-  logic source_eops1 = 0;
-  logic source_eops2 = 0;
-  logic source_eops3 = 0;
-  logic source_eops4 = 0;
-  logic source_eops5 = 0;
-
-  SHIFT_REGGAE #(.DATA_WIDTH(2), .NO_STAGES(5)) shift_reg_6 (
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal (
     .clk(clk),
     .rst_n(reset_n),
-    .valid_in(1'b1),
-    .data_in({source_data_exposed_step4, source_sop_exposed_step4, source_eop_exposed_step4}),
-    .data_out({source_data_fifo4, source_sop_fifo4, source_eop_fifo4})
+    .valid_in(source_valid),
+    .data_in({hsv_thresholded}),
+    .internal_out(source_data_exposed_modal),
+    .data_out({source_data_intermediate_step2})
   );
+  
+  logic [3:0] count_t1; 
+  logic [3:0] count_t2; 
+  logic [3:0] count_t3; 
+  logic [3:0] count_t4; 
+  logic [3:0] count_t5; 
+  logic [3:0] count_t6; 
+  logic [3:0] count_t7;
 
-  always_ff @(posedge clk) begin
-    // Clk 1: Add row 1
+  logic [23:0] modal_data_out;
 
-    out_pixel_r_s0 <= row_1_data[0][25:18]+row_1_data[1][25:18]+row_1_data[2][25:18]+row_1_data[3][25:18] + row_1_data[4][25:18];
-    out_pixel_g_s0 <= row_1_data[0][17:10]+row_1_data[1][17:10]+row_1_data[2][17:10]+row_1_data[3][17:10] + row_1_data[4][17:10];
-    out_pixel_b_s0 <= row_1_data[0][9:2]+row_1_data[1][9:2]+row_1_data[2][9:2]+row_1_data[3][9:2] + row_1_data[4][9:2];
+  always_comb begin
 
-    // Clk 2: Add Row 2
-    out_pixel_r_s1 <= (out_pixel_r_s0 + row_2_data[0][25:18]+row_2_data[1][25:18]+row_2_data[2][25:18]+row_2_data[3][25:18] + row_2_data[4][25:18]);
-    out_pixel_g_s1 <= (out_pixel_g_s0 + row_2_data[0][17:10]+row_2_data[1][17:10]+row_2_data[2][17:10]+row_2_data[3][17:10] + row_2_data[4][17:10]);
-    out_pixel_b_s1 <= (out_pixel_b_s0 + row_2_data[0][9:2]+row_2_data[1][9:2]+row_2_data[2][9:2]+row_2_data[3][9:2] + row_2_data[4][9:2]);
-
-    // Clk 3: Add Row 3
-    out_pixel_r_s2 <= (out_pixel_r_s1 + row_3_data[0][25:18]+row_3_data[1][25:18]+row_3_data[2][25:18]+row_3_data[3][25:18] + row_3_data[4][25:18]);
-    out_pixel_g_s2 <= (out_pixel_g_s1 + row_3_data[0][17:10]+row_3_data[1][17:10]+row_3_data[2][17:10]+row_3_data[3][17:10] + row_3_data[4][17:10]);
-    out_pixel_b_s2 <= (out_pixel_b_s1 + row_3_data[0][9:2]+row_3_data[1][9:2]+row_3_data[2][9:2]+row_3_data[3][9:2] + row_3_data[4][9:2]);
+    count_t1 = 0; 
+    count_t2 = 0; 
+    count_t3 = 0; 
+    count_t4 = 0; 
+    count_t5 = 0; 
+    count_t6 = 0; 
+    count_t7 = 0;
     
-    // Clk 4: Add Row 4
-    out_pixel_r_s3 <= (out_pixel_r_s2 + row_4_data[0][25:18]+row_4_data[1][25:18]+row_4_data[2][25:18]+row_4_data[3][25:18] + row_4_data[4][25:18]);
-    out_pixel_g_s3 <= (out_pixel_g_s2 + row_4_data[0][17:10]+row_4_data[1][17:10]+row_4_data[2][17:10]+row_4_data[3][17:10] + row_4_data[4][17:10]);
-    out_pixel_b_s3 <= (out_pixel_b_s2 + row_4_data[0][9:2]+row_4_data[1][9:2]+row_4_data[2][9:2]+row_4_data[3][9:2] + row_4_data[4][9:2]);
 
-    // Clk 5: Add Row 5
-    out_pixel_r_s4 <= (out_pixel_r_s3 + row_5_data[0][25:18]+row_5_data[1][25:18]+row_5_data[2][25:18]+row_5_data[3][25:18] + row_5_data[4][25:18]);
-    out_pixel_g_s4 <= (out_pixel_g_s3 + row_5_data[0][17:10]+row_5_data[1][17:10]+row_5_data[2][17:10]+row_5_data[3][17:10] + row_5_data[4][17:10]);
-    out_pixel_b_s4 <= (out_pixel_b_s3 + row_5_data[0][9:2]+row_5_data[1][9:2]+row_5_data[2][9:2]+row_5_data[3][9:2] + row_5_data[4][9:2]);
+    for(integer i = 0; i<16; i++) begin
+      if (source_data_exposed_modal[i] == {8'd255, 8'd0, 8'd0}) begin
+        count_t1 = count_t1 + 1; 
+      end
+      if (source_data_exposed_modal[i] == {8'd255, 8'd255, 8'd0}) begin
+        count_t2 = count_t2 + 1; 
+      end
+      if (source_data_exposed_modal[i] == {8'd168, 8'd50, 8'd153}) begin
+        count_t3 = count_t3 + 1; 
+      end
+      if (source_data_exposed_modal[i] ==  {8'd0, 8'd0, 8'd255}) begin
+        count_t4 = count_t4 + 1; 
+      end
+      if (source_data_exposed_modal[i] == {8'd0, 8'd255, 8'd0}) begin
+        count_t5 = count_t5 + 1; 
+      end
+      if (source_data_exposed_modal[i] ==  {8'd0, 8'd255, 8'd128} ) begin
+        count_t6 = count_t6 + 1; 
+      end
+      if (source_data_exposed_modal[i] == {8'd0, 8'd0, 8'd0} ) begin
+        count_t7 = count_t7 + 1; 
+      end
+    end
+
+    modal_data_out = source_data_exposed_modal[7];
+
+    if(count_t1 > count_t2 && 
+       count_t1 > count_t3 && 
+       count_t1 > count_t4 && 
+       count_t1 > count_t5 &&
+       count_t1 > count_t6 &&
+       count_t1 > count_t7) begin
+        modal_data_out = {8'd255, 8'd0, 8'd0};
+    end
+
+    else if(count_t2 > count_t1 && 
+       count_t2 > count_t3 && 
+       count_t2 > count_t4 && 
+       count_t2 > count_t5 &&
+       count_t2 > count_t6 &&
+       count_t2 > count_t7) begin
+      modal_data_out = {8'd255, 8'd255, 8'd0};
+    end
+    else if(count_t3 > count_t1 && 
+       count_t3 > count_t2 && 
+       count_t3 > count_t4 && 
+       count_t3 > count_t5 &&
+       count_t3 > count_t6 &&
+       count_t3 > count_t7) begin
+       modal_data_out = {8'd168, 8'd50, 8'd153};
+    end
+    else if(count_t4 > count_t1 && 
+       count_t4 > count_t2 && 
+       count_t4 > count_t3 && 
+       count_t4 > count_t5 &&
+       count_t4 > count_t6 &&
+       count_t4 > count_t7) begin
+      modal_data_out = {8'd0, 8'd0, 8'd255};
+    end
+
+    else if(count_t5 > count_t1 && 
+       count_t5 > count_t3 && 
+       count_t5 > count_t4 && 
+       count_t5 > count_t5 &&
+       count_t5 > count_t6 &&
+       count_t5 > count_t7) begin
+      modal_data_out = {8'd0, 8'd255, 8'd0};
+    end
+
+
+    else if(count_t6 > count_t1 && 
+       count_t6 > count_t2 && 
+       count_t6 > count_t3 && 
+       count_t6 > count_t4 &&
+       count_t6 > count_t5 &&
+       count_t6 > count_t7) begin
+        modal_data_out = {8'd0, 8'd255, 8'd128};
+    end 
+
+    if(count_t7 > count_t1 && 
+       count_t7 > count_t2 && 
+       count_t7 > count_t3 && 
+       count_t7 > count_t4 &&
+       count_t7 > count_t5 &&
+       count_t7 > count_t6) begin
+        modal_data_out = {8'd0, 8'd0, 8'd0};
+    end           
   end
-  */
-  
-  // logic [25:0] centre_pixel_d20;
-  // logic found_eop_or_sop_d20;
 
-  // SHIFT_REGGAE #(.DATA_WIDTH(27), .NO_STAGES(20)) shift_reg_centre_pixel (
-  //   .clk(clk),
-  //   .rst_n(reset_n),
-  //   .valid_in(source_valid),
-  //   .data_in({found_eop_or_sop, row_3_data[2]}),
-  //   .data_out({found_eop_or_sop_d20, centre_pixel_d20})
-  // );
+    
+//__________________________________end Modal Kernel ___________________________
 
-  // logic [7:0] hue_d20;
-  // RGB_TO_HSV hsv_converter (
-  //   .clk(clk),
-  //   .rst_n(reset_n),
-  //   .valid_in(source_valid),
-  //   .rgb_in(row_3_data[2][25:2]),
-  //   .hue(hue_d20)
-  // );
-
-  // logic [23:0] hue_thresholded;
-
-  // always_comb begin
-  //   if(hue_d20 < 6 || hue_d20 >=249) begin
-  //     hue_thresholded = {8'd255, 8'd0, 8'd0}; //red
-  //   end else if (hue_d20 < 40 && hue_d20>=20) begin //orange
-  //     hue_thresholded = {8'd255, 8'd213, 8'd84}; 
-  //   end else if (hue_d20 < 233 && hue_d20>= 227) begin
-  //     hue_thresholded = {8'd255, 8'd117, 8'd198}; // Pink
-  //   end else if (hue_d20 < 150 && hue_d20>= 130) begin
-  //     hue_thresholded = {8'd178, 8'd216, 8'd237}; //blue
-  //   end
-  //   else begin
-  //     hue_thresholded = centre_pixel_d20[25:2];
-  //   end
-  // end
-
+ 
   // assign source_data = found_eop_or_sop ? centre_pixel : {out_pixel_r_s4[13:6], out_pixel_g_s4[13:6], out_pixel_b_s4[13:6]};
-  // assign source_data = found_eop_or_sop_d20 ? centre_pixel_d20[25:2] : hue_thresholded;
-  
+  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : modal_data_out;
+  //assign source_data = found_eop_or_sop ? row_1_data[6][25:2] : gaus_blur_pixel;
+  // assign source_sop = row_1_data[6][1];
+  // assign source_eop = row_1_data[6][0];
+
+
   //assign source_data = centre_pixel_d20[25:2];
-  // assign source_sop = centre_pixel_d20[1];
-  // assign source_eop = centre_pixel_d20[0];
+  assign source_sop = fallback_data_d36[1];
+  assign source_eop = fallback_data_d36[0];
 
   // assign source_data = row_3_data[2][25:2];
-
-  
-  
-
-
-  
-  
-  
-
-  // assign source_valid_fifo5 = source_valid;
-  // assign sink_ready_fifo5 = source_valid;
-
-  // SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(128)) shift_reg_6 (
-  //   .clk(clk),
-  //   .rst_n(reset_n),
-  //   .valid_in(source_valid),
-  //   .data_in({sink_data_fifo5, sink_sop_fifo5, sink_eop_fifo5}),
-  //   .data_out({source_data_fifo6, source_sop_fifo6, source_eop_fifo6})
-  // );
-
-  // assign source_valid_fifo6 = source_valid;
-  // assign sink_ready_fifo6 = source_valid;
-
-  // SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(128)) shift_reg_7 (
-  //   .clk(clk),
-  //   .rst_n(reset_n),
-  //   .valid_in(source_valid),
-  //   .data_in({sink_data_fifo6, sink_sop_fifo6, sink_eop_fifo6}),
-  //   .data_out({source_data, source_sop, source_eop})
-  // );
-
-
-
 
   /////////////////////////////////
   /// Memory-mapped port		 /////

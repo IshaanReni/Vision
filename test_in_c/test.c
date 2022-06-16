@@ -13,7 +13,7 @@
 int main()
 {
 
-	for (i32 p = 1; p <= 8; p++)
+	for (i32 p = 1; p <= 20; p++)
 	{
 		i32 x, y, n;
 		char buf[100];
@@ -25,31 +25,31 @@ int main()
 
 		for (i32 i = 0; i < x * y; i++)
 		{
-			if ((hsv_data[i].hue < 35 && hsv_data[i].hue > 21)) //|| (hsv_data[i].val > 250)) // orangey background
-			{
-				rgb_data[i] = {0, 0, 0};
-			}
+			// if ((hsv_data[i].hue < 35 && hsv_data[i].hue > 21)) //|| (hsv_data[i].val > 250)) // orangey background
+			// {
+			// 	rgb_data[i] = {0, 0, 0};
+			// }
 			// else if (hsv_data[i].hue < 20)
 			// {
 			// 	rgb_data[i] = {255, 0, 0};
 			// }
-			// if ((hsv_data[i].hue < 15 || hsv_data[i].hue > 250) && hsv_data[i].val > 57) // red
-			// {
-			// 	rgb_data[i] = {255, 0, 0};
-			// }
-			// else if ((hsv_data[i].hue < 50 && hsv_data[i].hue > 35) && (hsv_data[i].val > 160 && hsv_data[i].val < 210) && (hsv_data[i].sat > 130 && hsv_data[i].sat < 200)) // top half yellow
-			// {
-			// 	rgb_data[i] = {255, 255, 0};
-			// }
-			// else if (hsv_data[i].hue < 230 && hsv_data[i].hue > 220) // pink
-			// {
-			// 	rgb_data[i] = {168, 50, 153};
-			// }
-			// else if ((hsv_data[i].hue < 155 && hsv_data[i].hue > 113) && (hsv_data[i].val > 25 && hsv_data[i].val < 50)) // && hsv_data[i].sat > 100) // Dark blue
-			//{
-			//	rgb_data[i] = {0, 0, 255};
-			//}
-			else if (hsv_data[i].hue < 80 && hsv_data[i].hue > 75 && hsv_data[i].val > 130 && hsv_data[i].sat < 200 && hsv_data[i].sat > 120) // light green
+			if ((hsv_data[i].hue < 15 || hsv_data[i].hue > 250) && hsv_data[i].val > 57) // red
+			{
+				rgb_data[i] = {255, 0, 0};
+			}
+			else if ((hsv_data[i].hue < 50 && hsv_data[i].hue > 35) && (hsv_data[i].val > 160 && hsv_data[i].val < 210) && (hsv_data[i].sat > 130 && hsv_data[i].sat < 200)) // top half yellow
+			{
+				rgb_data[i] = {255, 255, 0};
+			}
+			else if (hsv_data[i].hue < 230 && hsv_data[i].hue > 220) // pink
+			{
+				rgb_data[i] = {168, 50, 153};
+			}
+			else if ((hsv_data[i].hue < 155 && hsv_data[i].hue > 113) && (hsv_data[i].val > 25 && hsv_data[i].val < 50)) // && hsv_data[i].sat > 100) // Dark blue
+			{
+				rgb_data[i] = {0, 0, 255};
+			}
+			else if (hsv_data[i].hue < 80 && hsv_data[i].hue > 70 && hsv_data[i].val > 130 && hsv_data[i].sat < 200 && hsv_data[i].sat > 120) // light green
 			{
 				rgb_data[i] = {0, 255, 0};
 			}
@@ -57,11 +57,15 @@ int main()
 			// {
 			// 	rgb_data[i] = {0, 255, 0};
 			// }
+			else if (hsv_data[i].hue < 85 && hsv_data[i].hue > 80 && hsv_data[i].val > 120) // teal
+			{
+				rgb_data[i] = {0, 255, 128};
+			}
 
-			// else
-			// {
-			// rgb_data[i] = {0, 0, 0};
-			// }
+			else
+			{
+				rgb_data[i] = {0, 0, 0};
+			}
 		}
 		snprintf(buf, 100, "images/results/test%i_result.png", p);
 		stbi_write_png(buf, x, y, n, rgb_data, x * n * sizeof(u8));
