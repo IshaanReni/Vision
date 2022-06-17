@@ -331,11 +331,7 @@ module EEE_IMGPROC #(
 
   //for modal Kernel
 
-  logic [23:0] source_data_intermediate_modal;
-  logic source_sop_intermediate_modal, source_eop_intermediate_modal;
-  logic [23:0] source_data_exposed_modal [15:0];
-  logic source_sop_exposed_modal, source_eop_exposed_modal;
-  logic [25:0] modal_data [15:0];
+  
 
   logic [23:0] source_data_intermediate_step2;
 
@@ -474,23 +470,103 @@ module EEE_IMGPROC #(
   //______________________________Modal Kernel Below_____________________
 
   // FOR Modal Kernel
-  
-  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal (
+  logic [23:0] source_data_intermediate_modal;
+  logic source_sop_intermediate_modal, source_eop_intermediate_modal;
+  logic [23:0] source_data_exposed_modal [4:0][15:0];
+  logic source_sop_exposed_modal, source_eop_exposed_modal;
+  logic [25:0] modal_data [15:0];
+
+  logic [23:0] throwaway [4:0];
+  logic [23:0] hsv_intermediate [4:0];
+
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row1 (
     .clk(clk),
     .rst_n(reset_n),
     .valid_in(source_valid),
-    .data_in({hsv_thresholded}),
-    .internal_out(source_data_exposed_modal),
-    .data_out({source_data_intermediate_step2})
+    .data_in(hsv_thresholded),
+    .internal_out(source_data_exposed_modal[0]),
+    .data_out(throwaway[0])
   );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row2 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_thresholded),
+    .data_out(hsv_intermediate[0])
+  );
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row2 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[0]),
+    .internal_out(source_data_exposed_modal[1]),
+    .data_out(throwaway[1])
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row3 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[0]),
+    .data_out(hsv_intermediate[1])
+  );
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row3 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[1]),
+    .internal_out(source_data_exposed_modal[2]),
+    .data_out(throwaway[2])
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row4 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[1]),
+    .data_out(hsv_intermediate[2])
+  );
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row4 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[2]),
+    .internal_out(source_data_exposed_modal[3]),
+    .data_out(throwaway[3])
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row5 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[2]),
+    .data_out(hsv_intermediate[3])
+  );
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row5 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[3]),
+    .internal_out(source_data_exposed_modal[4]),
+    .data_out(throwaway[4])
+  );
+
   
-  logic [3:0] count_t1; 
-  logic [3:0] count_t2; 
-  logic [3:0] count_t3; 
-  logic [3:0] count_t4; 
-  logic [3:0] count_t5; 
-  logic [3:0] count_t6; 
-  logic [3:0] count_t7;
+  logic [7:0] count_t1; 
+  logic [7:0] count_t2; 
+  logic [7:0] count_t3; 
+  logic [7:0] count_t4; 
+  logic [7:0] count_t5; 
+  logic [7:0] count_t6; 
+  logic [7:0] count_t7;
+
+  logic [7:0] count_max;
 
   logic [23:0] modal_data_out;
 
@@ -503,33 +579,36 @@ module EEE_IMGPROC #(
     count_t5 = 0; 
     count_t6 = 0; 
     count_t7 = 0;
+    count_max = 0;
     
-
-    for(integer i = 0; i<16; i++) begin
-      if (source_data_exposed_modal[i] == {8'd255, 8'd0, 8'd0}) begin
-        count_t1 = count_t1 + 1; 
-      end
-      if (source_data_exposed_modal[i] == {8'd255, 8'd255, 8'd0}) begin
-        count_t2 = count_t2 + 1; 
-      end
-      if (source_data_exposed_modal[i] == {8'd168, 8'd50, 8'd153}) begin
-        count_t3 = count_t3 + 1; 
-      end
-      if (source_data_exposed_modal[i] ==  {8'd0, 8'd0, 8'd255}) begin
-        count_t4 = count_t4 + 1; 
-      end
-      if (source_data_exposed_modal[i] == {8'd0, 8'd255, 8'd0}) begin
-        count_t5 = count_t5 + 1; 
-      end
-      if (source_data_exposed_modal[i] ==  {8'd0, 8'd255, 8'd128} ) begin
-        count_t6 = count_t6 + 1; 
-      end
-      if (source_data_exposed_modal[i] == {8'd0, 8'd0, 8'd0} ) begin
-        count_t7 = count_t7 + 1; 
+  
+    for(integer j = 0; j < 5; j++) begin
+      for(integer i = 0; i<16; i++) begin
+        if (source_data_exposed_modal[j][i] == {8'd255, 8'd0, 8'd0}) begin
+          count_t1 = count_t1 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] == {8'd255, 8'd255, 8'd0}) begin
+          count_t2 = count_t2 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] == {8'd168, 8'd50, 8'd153}) begin
+          count_t3 = count_t3 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] ==  {8'd0, 8'd0, 8'd255}) begin
+          count_t4 = count_t4 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] == {8'd0, 8'd255, 8'd0}) begin
+          count_t5 = count_t5 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] ==  {8'd0, 8'd255, 8'd128} ) begin
+          count_t6 = count_t6 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] == {8'd0, 8'd0, 8'd0} ) begin
+          count_t7 = count_t7 + 1; 
+        end
       end
     end
 
-    modal_data_out = source_data_exposed_modal[7];
+    modal_data_out = source_data_exposed_modal[0][7];
 
     if(count_t1 > count_t2 && 
        count_t1 > count_t3 && 
@@ -538,6 +617,7 @@ module EEE_IMGPROC #(
        count_t1 > count_t6 &&
        count_t1 > count_t7) begin
         modal_data_out = {8'd255, 8'd0, 8'd0};
+        count_max = count_t1;
     end
 
     else if(count_t2 > count_t1 && 
@@ -547,6 +627,7 @@ module EEE_IMGPROC #(
        count_t2 > count_t6 &&
        count_t2 > count_t7) begin
       modal_data_out = {8'd255, 8'd255, 8'd0};
+      count_max = count_t2;
     end
     else if(count_t3 > count_t1 && 
        count_t3 > count_t2 && 
@@ -555,6 +636,7 @@ module EEE_IMGPROC #(
        count_t3 > count_t6 &&
        count_t3 > count_t7) begin
        modal_data_out = {8'd168, 8'd50, 8'd153};
+       count_max = count_t3;
     end
     else if(count_t4 > count_t1 && 
        count_t4 > count_t2 && 
@@ -563,6 +645,7 @@ module EEE_IMGPROC #(
        count_t4 > count_t6 &&
        count_t4 > count_t7) begin
       modal_data_out = {8'd0, 8'd0, 8'd255};
+      count_max = count_t4;
     end
 
     else if(count_t5 > count_t1 && 
@@ -572,6 +655,7 @@ module EEE_IMGPROC #(
        count_t5 > count_t6 &&
        count_t5 > count_t7) begin
       modal_data_out = {8'd0, 8'd255, 8'd0};
+      count_max = count_t5;
     end
 
 
@@ -582,6 +666,7 @@ module EEE_IMGPROC #(
        count_t6 > count_t5 &&
        count_t6 > count_t7) begin
         modal_data_out = {8'd0, 8'd255, 8'd128};
+        count_max = count_t6;
     end 
 
     if(count_t7 > count_t1 && 
@@ -591,6 +676,11 @@ module EEE_IMGPROC #(
        count_t7 > count_t5 &&
        count_t7 > count_t6) begin
         modal_data_out = {8'd0, 8'd0, 8'd0};
+        count_max = count_t7;
+    end
+
+    if(count_max < 40) begin
+      modal_data_out = {8'd0, 8'd0, 8'd0};
     end           
   end
 
