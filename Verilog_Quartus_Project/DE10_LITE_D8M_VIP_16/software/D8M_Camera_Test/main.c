@@ -22,7 +22,7 @@
 
 #define EXPOSURE_INIT 0x002000
 #define EXPOSURE_STEP 0x100
-#define GAIN_INIT 0x080
+#define GAIN_INIT 0x280
 #define GAIN_STEP 0x040
 #define DEFAULT_LEVEL 3
 

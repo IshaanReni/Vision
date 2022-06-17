@@ -35,19 +35,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   8 .debug_aranges 00001208  00000000  00000000  00017120  2**3
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_info   0002dc3b  00000000  00000000  00018328  2**0
+  9 .debug_info   0002dc11  00000000  00000000  00018328  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_abbrev 0000b962  00000000  00000000  00045f63  2**0
+ 10 .debug_abbrev 0000b962  00000000  00000000  00045f39  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_line   0000e3c4  00000000  00000000  000518c5  2**0
+ 11 .debug_line   0000e394  00000000  00000000  0005189b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_frame  00002d58  00000000  00000000  0005fc8c  2**2
+ 12 .debug_frame  00002d58  00000000  00000000  0005fc30  2**2
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_str    00004386  00000000  00000000  000629e4  2**0
+ 13 .debug_str    000043df  00000000  00000000  00062988  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_loc    00018a3d  00000000  00000000  00066d6a  2**0
+ 14 .debug_loc    00018a3d  00000000  00000000  00066d67  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_alt_sim_info 00000060  00000000  00000000  0007f7a8  2**2
+ 15 .debug_alt_sim_info 00000060  00000000  00000000  0007f7a4  2**2
                   CONTENTS, READONLY, DEBUGGING
  16 .debug_ranges 00001aa8  00000000  00000000  0007f808  2**3
                   CONTENTS, READONLY, DEBUGGING
@@ -73,11 +73,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  27 .sopc_system_name 00000004  00000000  00000000  000850ac  2**0
                   CONTENTS, READONLY
- 28 .quartus_project_dir 00000057  00000000  00000000  000850b0  2**0
+ 28 .quartus_project_dir 00000049  00000000  00000000  000850b0  2**0
                   CONTENTS, READONLY
- 29 .jdi          00004e1d  00000000  00000000  00085107  2**0
+ 29 .jdi          00004e1d  00000000  00000000  000850f9  2**0
                   CONTENTS, READONLY
- 30 .sopcinfo     000a0537  00000000  00000000  00089f24  2**0
+ 30 .sopcinfo     000a8759  00000000  00000000  00089f16  2**0
                   CONTENTS, READONLY
 SYMBOL TABLE:
 00020000 l    d  .entry	00000000 .entry
@@ -3325,7 +3325,7 @@ int main()
    21858:	00880004 	movi	r2,8192
    2185c:	e0bffb15 	stw	r2,-20(fp)
 	alt_u16 gain = GAIN_INIT;
-   21860:	00802004 	movi	r2,128
+   21860:	0080a004 	movi	r2,640
    21864:	e0bffc0d 	sth	r2,-16(fp)
 
 	OV8865SetExposure(exposureTime);
@@ -19410,27 +19410,16 @@ int ALT_ISATTY (int file)
    3041c:	f800283a 	ret
 
 00030420 <alt_load_section>:
- */
-
-static void ALT_INLINE alt_load_section (alt_u32* from, 
-                                         alt_u32* to, 
-                                         alt_u32* end)
-{
    30420:	defffc04 	addi	sp,sp,-16
    30424:	df000315 	stw	fp,12(sp)
    30428:	df000304 	addi	fp,sp,12
    3042c:	e13ffd15 	stw	r4,-12(fp)
    30430:	e17ffe15 	stw	r5,-8(fp)
    30434:	e1bfff15 	stw	r6,-4(fp)
-  if (to != from)
    30438:	e0fffe17 	ldw	r3,-8(fp)
    3043c:	e0bffd17 	ldw	r2,-12(fp)
    30440:	18800c26 	beq	r3,r2,30474 <alt_load_section+0x54>
-  {
-    while( to != end )
    30444:	00000806 	br	30468 <alt_load_section+0x48>
-    {
-      *to++ = *from++;
    30448:	e0bffe17 	ldw	r2,-8(fp)
    3044c:	10c00104 	addi	r3,r2,4
    30450:	e0fffe15 	stw	r3,-8(fp)
@@ -19439,20 +19428,9 @@ static void ALT_INLINE alt_load_section (alt_u32* from,
    3045c:	e13ffd15 	stw	r4,-12(fp)
    30460:	18c00017 	ldw	r3,0(r3)
    30464:	10c00015 	stw	r3,0(r2)
-                                         alt_u32* to, 
-                                         alt_u32* end)
-{
-  if (to != from)
-  {
-    while( to != end )
    30468:	e0fffe17 	ldw	r3,-8(fp)
    3046c:	e0bfff17 	ldw	r2,-4(fp)
    30470:	18bff51e 	bne	r3,r2,30448 <alt_load_section+0x28>
-    {
-      *to++ = *from++;
-    }
-  }
-}
    30474:	0001883a 	nop
    30478:	e037883a 	mov	sp,fp
    3047c:	df000017 	ldw	fp,0(sp)
@@ -19460,21 +19438,10 @@ static void ALT_INLINE alt_load_section (alt_u32* from,
    30484:	f800283a 	ret
 
 00030488 <alt_load>:
- * there is no bootloader, so this application is responsible for loading to
- * RAM any sections that are required.
- */  
-
-void alt_load (void)
-{
    30488:	defffe04 	addi	sp,sp,-8
    3048c:	dfc00115 	stw	ra,4(sp)
    30490:	df000015 	stw	fp,0(sp)
    30494:	d839883a 	mov	fp,sp
-  /* 
-   * Copy the .rwdata section. 
-   */
-
-  alt_load_section (&__flash_rwdata_start, 
    30498:	018000f4 	movhi	r6,3
    3049c:	31983f04 	addi	r6,r6,24828
    304a0:	014000f4 	movhi	r5,3
@@ -19482,12 +19449,6 @@ void alt_load (void)
    304a8:	010000f4 	movhi	r4,3
    304ac:	21183f04 	addi	r4,r4,24828
    304b0:	00304200 	call	30420 <alt_load_section>
-
-  /*
-   * Copy the exception handler.
-   */
-
-  alt_load_section (&__flash_exceptions_start, 
    304b4:	018000b4 	movhi	r6,2
    304b8:	31809104 	addi	r6,r6,580
    304bc:	014000b4 	movhi	r5,2
@@ -19495,12 +19456,6 @@ void alt_load (void)
    304c4:	010000b4 	movhi	r4,2
    304c8:	21000804 	addi	r4,r4,32
    304cc:	00304200 	call	30420 <alt_load_section>
-
-  /*
-   * Copy the .rodata section.
-   */
-
-  alt_load_section (&__flash_rodata_start, 
    304d0:	018000f4 	movhi	r6,3
    304d4:	318f6604 	addi	r6,r6,15768
    304d8:	014000f4 	movhi	r5,3
@@ -19508,16 +19463,8 @@ void alt_load (void)
    304e0:	010000f4 	movhi	r4,3
    304e4:	210d1a04 	addi	r4,r4,13416
    304e8:	00304200 	call	30420 <alt_load_section>
-  
-  /*
-   * Now ensure that the caches are in synch.
-   */
-  
-  alt_dcache_flush_all();
    304ec:	00326ec0 	call	326ec <alt_dcache_flush_all>
-  alt_icache_flush_all();
    304f0:	0032b400 	call	32b40 <alt_icache_flush_all>
-}
    304f4:	0001883a 	nop
    304f8:	e037883a 	mov	sp,fp
    304fc:	dfc00117 	ldw	ra,4(sp)
@@ -19737,17 +19684,10 @@ void alt_main (void)
    306a8:	00330e80 	call	330e8 <exit>
 
 000306ac <__malloc_lock>:
- * configuration is single threaded, so there is nothing to do here. Note that 
- * this requires that malloc is never called by an interrupt service routine.
- */
-
-void __malloc_lock ( struct _reent *_r )
-{
    306ac:	defffe04 	addi	sp,sp,-8
    306b0:	df000115 	stw	fp,4(sp)
    306b4:	df000104 	addi	fp,sp,4
    306b8:	e13fff15 	stw	r4,-4(fp)
-}
    306bc:	0001883a 	nop
    306c0:	e037883a 	mov	sp,fp
    306c4:	df000017 	ldw	fp,0(sp)
@@ -19755,17 +19695,10 @@ void __malloc_lock ( struct _reent *_r )
    306cc:	f800283a 	ret
 
 000306d0 <__malloc_unlock>:
-/*
- *
- */
-
-void __malloc_unlock ( struct _reent *_r )
-{
    306d0:	defffe04 	addi	sp,sp,-8
    306d4:	df000115 	stw	fp,4(sp)
    306d8:	df000104 	addi	fp,sp,4
    306dc:	e13fff15 	stw	r4,-4(fp)
-}
    306e0:	0001883a 	nop
    306e4:	e037883a 	mov	sp,fp
    306e8:	df000017 	ldw	fp,0(sp)
@@ -20559,21 +20492,13 @@ void alt_tick (void)
    30d68:	f800283a 	ret
 
 00030d6c <usleep>:
-#if defined (__GNUC__) && __GNUC__ >= 4
-int ALT_USLEEP (useconds_t us)
-#else
-unsigned int ALT_USLEEP (unsigned int us)
-#endif
-{
    30d6c:	defffd04 	addi	sp,sp,-12
    30d70:	dfc00215 	stw	ra,8(sp)
    30d74:	df000115 	stw	fp,4(sp)
    30d78:	df000104 	addi	fp,sp,4
    30d7c:	e13fff15 	stw	r4,-4(fp)
-  return alt_busy_sleep(us);
    30d80:	e13fff17 	ldw	r4,-4(fp)
    30d84:	00325940 	call	32594 <alt_busy_sleep>
-}
    30d88:	e037883a 	mov	sp,fp
    30d8c:	dfc00117 	ldw	ra,4(sp)
    30d90:	df000017 	ldw	fp,0(sp)
@@ -23705,17 +23630,10 @@ void alt_dcache_flush_all (void)
    32730:	f800283a 	ret
 
 00032734 <alt_get_errno>:
-#undef errno
-
-extern int errno;
-
-static ALT_INLINE int* alt_get_errno(void)
-{
    32734:	defffe04 	addi	sp,sp,-8
    32738:	dfc00115 	stw	ra,4(sp)
    3273c:	df000015 	stw	fp,0(sp)
    32740:	d839883a 	mov	fp,sp
-  return ((alt_errno) ? alt_errno() : &errno);
    32744:	008000f4 	movhi	r2,3
    32748:	10983a04 	addi	r2,r2,24808
    3274c:	10800017 	ldw	r2,0(r2)
@@ -23727,7 +23645,6 @@ static ALT_INLINE int* alt_get_errno(void)
    32764:	00000206 	br	32770 <alt_get_errno+0x3c>
    32768:	00800134 	movhi	r2,4
    3276c:	10a11804 	addi	r2,r2,-31648
-}
    32770:	e037883a 	mov	sp,fp
    32774:	dfc00117 	ldw	ra,4(sp)
    32778:	df000017 	ldw	fp,0(sp)
@@ -23735,75 +23652,42 @@ static ALT_INLINE int* alt_get_errno(void)
    32780:	f800283a 	ret
 
 00032784 <alt_dev_llist_insert>:
-/*
- *
- */
-
-int alt_dev_llist_insert (alt_dev_llist* dev, alt_llist* list)
-{
    32784:	defffa04 	addi	sp,sp,-24
    32788:	dfc00515 	stw	ra,20(sp)
    3278c:	df000415 	stw	fp,16(sp)
    32790:	df000404 	addi	fp,sp,16
    32794:	e13ffe15 	stw	r4,-8(fp)
    32798:	e17fff15 	stw	r5,-4(fp)
-  /*
-   * check that the device exists, and that it has a valid name.
-   */
-
-  if (!dev || !dev->name)
    3279c:	e0bffe17 	ldw	r2,-8(fp)
    327a0:	10000326 	beq	r2,zero,327b0 <alt_dev_llist_insert+0x2c>
    327a4:	e0bffe17 	ldw	r2,-8(fp)
    327a8:	10800217 	ldw	r2,8(r2)
    327ac:	1000061e 	bne	r2,zero,327c8 <alt_dev_llist_insert+0x44>
-  {
-    ALT_ERRNO = EINVAL;
    327b0:	00327340 	call	32734 <alt_get_errno>
    327b4:	1007883a 	mov	r3,r2
    327b8:	00800584 	movi	r2,22
    327bc:	18800015 	stw	r2,0(r3)
-    return -EINVAL;
    327c0:	00bffa84 	movi	r2,-22
    327c4:	00001306 	br	32814 <alt_dev_llist_insert+0x90>
-  
-  /*
-   * register the device.
-   */
-  
-  alt_llist_insert(list, &dev->llist);
    327c8:	e0bffe17 	ldw	r2,-8(fp)
    327cc:	e0ffff17 	ldw	r3,-4(fp)
    327d0:	e0fffc15 	stw	r3,-16(fp)
    327d4:	e0bffd15 	stw	r2,-12(fp)
- */
-
-static ALT_INLINE void ALT_ALWAYS_INLINE alt_llist_insert(alt_llist* list, 
-                alt_llist* entry)
-{
-  entry->previous = list;
    327d8:	e0bffd17 	ldw	r2,-12(fp)
    327dc:	e0fffc17 	ldw	r3,-16(fp)
    327e0:	10c00115 	stw	r3,4(r2)
-  entry->next     = list->next;
    327e4:	e0bffc17 	ldw	r2,-16(fp)
    327e8:	10c00017 	ldw	r3,0(r2)
    327ec:	e0bffd17 	ldw	r2,-12(fp)
    327f0:	10c00015 	stw	r3,0(r2)
-
-  list->next->previous = entry;
    327f4:	e0bffc17 	ldw	r2,-16(fp)
    327f8:	10800017 	ldw	r2,0(r2)
    327fc:	e0fffd17 	ldw	r3,-12(fp)
    32800:	10c00115 	stw	r3,4(r2)
-  list->next           = entry;
    32804:	e0bffc17 	ldw	r2,-16(fp)
    32808:	e0fffd17 	ldw	r3,-12(fp)
    3280c:	10c00015 	stw	r3,0(r2)
-
-  return 0;  
    32810:	0005883a 	mov	r2,zero
-}
    32814:	e037883a 	mov	sp,fp
    32818:	dfc00117 	ldw	ra,4(sp)
    3281c:	df000017 	ldw	fp,0(sp)
@@ -23811,33 +23695,17 @@ static ALT_INLINE void ALT_ALWAYS_INLINE alt_llist_insert(alt_llist* list,
    32824:	f800283a 	ret
 
 00032828 <_do_ctors>:
-/*
- * Run the C++ static constructors.
- */
-
-void _do_ctors(void)
-{
    32828:	defffd04 	addi	sp,sp,-12
    3282c:	dfc00215 	stw	ra,8(sp)
    32830:	df000115 	stw	fp,4(sp)
    32834:	df000104 	addi	fp,sp,4
-  constructor* ctor;
-
-  for (ctor = &__CTOR_END__[-1]; ctor >= __CTOR_LIST__; ctor--)
    32838:	008000f4 	movhi	r2,3
    3283c:	108d1904 	addi	r2,r2,13412
    32840:	e0bfff15 	stw	r2,-4(fp)
    32844:	00000606 	br	32860 <_do_ctors+0x38>
-        (*ctor) (); 
    32848:	e0bfff17 	ldw	r2,-4(fp)
    3284c:	10800017 	ldw	r2,0(r2)
    32850:	103ee83a 	callr	r2
-
-void _do_ctors(void)
-{
-  constructor* ctor;
-
-  for (ctor = &__CTOR_END__[-1]; ctor >= __CTOR_LIST__; ctor--)
    32854:	e0bfff17 	ldw	r2,-4(fp)
    32858:	10bfff04 	addi	r2,r2,-4
    3285c:	e0bfff15 	stw	r2,-4(fp)
@@ -23845,8 +23713,6 @@ void _do_ctors(void)
    32864:	008000f4 	movhi	r2,3
    32868:	108d1a04 	addi	r2,r2,13416
    3286c:	18bff62e 	bgeu	r3,r2,32848 <_do_ctors+0x20>
-        (*ctor) (); 
-}
    32870:	0001883a 	nop
    32874:	e037883a 	mov	sp,fp
    32878:	dfc00117 	ldw	ra,4(sp)
@@ -23855,33 +23721,17 @@ void _do_ctors(void)
    32884:	f800283a 	ret
 
 00032888 <_do_dtors>:
-/*
- * Run the C++ static destructors.
- */
-
-void _do_dtors(void)
-{
    32888:	defffd04 	addi	sp,sp,-12
    3288c:	dfc00215 	stw	ra,8(sp)
    32890:	df000115 	stw	fp,4(sp)
    32894:	df000104 	addi	fp,sp,4
-  destructor* dtor;
-
-  for (dtor = &__DTOR_END__[-1]; dtor >= __DTOR_LIST__; dtor--)
    32898:	008000f4 	movhi	r2,3
    3289c:	108d1904 	addi	r2,r2,13412
    328a0:	e0bfff15 	stw	r2,-4(fp)
    328a4:	00000606 	br	328c0 <_do_dtors+0x38>
-        (*dtor) (); 
    328a8:	e0bfff17 	ldw	r2,-4(fp)
    328ac:	10800017 	ldw	r2,0(r2)
    328b0:	103ee83a 	callr	r2
-
-void _do_dtors(void)
-{
-  destructor* dtor;
-
-  for (dtor = &__DTOR_END__[-1]; dtor >= __DTOR_LIST__; dtor--)
    328b4:	e0bfff17 	ldw	r2,-4(fp)
    328b8:	10bfff04 	addi	r2,r2,-4
    328bc:	e0bfff15 	stw	r2,-4(fp)
@@ -23889,8 +23739,6 @@ void _do_dtors(void)
    328c4:	008000f4 	movhi	r2,3
    328c8:	108d1a04 	addi	r2,r2,13416
    328cc:	18bff62e 	bgeu	r3,r2,328a8 <_do_dtors+0x20>
-        (*dtor) (); 
-}
    328d0:	0001883a 	nop
    328d4:	e037883a 	mov	sp,fp
    328d8:	dfc00117 	ldw	ra,4(sp)

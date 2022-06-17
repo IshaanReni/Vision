@@ -437,28 +437,28 @@ module EEE_IMGPROC #(
   logic [23:0] hsv_thresholded;
 
   always_comb begin
-    if ((hsv_d20[23:16] < 15 || hsv_d20[23:16] > 250) && hsv_d20[7:0] > 57) begin // red
+    if ((hsv_d20[23:16] < 15 && hsv_d20[23:16] > 5) && hsv_d20[7:0] > 57) begin // red
       hsv_thresholded = {8'd255, 8'd0, 8'd0};
     end
     else if ((hsv_d20[23:16] < 50 && hsv_d20[23:16] > 35) && (hsv_d20[7:0] > 160 && hsv_d20[7:0] < 210) && (hsv_d20[15:8] > 130 && hsv_d20[15:8] < 200))// top half yellow 
     begin
       hsv_thresholded = {8'd255, 8'd255, 8'd0};
     end
-    else if (hsv_d20[23:16] < 230 && hsv_d20[23:16] > 220) // pink
+    else if (hsv_d20[23:16] > 250 || hsv_d20[23:16] < 5) // pink
     begin
       hsv_thresholded = {8'd168, 8'd50, 8'd153};
     end
-    else if ((hsv_d20[23:16] < 155 && hsv_d20[23:16] > 113) && (hsv_d20[7:0] > 25 && hsv_d20[7:0] < 50)) // && hsv_d20[15:8] > 100) // Dark blue
+    else if ((hsv_d20[23:16] < 170 && hsv_d20[23:16] > 130)) //&& (hsv_d20[7:0] > 25 && hsv_d20[7:0] < 50)) // && hsv_d20[15:8] > 100) // Dark blue
     begin
       hsv_thresholded = {8'd0, 8'd0, 8'd255};
     end
-    else if (hsv_d20[23:16] < 80 && hsv_d20[23:16] > 70 && hsv_d20[7:0] > 130 && hsv_d20[15:8] < 200 && hsv_d20[15:8] > 120) // light green
+    else if (hsv_d20[23:16] < 85 && hsv_d20[23:16] > 60/*&& hsv_d20[7:0] > 130) */&& hsv_d20[15:8] < 200 && hsv_d20[15:8] > 120) // light green
     begin
       hsv_thresholded = {8'd0, 8'd255, 8'd0};
     end
-    else if (hsv_d20[23:16] < 85 && hsv_d20[23:16] > 80 && hsv_d20[7:0] > 120) // teal
+    else if (hsv_d20[23:16] < 130 && hsv_d20[23:16] > 113)//&& hsv_d20[7:0] > 120) // teal
     begin
-      hsv_thresholded = {8'd0, 8'd255, 8'd128};
+      hsv_thresholded = {8'd0, 8'd255, 8'd140};
     end
     else
     begin
@@ -523,39 +523,39 @@ module EEE_IMGPROC #(
     .data_out(throwaway[2])
   );
 
-  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row4 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in(hsv_intermediate[1]),
-    .data_out(hsv_intermediate[2])
-  );
+  // SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row4 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in(hsv_intermediate[1]),
+  //   .data_out(hsv_intermediate[2])
+  // );
 
-  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row4 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in(hsv_intermediate[2]),
-    .internal_out(source_data_exposed_modal[3]),
-    .data_out(throwaway[3])
-  );
+  // SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row4 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in(hsv_intermediate[2]),
+  //   .internal_out(source_data_exposed_modal[3]),
+  //   .data_out(throwaway[3])
+  // );
 
-  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row5 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in(hsv_intermediate[2]),
-    .data_out(hsv_intermediate[3])
-  );
+  // SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row5 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in(hsv_intermediate[2]),
+  //   .data_out(hsv_intermediate[3])
+  // );
 
-  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row5 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in(hsv_intermediate[3]),
-    .internal_out(source_data_exposed_modal[4]),
-    .data_out(throwaway[4])
-  );
+  // SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row5 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in(hsv_intermediate[3]),
+  //   .internal_out(source_data_exposed_modal[4]),
+  //   .data_out(throwaway[4])
+  // );
 
   
   logic [7:0] count_t1; 
@@ -582,7 +582,7 @@ module EEE_IMGPROC #(
     count_max = 0;
     
   
-    for(integer j = 0; j < 5; j++) begin
+    for(integer j = 0; j < 3; j++) begin
       for(integer i = 0; i<16; i++) begin
         if (source_data_exposed_modal[j][i] == {8'd255, 8'd0, 8'd0}) begin
           count_t1 = count_t1 + 1; 
@@ -599,7 +599,7 @@ module EEE_IMGPROC #(
         if (source_data_exposed_modal[j][i] == {8'd0, 8'd255, 8'd0}) begin
           count_t5 = count_t5 + 1; 
         end
-        if (source_data_exposed_modal[j][i] ==  {8'd0, 8'd255, 8'd128} ) begin
+        if (source_data_exposed_modal[j][i] ==  {8'd0, 8'd255, 8'd140} ) begin
           count_t6 = count_t6 + 1; 
         end
         if (source_data_exposed_modal[j][i] == {8'd0, 8'd0, 8'd0} ) begin
@@ -649,9 +649,9 @@ module EEE_IMGPROC #(
     end
 
     else if(count_t5 > count_t1 && 
+       count_t5 > count_t2 && 
        count_t5 > count_t3 && 
-       count_t5 > count_t4 && 
-       count_t5 > count_t5 &&
+       count_t5 > count_t4 &&
        count_t5 > count_t6 &&
        count_t5 > count_t7) begin
       modal_data_out = {8'd0, 8'd255, 8'd0};

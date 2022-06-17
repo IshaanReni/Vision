@@ -2,9 +2,9 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>18.1</BspVersion>
-        <BspGeneratedTimeStamp>06-Jun-2022 12:23:36</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1654514616429</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>/home/joachimls/Imperial/ProjectEE2/Vision/Verilog_Quartus_Project/DE10_LITE_D8M_VIP_16/software/D8M_Camera_Test_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>17-Jun-2022 16:42:44</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1655480564717</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>/home/ishaan/projects/Vision/Verilog_Quartus_Project/DE10_LITE_D8M_VIP_16/software/D8M_Camera_Test_bsp</BspGeneratedLocation>
         <BspSettingsFile>./settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../Qsys.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
