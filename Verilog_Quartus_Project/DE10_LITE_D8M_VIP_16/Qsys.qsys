@@ -21,7 +21,23 @@
    {
       datum _originalDeviceFamily
       {
+         value = "MAX 10";
+         type = "String";
+      }
+   }
+   element Qsys
+   {
+      datum _originalDeviceFamily
+      {
          value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element Qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "MAX 10";
          type = "String";
       }
    }
@@ -45,7 +61,7 @@
    {
       datum _originalDeviceFamily
       {
-         value = "Cyclone V";
+         value = "MAX 10";
          type = "String";
       }
    }
@@ -53,7 +69,7 @@
    {
       datum _originalDeviceFamily
       {
-         value = "MAX 10";
+         value = "Cyclone V";
          type = "String";
       }
    }
@@ -437,6 +453,11 @@
  <interface
    name="eee_imgproc_0_conduit_mode"
    internal="EEE_IMGPROC_0.conduit_mode"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="eee_imgproc_0_conduit_spi"
+   internal="EEE_IMGPROC_0.conduit_spi"
    type="conduit"
    dir="end" />
  <interface

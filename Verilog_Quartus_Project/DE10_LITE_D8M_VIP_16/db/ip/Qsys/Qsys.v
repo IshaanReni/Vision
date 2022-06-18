@@ -20,6 +20,10 @@ module Qsys (
 		output wire        clk_vga_clk,                               //                          clk_vga.clk
 		output wire        d8m_xclkin_clk,                            //                       d8m_xclkin.clk
 		input  wire        eee_imgproc_0_conduit_mode_new_signal,     //       eee_imgproc_0_conduit_mode.new_signal
+		input  wire        eee_imgproc_0_conduit_spi_spi_clk,         //        eee_imgproc_0_conduit_spi.spi_clk
+		output wire        eee_imgproc_0_conduit_spi_spi_miso,        //                                 .spi_miso
+		input  wire        eee_imgproc_0_conduit_spi_spi_mosi,        //                                 .spi_mosi
+		input  wire        eee_imgproc_0_conduit_spi_spi_cs_n,        //                                 .spi_cs_n
 		inout  wire        i2c_opencores_camera_export_scl_pad_io,    //      i2c_opencores_camera_export.scl_pad_io
 		inout  wire        i2c_opencores_camera_export_sda_pad_io,    //                                 .sda_pad_io
 		inout  wire        i2c_opencores_mipi_export_scl_pad_io,      //        i2c_opencores_mipi_export.scl_pad_io
@@ -266,7 +270,11 @@ module Qsys (
 		.source_eop_fifo4   (),                                                    //                          .endofpacket
 		.source_ready_fifo4 (),                                                    //                          .ready
 		.source_sop_fifo4   (),                                                    //                          .startofpacket
-		.source_valid_fifo4 ()                                                     //                          .valid
+		.source_valid_fifo4 (),                                                    //                          .valid
+		.SPI_Clk            (eee_imgproc_0_conduit_spi_spi_clk),                   //               conduit_spi.spi_clk
+		.SPI_MISO           (eee_imgproc_0_conduit_spi_spi_miso),                  //                          .spi_miso
+		.SPI_MOSI           (eee_imgproc_0_conduit_spi_spi_mosi),                  //                          .spi_mosi
+		.SPI_CS_n           (eee_imgproc_0_conduit_spi_spi_cs_n)                   //                          .spi_cs_n
 	);
 
 	TERASIC_AUTO_FOCUS #(

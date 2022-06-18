@@ -55,6 +55,25 @@ extern module RGB_TO_HSV (
 
 );
 
+extern module SPI_Slave #(
+    parameter CLK_POL = 1,
+    parameter CLK_PHA = 1
+) (
+    input logic clk_in,
+    input logic rst_n_in,
+
+    // Signals to interface with rest of FPGA
+    input logic TX_valid_in,
+    input logic [7:0] TX_byte_in,
+
+
+    // External SPI Interface signals
+    input  logic SPI_Clk_in,
+    output logic SPI_MISO_out,
+    input  logic SPI_MOSI_in,
+    input  logic SPI_CS_n_in    // active low
+);
+
 module EEE_IMGPROC #(
     parameter IMAGE_W = 11'd640,
     parameter IMAGE_H = 11'd480,
@@ -89,7 +108,12 @@ module EEE_IMGPROC #(
     output logic source_sop,
     output logic source_eop,
 
-    /*
+    input logic SPI_Clk,
+    output logic SPI_MISO,
+    input logic SPI_MOSI,
+    input logic SPI_CS_n,
+
+
     // streaming sink fifo1
     input logic [31:0] sink_data_fifo1,
     input logic sink_valid_fifo1,
@@ -149,6 +173,7 @@ module EEE_IMGPROC #(
     output logic source_sop_fifo4,
     output logic source_eop_fifo4,
 
+    /*
     //FIFO ADDED FOR MODAL KERNEL
 
     // streaming sink fifo5
@@ -216,41 +241,6 @@ module EEE_IMGPROC #(
       end
     end
   end
-
-
-  //PERSO Addition
-  //Solid Kernel relying on delay line
-  //integer k_halfwidth = 4;
-  //integer k_tot_size = (2 * k_halfwidth + 1) * (2 * k_halfwidth + 1);  //this is 9x9 kernel
-
-
-  //NB : coordinates are [y][x] in JLS code
-  // logic to read from buffer (from 3D coordinates):
-  // we use x,y coordinate already calculated (end of buffer and bottom right of kernel)
-  //attempt to rewrite:
-  /*
-generate
-genvar i;
-for (i=0; i< IMAGE_W; i = i + 1) begin
-	genvar j;
-	for (always< IMAGE_H; j = j + 1) begin
-		if( (x>(2*k_halfwidth+1)) && (y>(2*k_halfwidth+1)) ) begin //check we are not out of bounds
-
-			for (integer m=0; m<(2*k_halfwidth+1)) begin 
-				for(integer n=0<(2*k_halfwidth+1)) begin
-					p+= hsv_delayline[j+i*(2*k_halfwidth+1)];
-				end
-			end
-
-			p /= k_tot_size - 10; 
-			
-			
-			hsv_delayline[k_halfwidth] = p; //middle of the kernel
-		end
-	end
-end
-endgenerate
-*/
 
   //Find first and last red pixels
   logic [10:0] x_min, y_min, x_max, y_max;
@@ -343,7 +333,6 @@ endgenerate
       .empty(msg_buf_empty)
   );
 
-
   //Streaming registers to buffer video signal
   // feeds into the ring buffer
   //Streaming registers to buffer video signal
@@ -364,6 +353,12 @@ endgenerate
   logic source_sop_exposed_step1, source_eop_exposed_step1;
   logic [25:0] row_1_data [15:0];
 
+  //for modal Kernel
+
+  
+
+  logic [23:0] source_data_intermediate_step2;
+
   STREAM_REG #(.DATA_WIDTH(26)) out_reg (
     .clk(clk),
     .rst_n(reset_n),
@@ -382,61 +377,84 @@ endgenerate
     .valid_in(source_valid),
     .data_in({source_data_intermediate_step1, source_sop_intermediate_step1, source_eop_intermediate_step1}),
     .internal_out(row_1_data),
-    .data_out({source_data_exposed_step1,source_sop_exposed_step1,source_eop_exposed_step1})
+    .data_out({source_data_intermediate_modal, source_sop_intermediate_modal, source_eop_intermediate_modal})
   );
   
-  // SHIFT_REGGAE #(.DATA_WIDTH(26), .NO_STAGES(624)) shift_reg_1 (
-  //   .clk(clk),
-  //   .rst_n(reset_n),
-  //   .valid_in(source_valid),
-  //   .data_in({source_data_exposed_step1, source_sop_exposed_step1, source_eop_exposed_step1}),
-  //   .data_out({, , })
-  // );
-
-  // // STAGE 2
-  // SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_2 (
-  //   .clk(clk),
-  //   .rst_n(reset_n),
-  //   .valid_in(source_valid),
-  //   .data_in({sink_data_fifo1, sink_sop_fifo1, sink_eop_fifo1}),
-  //   .internal_out(row_2_data),
-  //   .data_out({source_data_exposed_step2, source_sop_exposed_step2, source_eop_exposed_step2})
-  // );
-  
   logic found_eop_or_sop;
-
   always_comb begin
     found_eop_or_sop = 0;
 
     for(integer i = 0; i < 16; i = i + 1) begin
-      if(/*row_5_data[i][0] | row_5_data[i][1] | 
-        row_4_data[i][0] | row_4_data[i][1] | 
-        row_3_data[i][0] | row_3_data[i][1] |
-        row_2_data[i][0] | row_2_data[i][1] | */
-        row_1_data[i][0] | row_1_data[i][1])
+      if(row_1_data[i][0] | row_1_data[i][1])
         begin 
         found_eop_or_sop = 1;
       end
     end
   end
-  
-  logic [25:0] centre_pixel_d20;
-  logic found_eop_or_sop_d20;
 
-  SHIFT_REGGAE #(.DATA_WIDTH(27), .NO_STAGES(20)) shift_reg_centre_pixel (
+  
+  logic [25:0] fallback_data_d36;
+  logic found_eop_or_sop_d36;
+
+  SHIFT_REGGAE #(.DATA_WIDTH(27), .NO_STAGES(36)) shift_reg_fallback (
     .clk(clk),
     .rst_n(reset_n),
     .valid_in(source_valid),
-    .data_in({found_eop_or_sop, row_1_data[7]}),
-    .data_out({found_eop_or_sop_d20, centre_pixel_d20})
+    .data_in({found_eop_or_sop, row_1_data[0][25:0]}),
+    .data_out({found_eop_or_sop_d36, fallback_data_d36})
   );
 
+  logic [23:0] gaus_blur_pixel;
+  logic [31:0] gaus_intermidate_r, gaus_intermidate_g, gaus_intermidate_b;
+
+  always_ff @(posedge clk) begin
+    if(source_valid) begin
+      gaus_intermidate_r <= (
+                            {24'b0, row_1_data[0][25:18]} + 
+                            ({24'b0, row_1_data[1][25:18]} << 3) +
+                            ({24'b0, row_1_data[2][25:18]} * 28) + 
+                            ({24'b0, row_1_data[3][25:18]} * 56)  +
+                            ({24'b0, row_1_data[4][25:18]} * 70) +
+                            ({24'b0, row_1_data[5][25:18]} * 56) + 
+                            ({24'b0, row_1_data[6][25:18]} * 28) +
+                            ({24'b0, row_1_data[7][25:18]} << 3) +
+                            {24'b0, row_1_data[8][25:18]}) >> 8;
+
+      gaus_intermidate_g <= (
+                            {24'b0, row_1_data[0][17:10]} + 
+                            ({24'b0, row_1_data[1][17:10]} << 3)+
+                            ({24'b0, row_1_data[2][17:10]} * 28)+
+                            ({24'b0, row_1_data[3][17:10]} *56)+
+                            ({24'b0, row_1_data[4][17:10]} *70)+
+                            ({24'b0, row_1_data[5][17:10]} *56)+
+                            ({24'b0, row_1_data[6][17:10]} * 28)+
+                            ({24'b0, row_1_data[7][17:10]} << 3)+
+                            {24'b0, row_1_data[8][17:10]}) >> 8;
+
+      gaus_intermidate_b <= (
+                            {24'b0, row_1_data[0][9:2]} + 
+                            ({24'b0, row_1_data[1][9:2]} << 3 )+
+                            ({24'b0, row_1_data[2][9:2]} * 28 ) +
+                            ({24'b0, row_1_data[3][9:2]} * 56)+
+                            ({24'b0, row_1_data[4][9:2]} * 70 )+
+                            ({24'b0, row_1_data[5][9:2]} * 56 ) +
+                            ({24'b0, row_1_data[6][9:2]} *28)+
+                            ({24'b0, row_1_data[7][9:2]} << 3)+
+                            {24'b0, row_1_data[8][9:2]}) >> 8;
+    end
+  end 
+
+  assign gaus_blur_pixel[23:16] = gaus_intermidate_r[7:0];
+  assign gaus_blur_pixel[15:8] = gaus_intermidate_g[7:0];
+  assign gaus_blur_pixel[7:0] = gaus_intermidate_b[7:0];
+
+  
   logic [23:0] hsv_d20;
   RGB_TO_HSV hsv_converter (
     .clk(clk),
     .rst_n(reset_n),
     .valid_in(source_valid),
-    .rgb_in(row_1_data[7][25:2]),
+    .rgb_in(gaus_blur_pixel),
     .hsv_out(hsv_d20)
   );
 
@@ -475,19 +493,253 @@ endgenerate
 
   //______________________________Modal Kernel Below_____________________
 
-  //NEED to Add Buffering for line of pixels
+  // FOR Modal Kernel
+  logic [23:0] source_data_intermediate_modal;
+  logic source_sop_intermediate_modal, source_eop_intermediate_modal;
+  logic [23:0] source_data_exposed_modal [4:0][15:0];
+  logic source_sop_exposed_modal, source_eop_exposed_modal;
+  logic [25:0] modal_data [15:0];
+
+  logic [23:0] throwaway [4:0];
+  logic [23:0] hsv_intermediate [4:0];
+
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row1 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_thresholded),
+    .internal_out(source_data_exposed_modal[0]),
+    .data_out(throwaway[0])
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row2 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_thresholded),
+    .data_out(hsv_intermediate[0])
+  );
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row2 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[0]),
+    .internal_out(source_data_exposed_modal[1]),
+    .data_out(throwaway[1])
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row3 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[0]),
+    .data_out(hsv_intermediate[1])
+  );
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row3 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[1]),
+    .internal_out(source_data_exposed_modal[2]),
+    .data_out(throwaway[2])
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row4 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[1]),
+    .data_out(hsv_intermediate[2])
+  );
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row4 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[2]),
+    .internal_out(source_data_exposed_modal[3]),
+    .data_out(throwaway[3])
+  );
+
+  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row5 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[2]),
+    .data_out(hsv_intermediate[3])
+  );
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row5 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(hsv_intermediate[3]),
+    .internal_out(source_data_exposed_modal[4]),
+    .data_out(throwaway[4])
+  );
 
   
+  logic [7:0] count_t1; 
+  logic [7:0] count_t2; 
+  logic [7:0] count_t3; 
+  logic [7:0] count_t4; 
+  logic [7:0] count_t5; 
+  logic [7:0] count_t6; 
+  logic [7:0] count_t7;
 
- //__________________________________end Modal Kernel ___________________________
+  logic [7:0] count_max;
+
+  logic [23:0] modal_data_out;
+
+  always_comb begin
+
+    count_t1 = 0; 
+    count_t2 = 0; 
+    count_t3 = 0; 
+    count_t4 = 0; 
+    count_t5 = 0; 
+    count_t6 = 0; 
+    count_t7 = 0;
+    count_max = 0;
+    
+  
+    for(integer j = 0; j < 5; j++) begin
+      for(integer i = 0; i<16; i++) begin
+        if (source_data_exposed_modal[j][i] == {8'd255, 8'd0, 8'd0}) begin
+          count_t1 = count_t1 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] == {8'd255, 8'd255, 8'd0}) begin
+          count_t2 = count_t2 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] == {8'd168, 8'd50, 8'd153}) begin
+          count_t3 = count_t3 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] ==  {8'd0, 8'd0, 8'd255}) begin
+          count_t4 = count_t4 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] == {8'd0, 8'd255, 8'd0}) begin
+          count_t5 = count_t5 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] ==  {8'd0, 8'd255, 8'd128} ) begin
+          count_t6 = count_t6 + 1; 
+        end
+        if (source_data_exposed_modal[j][i] == {8'd0, 8'd0, 8'd0} ) begin
+          count_t7 = count_t7 + 1; 
+        end
+      end
+    end
+
+    modal_data_out = source_data_exposed_modal[0][7];
+
+    if(count_t1 > count_t2 && 
+       count_t1 > count_t3 && 
+       count_t1 > count_t4 && 
+       count_t1 > count_t5 &&
+       count_t1 > count_t6 &&
+       count_t1 > count_t7) begin
+        modal_data_out = {8'd255, 8'd0, 8'd0};
+        count_max = count_t1;
+    end
+
+    else if(count_t2 > count_t1 && 
+       count_t2 > count_t3 && 
+       count_t2 > count_t4 && 
+       count_t2 > count_t5 &&
+       count_t2 > count_t6 &&
+       count_t2 > count_t7) begin
+      modal_data_out = {8'd255, 8'd255, 8'd0};
+      count_max = count_t2;
+    end
+    else if(count_t3 > count_t1 && 
+       count_t3 > count_t2 && 
+       count_t3 > count_t4 && 
+       count_t3 > count_t5 &&
+       count_t3 > count_t6 &&
+       count_t3 > count_t7) begin
+       modal_data_out = {8'd168, 8'd50, 8'd153};
+       count_max = count_t3;
+    end
+    else if(count_t4 > count_t1 && 
+       count_t4 > count_t2 && 
+       count_t4 > count_t3 && 
+       count_t4 > count_t5 &&
+       count_t4 > count_t6 &&
+       count_t4 > count_t7) begin
+      modal_data_out = {8'd0, 8'd0, 8'd255};
+      count_max = count_t4;
+    end
+
+    else if(count_t5 > count_t1 && 
+       count_t5 > count_t3 && 
+       count_t5 > count_t4 && 
+       count_t5 > count_t5 &&
+       count_t5 > count_t6 &&
+       count_t5 > count_t7) begin
+      modal_data_out = {8'd0, 8'd255, 8'd0};
+      count_max = count_t5;
+    end
+
+
+    else if(count_t6 > count_t1 && 
+       count_t6 > count_t2 && 
+       count_t6 > count_t3 && 
+       count_t6 > count_t4 &&
+       count_t6 > count_t5 &&
+       count_t6 > count_t7) begin
+        modal_data_out = {8'd0, 8'd255, 8'd128};
+        count_max = count_t6;
+    end 
+
+    if(count_t7 > count_t1 && 
+       count_t7 > count_t2 && 
+       count_t7 > count_t3 && 
+       count_t7 > count_t4 &&
+       count_t7 > count_t5 &&
+       count_t7 > count_t6) begin
+        modal_data_out = {8'd0, 8'd0, 8'd0};
+        count_max = count_t7;
+    end
+
+    if(count_max < 40) begin
+      modal_data_out = {8'd0, 8'd0, 8'd0};
+    end           
+  end
+
+    
+//__________________________________end Modal Kernel ___________________________
+
+ 
   // assign source_data = found_eop_or_sop ? centre_pixel : {out_pixel_r_s4[13:6], out_pixel_g_s4[13:6], out_pixel_b_s4[13:6]};
-  assign source_data = found_eop_or_sop_d20 ? centre_pixel_d20[25:2] : hsv_thresholded;
-  
+  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : modal_data_out;
+  //assign source_data = found_eop_or_sop ? row_1_data[6][25:2] : gaus_blur_pixel;
+  // assign source_sop = row_1_data[6][1];
+  // assign source_eop = row_1_data[6][0];
+
+
   //assign source_data = centre_pixel_d20[25:2];
-  assign source_sop = centre_pixel_d20[1];
-  assign source_eop = centre_pixel_d20[0];
+  assign source_sop = fallback_data_d36[1];
+  assign source_eop = fallback_data_d36[0];
 
   // assign source_data = row_3_data[2][25:2];
+
+  SPI_Slave #(.CLK_POL(1), .CLK_PHA(1)) spi_slave_1 (
+    .clk_in(clk),
+    .rst_n_in(reset_n),
+
+    // Signals to interface with rest of FPGA
+    .TX_valid_in(1'b1),
+    .TX_byte_in(8'b10011001),
+    
+    // External SPI Interface signals
+    .SPI_Clk_in(SPI_Clk),
+    .SPI_MISO_out(SPI_MISO),
+    .SPI_MOSI_in(SPI_MOSI),
+    .SPI_CS_n_in(SPI_CS_n)    // active low
+  );
+
 
   /////////////////////////////////
   /// Memory-mapped port		 /////

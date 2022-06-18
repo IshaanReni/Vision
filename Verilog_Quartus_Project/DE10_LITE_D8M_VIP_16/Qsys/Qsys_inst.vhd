@@ -43,7 +43,11 @@
 			terasic_camera_0_conduit_end_LVAL         : in    std_logic                     := 'X';             -- LVAL
 			terasic_camera_0_conduit_end_PIXCLK       : in    std_logic                     := 'X';             -- PIXCLK
 			uart_0_rx_tx_rxd                          : in    std_logic                     := 'X';             -- rxd
-			uart_0_rx_tx_txd                          : out   std_logic                                         -- txd
+			uart_0_rx_tx_txd                          : out   std_logic;                                        -- txd
+			eee_imgproc_0_conduit_spi_spi_clk         : in    std_logic                     := 'X';             -- spi_clk
+			eee_imgproc_0_conduit_spi_spi_miso        : out   std_logic;                                        -- spi_miso
+			eee_imgproc_0_conduit_spi_spi_mosi        : in    std_logic                     := 'X';             -- spi_mosi
+			eee_imgproc_0_conduit_spi_spi_cs_n        : in    std_logic                     := 'X'              -- spi_cs_n
 		);
 	end component Qsys;
 
@@ -92,6 +96,10 @@
 			terasic_camera_0_conduit_end_LVAL         => CONNECTED_TO_terasic_camera_0_conduit_end_LVAL,         --                                 .LVAL
 			terasic_camera_0_conduit_end_PIXCLK       => CONNECTED_TO_terasic_camera_0_conduit_end_PIXCLK,       --                                 .PIXCLK
 			uart_0_rx_tx_rxd                          => CONNECTED_TO_uart_0_rx_tx_rxd,                          --                     uart_0_rx_tx.rxd
-			uart_0_rx_tx_txd                          => CONNECTED_TO_uart_0_rx_tx_txd                           --                                 .txd
+			uart_0_rx_tx_txd                          => CONNECTED_TO_uart_0_rx_tx_txd,                          --                                 .txd
+			eee_imgproc_0_conduit_spi_spi_clk         => CONNECTED_TO_eee_imgproc_0_conduit_spi_spi_clk,         --        eee_imgproc_0_conduit_spi.spi_clk
+			eee_imgproc_0_conduit_spi_spi_miso        => CONNECTED_TO_eee_imgproc_0_conduit_spi_spi_miso,        --                                 .spi_miso
+			eee_imgproc_0_conduit_spi_spi_mosi        => CONNECTED_TO_eee_imgproc_0_conduit_spi_spi_mosi,        --                                 .spi_mosi
+			eee_imgproc_0_conduit_spi_spi_cs_n        => CONNECTED_TO_eee_imgproc_0_conduit_spi_spi_cs_n         --                                 .spi_cs_n
 		);
 

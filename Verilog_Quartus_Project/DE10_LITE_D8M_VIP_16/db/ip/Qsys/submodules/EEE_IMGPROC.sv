@@ -55,6 +55,25 @@ extern module RGB_TO_HSV (
 
 );
 
+extern module SPI_Slave #(
+    parameter CLK_POL = 1,
+    parameter CLK_PHA = 1
+) (
+    input logic clk_in,
+    input logic rst_n_in,
+
+    // Signals to interface with rest of FPGA
+    input logic TX_valid_in,
+    input logic [7:0] TX_byte_in,
+
+
+    // External SPI Interface signals
+    input  logic SPI_Clk_in,
+    output logic SPI_MISO_out,
+    input  logic SPI_MOSI_in,
+    input  logic SPI_CS_n_in    // active low
+);
+
 module EEE_IMGPROC #(
     parameter IMAGE_W = 11'd640,
     parameter IMAGE_H = 11'd480,
@@ -89,7 +108,12 @@ module EEE_IMGPROC #(
     output logic source_sop,
     output logic source_eop,
 
-    
+    input logic SPI_Clk,
+    output logic SPI_MISO,
+    input logic SPI_MOSI,
+    input logic SPI_CS_n,
+
+
     // streaming sink fifo1
     input logic [31:0] sink_data_fifo1,
     input logic sink_valid_fifo1,
@@ -523,6 +547,7 @@ module EEE_IMGPROC #(
     .data_out(throwaway[2])
   );
 
+  /*
   SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row4 (
     .clk(clk),
     .rst_n(reset_n),
@@ -555,7 +580,7 @@ module EEE_IMGPROC #(
     .data_in(hsv_intermediate[3]),
     .internal_out(source_data_exposed_modal[4]),
     .data_out(throwaway[4])
-  );
+  );*/
 
   
   logic [7:0] count_t1; 
@@ -582,7 +607,7 @@ module EEE_IMGPROC #(
     count_max = 0;
     
   
-    for(integer j = 0; j < 5; j++) begin
+    for(integer j = 0; j < 3; j++) begin
       for(integer i = 0; i<16; i++) begin
         if (source_data_exposed_modal[j][i] == {8'd255, 8'd0, 8'd0}) begin
           count_t1 = count_t1 + 1; 
@@ -700,6 +725,22 @@ module EEE_IMGPROC #(
   assign source_eop = fallback_data_d36[0];
 
   // assign source_data = row_3_data[2][25:2];
+
+  SPI_Slave #(.CLK_POL(1), .CLK_PHA(1)) spi_slave_1 (
+    .clk_in(clk),
+    .rst_n_in(reset_n),
+
+    // Signals to interface with rest of FPGA
+    .TX_valid_in(1'b1),
+    .TX_byte_in(8'b10111001),
+    
+    // External SPI Interface signals
+    .SPI_Clk_in(SPI_Clk),
+    .SPI_MISO_out(SPI_MISO),
+    .SPI_MOSI_in(SPI_MOSI),
+    .SPI_CS_n_in(SPI_CS_n)    // active low
+  );
+
 
   /////////////////////////////////
   /// Memory-mapped port		 /////

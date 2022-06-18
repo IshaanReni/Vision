@@ -177,6 +177,10 @@ Qsys u0 (
 		.altpll_0_phasedone_conduit_export         (),         					//       altpll_0_phasedone_conduit.export		
 		
 		.eee_imgproc_0_conduit_mode_new_signal     (SW[0]),
+		.eee_imgproc_0_conduit_spi_spi_clk         (ARDUINO_IO[6]), // ESP GPIO_NUM_18
+		.eee_imgproc_0_conduit_spi_spi_miso        (ARDUINO_IO[5]), // ESP GPI_NUM_19                                 .spi_miso
+		.eee_imgproc_0_conduit_spi_spi_mosi        (ARDUINO_IO[2]), // ESP GPI_NUM_23       //                                 .spi_mosi
+		.eee_imgproc_0_conduit_spi_spi_cs_n        (ARDUINO_IO[7]),	// ESP GPI_NUM_5
 		
 		.uart_0_rx_tx_rxd                          (ARDUINO_IO[1]),                          //                     uart_0_rx_tx.rxd
 		.uart_0_rx_tx_txd                          (ARDUINO_IO[0])                           //
