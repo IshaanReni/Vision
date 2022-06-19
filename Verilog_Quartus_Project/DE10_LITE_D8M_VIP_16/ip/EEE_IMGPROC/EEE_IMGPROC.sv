@@ -687,9 +687,66 @@ module EEE_IMGPROC #(
     
 //__________________________________end Modal Kernel ___________________________
 
- 
+
+
+
+
+//----------------- bounding box code--------------------------------
+
+//dealy sop and eop signals by 52 cycles
+SHIFT_REGGAE #(.DATA_WIDTH(4), .NO_STAGES(52)) shift_reg_sop_eop_invalid (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({sop, eop, in_valid,packet_video}),
+    .data_out({sop_d52, eop_d52, in_valid_d52,packet_video_d52})
+  );
+  logic sop_d52, eop_d52, in_valid_d52, packet_video_d52; //delayed start and end of packet and in_valid
+
+//Delay the x,y coordinates calculated by Stott by 52 cycles
+SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({x, y}),
+    .data_out({x_d52, y_d52})
+  );
+
+
+  //delayed x,y coordinates
+  logic [10:0] x_d52,y_d52;
+  //current bounderies of red_object
+  logic [10:0] x_left_red, x_right_red; 
+
+  always_ff @(posedge clk) begin 
+    if(sop_d52 & in_valid_d52) begin
+      /*on receiving new frame set left limit to far right
+       and right limit to far left (horseshoe theory)
+      */
+      x_left_red <= IMAGE_W- 11'd1; 
+      x_right_red <= 11'd0;
+    end
+    else if(modal_data_out == {8'd255,8'd0,8'd0}) begin
+      if(x_d52 < x_left_red) x_left_red <= x_d52;
+      if(x_d52 > x_right_red) x_right_red <= x_d52;
+    end
+  end 
+
+
+  //need to keep a latched version of x_left_red and x_right_red upon FINISHING A FRAME
+  logic [10:0] x_left_r_frame, x_right_r_frame; 
+  always_ff @(posedge clk) begin 
+    if(eop_d52 & in_valid_d52 & packet_video_d52) begin
+      x_left_r_frame <= x_left_red;
+      x_right_r_frame <= x_right_red; 
+    end 
+  end 
+
+  logic [23:0] bounding_boxed_data;
+  assign bounding_boxed_data = (x_d52 == x_left_r_frame | x_d52 == x_right_r_frame) ? {8'd256, 8'd0, 8'd0} : modal_data_out; 
+//---------------------------end bounding box code---------------------
   // assign source_data = found_eop_or_sop ? centre_pixel : {out_pixel_r_s4[13:6], out_pixel_g_s4[13:6], out_pixel_b_s4[13:6]};
-  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : modal_data_out;
+  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : bounding_boxed_data;
   //assign source_data = found_eop_or_sop ? row_1_data[6][25:2] : gaus_blur_pixel;
   // assign source_sop = row_1_data[6][1];
   // assign source_eop = row_1_data[6][0];
