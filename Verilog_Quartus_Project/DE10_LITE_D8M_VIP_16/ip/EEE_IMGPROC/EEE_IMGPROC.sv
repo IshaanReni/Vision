@@ -743,7 +743,7 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
   end 
 
   logic [23:0] bounding_boxed_data;
-  assign bounding_boxed_data = (x_d52 == x_left_r_frame | x_d52 == x_right_r_frame) ? {8'd256, 8'd0, 8'd0} : modal_data_out; 
+  assign bounding_boxed_data = (x_d52 == x_left_r_frame | x_d52 == x_right_r_frame) ? {8'd255, 8'd255, 8'd255} : modal_data_out; 
 //---------------------------end bounding box code---------------------
   // assign source_data = found_eop_or_sop ? centre_pixel : {out_pixel_r_s4[13:6], out_pixel_g_s4[13:6], out_pixel_b_s4[13:6]};
   assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : bounding_boxed_data;
