@@ -196,7 +196,7 @@ module EEE_IMGPROC #(
 
   logic packet_video;
   // Switch output pixels depending on mode switch
-  // Don't modify the start-of-packet word - it's a packet discriptor
+  // Don't modify the start-of-packet word - it's a packet descriptor
   // Don't modify data in non-video packets
   assign {red_out, green_out, blue_out} = (mode & ~sop & packet_video) ? new_image : {red,green,blue}; //if video packet : change content of new_image
 
@@ -466,7 +466,7 @@ module EEE_IMGPROC #(
     end
   end
 
-
+/*THE TIMING IS OFF BUT ALL THE LINES ARE NOW MOVING!!!!!*/
   //______________________________Modal Kernel Below_____________________
 
   // FOR Modal Kernel
@@ -682,14 +682,216 @@ module EEE_IMGPROC #(
     if(count_max < 40) begin
       modal_data_out = {8'd0, 8'd0, 8'd0};
     end           
-  end
-
-    
+  end  
 //__________________________________end Modal Kernel ___________________________
+
+
+//__________________________________Bounding Box Code_________________________ In progress rn
+
+SHIFT_REGGAE #(.DATA_WIDTH(23), .NO_STAGES(52)) shift_reg_xy (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({x,y,packet_video}),
+    .data_out({x_d36,y_d36,packet_video_d36})
+  );
+
+logic [23:0] bb_data_out; 
+logic eop_d36, sop_d36, packet_video_d36;
+assign sop_d36 = fallback_data_d36[1];
+assign eop_d36 = fallback_data_d36[0];
+logic [10:0] x_d36, y_d36;
+// Finding x,y coordinates
+
+
+
+logic [10:0] x_min_red, y_min_red, x_max_red, y_max_red; 
+logic [10:0] x_min_yellow, y_min_yellow, x_max_yellow, y_max_yellow; 
+logic [10:0] x_min_pink, y_min_pink, x_max_pink, y_max_pink; 
+logic [10:0] x_min_blue, y_min_blue, x_max_blue, y_max_blue; 
+logic [10:0] x_min_green, y_min_green, x_max_green, y_max_green; 
+logic [10:0] x_min_teal, y_min_teal, x_max_teal, y_max_teal;
+
+integer border_offset = 20;
+//red bbs 
+// logic new_min_x_found;
+// logic new_max_x_found;
+// logic new_min_y_found;
+// always_comb begin
+//   // new_min_x_found = x_d36 < left_red;
+//   // new_max_x_found = x_d36 > right_red; 
+//   // new_min_y_found = y_d36 < top_red;
+//   new_min_x_found = x_d36 < x_min_red;
+//   new_max_x_found = x_d36 > x_max_red; 
+//   new_min_y_found = y_d36 < y_min_red;
+// end
+logic [23:0] modal_data_out_latched;
+always_ff @(posedge clk) begin
+  //creates a latched version of modal data out for comparison in bounding box code
+  modal_data_out_latched <= modal_data_out;
+end 
+
+always_ff @(posedge clk) begin 
+  if(sop_d36 & source_valid) begin //& (y_d36 < 20 | y_d36 > 400)) begin //NB TODO: consider if need in_valid
+    x_min_red <= IMAGE_W/2; //640-20
+    x_max_red <= border_offset;           //
+    y_min_red <= IMAGE_H/2; //
+    y_max_red <= border_offset;
+  end 
+  else if (source_valid) begin //& (x_d36 > border_offset & x_d36 < IMAGE_W - border_offset & y_d36 > border_offset & y_d36 < IMAGE_H - border_offset)) begin
+    if (modal_data_out_latched == {8'd255, 8'd0, 8'd0}) begin
+      // if(x_d36 < x_min_red) begin 
+      //   x_min_red <= x_d36;
+      // end
+      // if(x_d36 > x_max_red) begin
+      //   x_max_red <= x_d36;
+      // end
+      // if(y_d36 < y_min_red) begin
+      //   y_min_red <= y_d36;
+      // end
+      // x_min_red <= x_d36;
+      // x_max_red <= x_d36;
+      // y_min_red <= y_d36;
+      // y_max_red <= y_d36;
+      x_max_red <= IMAGE_W/2; //640-20
+      x_min_red <= border_offset;           //
+      y_max_red <= IMAGE_H/2; //
+      y_min_red <= border_offset;
+    end
+    // else begin
+    //   //IMO shouldn't enter here but if does probably an issue
+    //   //Probably should be DO NOTHING in actual code tho
+    //   x_min_red <= IMAGE_W - border_offset; //640-20
+    //   x_max_red <= border_offset;           //
+    //   y_min_red <= IMAGE_H - border_offset; //
+    //   y_max_red <= border_offset;
+    // end
+  end
+  // else begin
+  //   x_max_red <= IMAGE_W/2; //640-20
+  //   x_min_red <= border_offset;           //
+  //   y_max_red <= IMAGE_H/2; //
+  //   y_min_red <= border_offset;
+  // end
+end
+  
+  
+    
+    
+    // //yellow bbs
+    // if (modal_data_out == {8'd255, 8'd255, 8'd0}) begin 
+    //   if(x_d36 < x_min_yellow) x_min_yellow <= x_d36; 
+    //   if(x_d36 > x_max_yellow) x_max_yellow <= x_d36;
+    //   if (y_d36 < y_min_yellow) y_min_yellow <= y_d36;
+    //   y_max_yellow <= y_d36; 
+    // end
+    // if(sop_d36) begin //NB TODO: consider if need in_valid
+    //   x_min_yellow <= IMAGE_W - 11'h1;
+    //   x_max_yellow <=0;
+    //   y_min_yellow <= IMAGE_H - 11'h1; 
+    //   y_max_yellow <= 0;
+    // end 
+    // //pink bbs
+    // if (modal_data_out == {8'd168, 8'd50, 8'd153}) begin 
+    //   if(x_d36 < x_min_pink) x_min_pink <= x_d36; 
+    //   if(x_d36 > x_max_pink) x_max_pink <= x_d36;
+    //   if (y_d36 < y_min_pink) y_min_pink <= y_d36;
+    //   y_max_pink <= y_d36; 
+    // end
+    // if(sop_d36) begin //NB TODO: consider if need in_valid
+    //   x_min_pink <= IMAGE_W - 11'h1;
+    //   x_max_pink <=0;
+    //   y_min_pink <= IMAGE_H - 11'h1; 
+    //   y_max_pink <= 0;
+    // end 
+    // //blue bbs
+    // if (modal_data_out == {8'd0, 8'd0, 8'd255}) begin 
+    //   if(x_d36 < x_min_blue) x_min_blue <= x_d36; 
+    //   if(x_d36 > x_max_blue) x_max_blue <= x_d36;
+    //   if (y_d36 < y_min_blue) y_min_blue <= y_d36;
+    //   y_max_blue <= y_d36; 
+    // end
+    // if(sop_d36) begin //NB TODO: consider if need in_valid
+    //   x_min_blue <= IMAGE_W - 11'h1;
+    //   x_max_blue <=0;
+    //   y_min_blue <= IMAGE_H - 11'h1; 
+    //   y_max_blue <= 0;
+    // end 
+    // //green bbs
+    // if (modal_data_out == {8'd0, 8'd255, 8'd0}) begin 
+    //   if(x_d36 < x_min_green) x_min_green <= x_d36; 
+    //   if(x_d36 > x_max_green) x_max_green <= x_d36;
+    //   if (y_d36 < y_min_green) y_min_green <= y_d36;
+    //   y_max_green <= y_d36;
+    // end
+    // if(sop_d36) begin //NB TODO: consider if need in_valid
+    //   x_min_green <= IMAGE_W - 11'h1;
+    //   x_max_green <=0;
+    //   y_min_green <= IMAGE_H - 11'h1; 
+    //   y_max_green <= 0;
+    // end 
+    // //teal bbs
+    // if (modal_data_out == {8'd0, 8'd255, 8'd140}) begin 
+    //   if(x_d36 < x_min_teal) x_min_teal <= x_d36; 
+    //   if(x_d36 > x_max_teal) x_max_teal <= x_d36;
+    //   if (y_d36 < y_min_teal) y_min_teal <= y_d36;
+    //   y_max_teal <= y_d36;
+    // end
+    // if(sop_d36) begin //NB TODO: consider if need in_valid
+    //   x_min_teal <= IMAGE_W - 11'h1;
+    //   x_max_teal <=0;
+    //   y_min_teal <= IMAGE_H - 11'h1; 
+    //   y_max_teal <= 0;
+    // end 
+  
+//end
+
+
+//left, right, top, bottom (delayed version of red x,y min,max)
+logic [10:0] left_red, right_red, top_red, bottom_red;
+
+always_ff @(posedge clk) begin
+  if(eop_d36 & source_valid & packet_video_d36) begin
+    //Latch edges for display overlay on next frame
+    left_red <= x_min_red;
+    right_red <= x_max_red;
+    top_red <= y_min_red;
+    bottom_red <= y_max_red;
+  end
+end
 
  
   // assign source_data = found_eop_or_sop ? centre_pixel : {out_pixel_r_s4[13:6], out_pixel_g_s4[13:6], out_pixel_b_s4[13:6]};
-  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : modal_data_out;
+  logic bb_left_active;
+  logic bb_right_active;
+  logic bb_bottom_active;
+  logic bb_top_active;
+  assign bb_left_active = (source_valid) & (x_d36 == left_red);
+  assign bb_right_active = (source_valid) & (x_d36 == right_red);
+  assign bb_top_active = (source_valid) & (y_d36 == top_red);
+  assign bb_bottom_active =(source_valid) & (y_d36 == bottom_red);
+  //assign bb_red_active = (x_d36 >= 300 && y_d36 >= 100); //DEBUG LINE (check if issue is x-y coordinate system or finding of maxima)
+  
+  always_comb begin 
+    if(bb_left_active) begin 
+      bb_data_out = {24'hFFFFFF}; //white
+    end else if (bb_right_active) begin 
+      bb_data_out = {24'h2596be}; //blue
+    end else if (bb_top_active) begin 
+      bb_data_out = {24'hffe0a0}; //beige
+    end else if (bb_bottom_active) begin 
+      bb_data_out = {24'h883022}; //brown
+    end else begin
+        bb_data_out = modal_data_out;
+    end
+  end
+  //assign bb_data_out = bb_red_active ? {24'hFFFFFF} : modal_data_out;
+  
+  
+
+//_________________________________end bounding boxes__________________
+
+  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : bb_data_out;
   //assign source_data = found_eop_or_sop ? row_1_data[6][25:2] : gaus_blur_pixel;
   // assign source_sop = row_1_data[6][1];
   // assign source_eop = row_1_data[6][0];
@@ -702,7 +904,7 @@ module EEE_IMGPROC #(
   // assign source_data = row_3_data[2][25:2];
 
   /////////////////////////////////
-  /// Memory-mapped port		 /////
+  ////   Memory-mapped port		 ////
   /////////////////////////////////
 
   // Addresses
