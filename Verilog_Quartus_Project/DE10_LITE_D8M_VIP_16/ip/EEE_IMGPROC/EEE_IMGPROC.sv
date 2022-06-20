@@ -292,7 +292,152 @@ module EEE_IMGPROC #(
     .data_in({red_out, green_out, blue_out, sop, eop})
   );
 
-  // STAGE 1
+  // _________________ Building Detection __________________
+
+  // 1. Convert to grayscale. 1 Clk delay
+
+  logic [7:0] building_grayscaled;
+
+  always_ff @(posedge clk) begin
+    //Grey = red/4 + green/2 + blue/4 <- Makes grayscale image - is this from stotts code earlier?
+    if(source_valid) begin
+      building_grayscaled <= source_data_intermediate_step1[23:18] + source_data_intermediate_step1[15:9] + source_data_intermediate_step1[7:2]; 
+    end
+  end
+
+  // 2. Buffer 3 pixels. 3 clk delay
+  
+  logic [7:0] sobel_throwaway;
+  logic [7:0] sobel_data [2:0];
+  SHIFT_EXPOSED #(.DATA_WIDTH(8), .NO_STAGES(3)) sobel_exposed (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(building_grayscaled),
+    .internal_out(sobel_data),
+    .data_out(sobel_throwaway)
+  );
+  
+  
+  // 3. Perform Image Derivative/Sobel filter. 1 Clk Delay
+  logic signed [8:0] sobel_tmp;
+  always_ff @(posedge clk) begin
+    if(source_valid) begin
+      sobel_tmp <= sobel_data[0] - sobel_data[2];
+    end
+  end
+
+  logic [8:0] sobel_tmp2;
+  assign sobel_tmp2 = sobel_tmp < 0 ? -sobel_tmp : sobel_tmp;
+  
+  logic [7:0] sobel_out;
+  assign sobel_out = sobel_tmp2[7:0];
+
+  // 4. Threshold Image Derivative 1 Clk Delay
+  logic [7:0] sobel_thresholded;
+  
+  always_ff @(posedge clk) begin
+    if(source_valid) begin 
+      if(sobel_out < 20) begin
+        sobel_thresholded <= 8'h0;
+      end else begin
+        sobel_thresholded <= 8'd255;
+      end
+    end
+  end
+
+  
+  // 5. Bounding box for building. Does not delay sobel data
+  
+  //Delayed versions of x, y coordinates
+  logic [10:0] x_d6, y_d6;
+
+  logic sop_d6, eop_d6, in_valid_d6, packet_video_d6;
+
+  SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(6)) delay_x_y_6 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({x,y}),
+    .data_out({x_d6, y_d6})
+  );
+  
+  SHIFT_REGGAE #(.DATA_WIDTH(4), .NO_STAGES(6)) delay_signals_6 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({sop, eop, in_valid, packet_video}),
+    .data_out({sop_d6, eop_d6, in_valid_d6, packet_video_d6})
+  );
+
+  logic [10:0] building_xmax, building_xmin;
+  
+  always_ff @(posedge clk) begin 
+    if(sop_d6 & in_valid_d6) begin
+      building_xmax <= 11'd0;
+      building_xmin <= IMAGE_W - 11'd1;
+    end 
+    else if ((sobel_thresholded != {8'd0}) && (y_d6 > 240) && (x_d6 > 20) && (x_d6 < 620)) begin
+      if(x_d6 < building_xmin) building_xmin <= x_d6; 
+      if(x_d6 > building_xmax) building_xmax <= x_d6;  
+    end
+  end 
+
+  logic [10:0] building_xmax_latch, building_xmin_latch; 
+  
+  always_ff @(posedge clk) begin
+    if (eop_d6 & in_valid_d6 & packet_video_d6) begin
+      building_xmin_latch <= building_xmin;
+      building_xmax_latch <= building_xmax;
+    end
+  end
+
+  logic [23:0] sobel_bounding_box;
+  assign sobel_bounding_box = ((x_d6 == building_xmax_latch) | 
+                              (x_d6 == building_xmin_latch)) ? 
+                              24'hFF0000 : {sobel_thresholded, sobel_thresholded, sobel_thresholded};
+
+  // 6. Identify columns of the obstacles at a certain row.
+
+  logic [7:0] sobel_col_data [2:0];
+  logic [7:0] sobel_throwaway_2;
+
+  SHIFT_EXPOSED #(.DATA_WIDTH(8), .NO_STAGES(3)) sobel_col_identify (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(sobel_thresholded),
+    .internal_out(sobel_col_data),
+    .data_out(sobel_throwaway_2)
+  );
+
+  logic [10:0] col;
+
+  always_ff @(posedge clk) begin
+    if((y_d6 == 359) && source_valid) begin
+      if(sobel_col_data[0] != {8'd0}) begin
+        
+      end
+    end
+
+  end
+
+  
+  // 7. Delay to match other image processing pipelines
+  // Name is a bit of a misnomer - d52 refers to delay of 52
+  // of input, not since performing sobel
+  logic [23:0] sobel_d52;
+  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(46)) sobel_delay (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(sobel_bounding_box),
+    .data_out(sobel_d52)
+  );
+
+
+  // _________________ Building Detection End __________________
+   
   SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_1 (
     .clk(clk),
     .rst_n(reset_n),
@@ -401,14 +546,14 @@ module EEE_IMGPROC #(
   logic [23:0] hsv_thresholded;
 
   always_comb begin
-    if ((hsv_d20[23:16] < 15 && hsv_d20[23:16] > 5) && hsv_d20[7:0] > 57) begin // red
+    if ((hsv_d20[23:16] < 15 && hsv_d20[23:16] > 9) && hsv_d20[7:0] > 57) begin // red
       hsv_thresholded = {8'd255, 8'd0, 8'd0};
     end
-    else if ((hsv_d20[23:16] < 50 && hsv_d20[23:16] > 35) && (hsv_d20[7:0] > 160 && hsv_d20[7:0] < 210) && (hsv_d20[15:8] > 130 && hsv_d20[15:8] < 200))// top half yellow 
+    else if ((hsv_d20[23:16] < 55 && hsv_d20[23:16] > 35) && (hsv_d20[7:0] > 160 && hsv_d20[7:0] < 210) && (hsv_d20[15:8] > 130 && hsv_d20[15:8] < 200))// top half yellow
     begin
       hsv_thresholded = {8'd255, 8'd255, 8'd0};
     end
-    else if (hsv_d20[23:16] > 250 || hsv_d20[23:16] < 5) // pink
+    else if (hsv_d20[23:16] > 250 || hsv_d20[23:16] < 6) // pink
     begin
       hsv_thresholded = {8'd168, 8'd50, 8'd153};
     end
@@ -420,7 +565,7 @@ module EEE_IMGPROC #(
     begin
       hsv_thresholded = {8'd0, 8'd255, 8'd0};
     end
-    else if (hsv_d20[23:16] < 130 && hsv_d20[23:16] > 113)//&& hsv_d20[7:0] > 120) // teal
+    else if (hsv_d20[23:16] < 120 && hsv_d20[23:16] > 90)//&& hsv_d20[7:0] > 120) // teal
     begin
       hsv_thresholded = {8'd0, 8'd255, 8'd140};
     end
@@ -761,10 +906,10 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
       x_right_r_frame <= x_right_red;
       //yellow
       x_left_y_frame <= x_left_yellow;
-      x_right_y_frame <= x_right_yellow; 
+      x_right_y_frame <= x_right_yellow;
       //pink
       x_left_p_frame <= x_left_pink;
-      x_right_p_frame <= x_right_pink; 
+      x_right_p_frame <= x_right_pink;
       //blue
       x_left_b_frame <= x_left_blue;
       x_right_b_frame <= x_right_blue; 
@@ -783,39 +928,38 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
   always_ff @(posedge clk) begin 
     if (source_valid) begin
       if(x_d52 == x_left_r_frame || x_d52 == x_right_r_frame) begin
-        bounding_boxed_data <= {24'hFFFFFF}; //white borders
+        bounding_boxed_data <= {24'hFFFFFF}; //<= {24'hFF0000}; //white borders 
       end 
       else if (x_d52 == x_left_y_frame || x_d52 == x_right_y_frame) begin 
-        bounding_boxed_data <= {24'h883022}; //brown borders
+        bounding_boxed_data <= {24'h883022}; //<= {24'hFFFF00}; //brown borders
       end 
       else if (x_d52 == x_left_p_frame || x_d52 == x_right_p_frame) begin 
-        bounding_boxed_data <= {24'h2596be}; //blue borders
+        bounding_boxed_data <= {24'h2596be}; //<= {24'hA93399}; //blue borders
       end 
       else if (x_d52 == x_left_b_frame || x_d52 == x_right_b_frame) begin 
-        bounding_boxed_data <= {24'hffe0a0}; //beige borders
+        bounding_boxed_data <= {24'hffe0a0}; //<= {24'h0000FF}; //beige borders
       end 
       else if (x_d52 == x_left_g_frame || x_d52 == x_right_g_frame) begin 
-        bounding_boxed_data <= {24'h8A7DFF}; //violet borders
+        bounding_boxed_data <= {24'h8A7DFF}; //<= {24'h00FF00}; //violet borders
       end 
       else if (x_d52 == x_left_t_frame || x_d52 == x_right_t_frame) begin 
-        bounding_boxed_data <= {24'hFFAC24}; //orange borders
+        bounding_boxed_data <= {24'hFFAC24}; //<= {24'h00FF8D}; //orange borders
       end 
       else begin
         bounding_boxed_data <= modal_data_out;
       end
     end
-  end
+  end 
 
   
   //if left or right frame, white otherwise use the hue output
   // assign bounding_boxed_data = (x_d52 == x_left_r_frame | x_d52 == x_right_r_frame) ? {8'd255, 8'd255, 8'd255} : modal_data_out;
 //---------------------------end bounding box code---------------------
-  // assign source_data = found_eop_or_sop ? centre_pixel : {out_pixel_r_s4[13:6], out_pixel_g_s4[13:6], out_pixel_b_s4[13:6]};
-  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : bounding_boxed_data;
-  //assign source_data = found_eop_or_sop ? row_1_data[6][25:2] : gaus_blur_pixel;
-  // assign source_sop = row_1_data[6][1];
-  // assign source_eop = row_1_data[6][0];
-
+  
+  
+  //assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : bounding_boxed_data;
+  
+  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : sobel_d52;
 
   //assign source_data = centre_pixel_d20[25:2];
   assign source_sop = fallback_data_d36[1];
@@ -861,7 +1005,6 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
 
   //Flush the message buffer if 1 is written to status register bit 4
   assign msg_buf_flush = (s_chipselect & s_write & (s_address == `REG_STATUS) & s_writedata[4]);
-
 
   // Process reads
   logic read_d;  //Store the read signal for correct updating of the message buffer

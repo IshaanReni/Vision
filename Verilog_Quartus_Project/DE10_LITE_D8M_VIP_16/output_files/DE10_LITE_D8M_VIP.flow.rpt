@@ -1,5 +1,5 @@
 Flow report for DE10_LITE_D8M_VIP
-Mon Jun 20 13:01:19 2022
+Mon Jun 20 18:35:59 2022
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -40,20 +40,20 @@ refer to the applicable agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Mon Jun 20 13:00:43 2022       ;
+; Flow Status                        ; Successful - Mon Jun 20 18:35:50 2022       ;
 ; Quartus Prime Version              ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                      ; DE10_LITE_D8M_VIP                           ;
 ; Top-level Entity Name              ; DE10_LITE_D8M_VIP                           ;
 ; Family                             ; MAX 10                                      ;
 ; Device                             ; 10M50DAF484C7G                              ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 26,724 / 49,760 ( 54 % )                    ;
-;     Total combinational functions  ; 24,833 / 49,760 ( 50 % )                    ;
-;     Dedicated logic registers      ; 20,091 / 49,760 ( 40 % )                    ;
-; Total registers                    ; 20158                                       ;
+; Total logic elements               ; 11,396 / 49,760 ( 23 % )                    ;
+;     Total combinational functions  ; 9,815 / 49,760 ( 20 % )                     ;
+;     Dedicated logic registers      ; 7,660 / 49,760 ( 15 % )                     ;
+; Total registers                    ; 7727                                        ;
 ; Total pins                         ; 171 / 360 ( 48 % )                          ;
 ; Total virtual pins                 ; 0                                           ;
-; Total memory bits                  ; 1,342,003 / 1,677,312 ( 80 % )              ;
+; Total memory bits                  ; 1,341,624 / 1,677,312 ( 80 % )              ;
 ; Embedded Multiplier 9-bit elements ; 6 / 288 ( 2 % )                             ;
 ; Total PLLs                         ; 1 / 4 ( 25 % )                              ;
 ; UFM blocks                         ; 0 / 1 ( 0 % )                               ;
@@ -66,7 +66,7 @@ refer to the applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 06/20/2022 12:50:40 ;
+; Start date & time ; 06/20/2022 18:32:21 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; DE10_LITE_D8M_VIP   ;
 +-------------------+---------------------+
@@ -77,7 +77,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 58232439073428.165572584029104         ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 141520612712870.165574634150800        ; --            ; --          ; --         ;
 ; ENABLE_SIGNALTAP                    ; Off                                    ; --            ; --          ; --         ;
 ; FITTER_EFFORT                       ; Standard Fit                           ; Auto Fit      ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --            ; --          ; --         ;
@@ -100,24 +100,24 @@ refer to the applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:04:14     ; 1.0                     ; 1556 MB             ; 00:05:52                           ;
-; Fitter               ; 00:05:21     ; 1.1                     ; 1813 MB             ; 00:07:30                           ;
-; Assembler            ; 00:00:07     ; 1.0                     ; 897 MB              ; 00:00:06                           ;
-; Timing Analyzer      ; 00:00:33     ; 1.5                     ; 1135 MB             ; 00:00:45                           ;
-; Total                ; 00:10:15     ; --                      ; --                  ; 00:14:13                           ;
+; Analysis & Synthesis ; 00:01:56     ; 1.0                     ; 1475 MB             ; 00:03:52                           ;
+; Fitter               ; 00:01:22     ; 2.0                     ; 2806 MB             ; 00:03:48                           ;
+; Assembler            ; 00:00:03     ; 1.0                     ; 854 MB              ; 00:00:03                           ;
+; Timing Analyzer      ; 00:00:09     ; 3.9                     ; 1183 MB             ; 00:00:30                           ;
+; Total                ; 00:03:30     ; --                      ; --                  ; 00:08:13                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
-+------------------------------------------------------------------------------------------+
-; Flow OS Summary                                                                          ;
-+----------------------+------------------+---------------+---------------+----------------+
-; Module Name          ; Machine Hostname ; OS Name       ; OS Version    ; Processor type ;
-+----------------------+------------------+---------------+---------------+----------------+
-; Analysis & Synthesis ; jls-hp           ; Manjaro Linux ; Manjaro Linux ; x86_64         ;
-; Fitter               ; jls-hp           ; Manjaro Linux ; Manjaro Linux ; x86_64         ;
-; Assembler            ; jls-hp           ; Manjaro Linux ; Manjaro Linux ; x86_64         ;
-; Timing Analyzer      ; jls-hp           ; Manjaro Linux ; Manjaro Linux ; x86_64         ;
-+----------------------+------------------+---------------+---------------+----------------+
++---------------------------------------------------------------------------------------------------+
+; Flow OS Summary                                                                                   ;
++----------------------+---------------------------+---------------+---------------+----------------+
+; Module Name          ; Machine Hostname          ; OS Name       ; OS Version    ; Processor type ;
++----------------------+---------------------------+---------------+---------------+----------------+
+; Analysis & Synthesis ; ishaan-omenlaptop15en1xxx ; Manjaro Linux ; Manjaro Linux ; x86_64         ;
+; Fitter               ; ishaan-omenlaptop15en1xxx ; Manjaro Linux ; Manjaro Linux ; x86_64         ;
+; Assembler            ; ishaan-omenlaptop15en1xxx ; Manjaro Linux ; Manjaro Linux ; x86_64         ;
+; Timing Analyzer      ; ishaan-omenlaptop15en1xxx ; Manjaro Linux ; Manjaro Linux ; x86_64         ;
++----------------------+---------------------------+---------------+---------------+----------------+
 
 
 ------------
