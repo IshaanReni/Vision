@@ -64,8 +64,8 @@ extern module SPI_Slave #(
 
     // Signals to interface with rest of FPGA
     input logic TX_valid_in,
-    input logic [7:0] TX_byte_in,
-
+    input logic [31:0] TX_byte_in,
+		output logic ready_out,
 
     // External SPI Interface signals
     input  logic SPI_Clk_in,
@@ -112,84 +112,6 @@ module EEE_IMGPROC #(
     output logic SPI_MISO,
     input logic SPI_MOSI,
     input logic SPI_CS_n,
-
-
-    // streaming sink fifo1
-    input logic [31:0] sink_data_fifo1,
-    input logic sink_valid_fifo1,
-    output logic sink_ready_fifo1,
-    input logic sink_sop_fifo1,
-    input logic sink_eop_fifo1,
-
-    // streaming source fifo1
-    output logic [31:0] source_data_fifo1,
-    output logic source_valid_fifo1,
-    input logic source_ready_fifo1,
-    output logic source_sop_fifo1,
-    output logic source_eop_fifo1,
-
-
-    // streaming sink fifo2
-    input logic [31:0] sink_data_fifo2,
-    input logic sink_valid_fifo2,
-    output logic sink_ready_fifo2,
-    input logic sink_sop_fifo2,
-    input logic sink_eop_fifo2,
-
-    // streaming source fifo2
-    output logic [31:0] source_data_fifo2,
-    output logic source_valid_fifo2,
-    input logic source_ready_fifo2,
-    output logic source_sop_fifo2,
-    output logic source_eop_fifo2,
-
-
-    // streaming sink fifo3
-    input logic [31:0] sink_data_fifo3,
-    input logic sink_valid_fifo3,
-    output logic sink_ready_fifo3,
-    input logic sink_sop_fifo3,
-    input logic sink_eop_fifo3,
-
-    // streaming source fifo3
-    output logic [31:0] source_data_fifo3,
-    output logic source_valid_fifo3,
-    input logic source_ready_fifo3,
-    output logic source_sop_fifo3,
-    output logic source_eop_fifo3,
-
-
-    // streaming sink fifo4
-    input logic [31:0] sink_data_fifo4,
-    input logic sink_valid_fifo4,
-    output logic sink_ready_fifo4,
-    input logic sink_sop_fifo4,
-    input logic sink_eop_fifo4,
-
-    // streaming source fifo4
-    output logic [31:0] source_data_fifo4,
-    output logic source_valid_fifo4,
-    input logic source_ready_fifo4,
-    output logic source_sop_fifo4,
-    output logic source_eop_fifo4,
-
-    /*
-    //FIFO ADDED FOR MODAL KERNEL
-
-    // streaming sink fifo5
-    input logic [31:0] sink_data_fifo4,
-    input logic sink_valid_fifo5,
-    output logic sink_ready_fifo5,
-    input logic sink_sop_fifo5,
-    input logic sink_eop_fifo5,
-
-    // streaming source fifo5
-    output logic [31:0] source_data_fifo5,
-    output logic source_valid_fifo5,
-    input logic source_ready_fifo5,
-    output logic source_sop_fifo5,
-    output logic source_eop_fifo5,
-    */
     // conduit export
     input logic mode
 );
@@ -392,6 +314,24 @@ module EEE_IMGPROC #(
     end
   end
 
+  logic spi_ready;
+
+  SPI_Slave #(.CLK_POL(1), .CLK_PHA(1)) spi_slave_1 (
+    .clk_in(clk),
+    .rst_n_in(reset_n),
+
+    // Signals to interface with rest of FPGA
+    .TX_valid_in(1'b1),
+    .TX_byte_in({5'b0, x, 5'b0, y}),
+		.ready_out(spi_ready),
+    
+    // External SPI Interface signals
+    .SPI_Clk_in(SPI_Clk),
+    .SPI_MISO_out(SPI_MISO),
+    .SPI_MOSI_in(SPI_MOSI),
+    .SPI_CS_n_in(SPI_CS_n)    // active low
+  );
+
   
   logic [25:0] fallback_data_d36;
   logic found_eop_or_sop_d36;
@@ -461,28 +401,28 @@ module EEE_IMGPROC #(
   logic [23:0] hsv_thresholded;
 
   always_comb begin
-    if ((hsv_d20[23:16] < 15 || hsv_d20[23:16] > 250) && hsv_d20[7:0] > 57) begin // red
+    if ((hsv_d20[23:16] < 15 && hsv_d20[23:16] > 5) && hsv_d20[7:0] > 57) begin // red
       hsv_thresholded = {8'd255, 8'd0, 8'd0};
     end
     else if ((hsv_d20[23:16] < 50 && hsv_d20[23:16] > 35) && (hsv_d20[7:0] > 160 && hsv_d20[7:0] < 210) && (hsv_d20[15:8] > 130 && hsv_d20[15:8] < 200))// top half yellow 
     begin
       hsv_thresholded = {8'd255, 8'd255, 8'd0};
     end
-    else if (hsv_d20[23:16] < 230 && hsv_d20[23:16] > 220) // pink
+    else if (hsv_d20[23:16] > 250 || hsv_d20[23:16] < 5) // pink
     begin
       hsv_thresholded = {8'd168, 8'd50, 8'd153};
     end
-    else if ((hsv_d20[23:16] < 155 && hsv_d20[23:16] > 113) && (hsv_d20[7:0] > 25 && hsv_d20[7:0] < 50)) // && hsv_d20[15:8] > 100) // Dark blue
+    else if ((hsv_d20[23:16] < 170 && hsv_d20[23:16] > 130)) //&& (hsv_d20[7:0] > 25 && hsv_d20[7:0] < 50)) // && hsv_d20[15:8] > 100) // Dark blue
     begin
       hsv_thresholded = {8'd0, 8'd0, 8'd255};
     end
-    else if (hsv_d20[23:16] < 80 && hsv_d20[23:16] > 70 && hsv_d20[7:0] > 130 && hsv_d20[15:8] < 200 && hsv_d20[15:8] > 120) // light green
+    else if (hsv_d20[23:16] < 85 && hsv_d20[23:16] > 60/*&& hsv_d20[7:0] > 130) */&& hsv_d20[15:8] < 200 && hsv_d20[15:8] > 120) // light green
     begin
       hsv_thresholded = {8'd0, 8'd255, 8'd0};
     end
-    else if (hsv_d20[23:16] < 85 && hsv_d20[23:16] > 80 && hsv_d20[7:0] > 120) // teal
+    else if (hsv_d20[23:16] < 130 && hsv_d20[23:16] > 113)//&& hsv_d20[7:0] > 120) // teal
     begin
-      hsv_thresholded = {8'd0, 8'd255, 8'd128};
+      hsv_thresholded = {8'd0, 8'd255, 8'd140};
     end
     else
     begin
@@ -547,40 +487,39 @@ module EEE_IMGPROC #(
     .data_out(throwaway[2])
   );
 
-  /*
-  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row4 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in(hsv_intermediate[1]),
-    .data_out(hsv_intermediate[2])
-  );
+  // SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row4 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in(hsv_intermediate[1]),
+  //   .data_out(hsv_intermediate[2])
+  // );
 
-  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row4 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in(hsv_intermediate[2]),
-    .internal_out(source_data_exposed_modal[3]),
-    .data_out(throwaway[3])
-  );
+  // SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row4 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in(hsv_intermediate[2]),
+  //   .internal_out(source_data_exposed_modal[3]),
+  //   .data_out(throwaway[3])
+  // );
 
-  SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row5 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in(hsv_intermediate[2]),
-    .data_out(hsv_intermediate[3])
-  );
+  // SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(640)) shift_reg_row5 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in(hsv_intermediate[2]),
+  //   .data_out(hsv_intermediate[3])
+  // );
 
-  SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row5 (
-    .clk(clk),
-    .rst_n(reset_n),
-    .valid_in(source_valid),
-    .data_in(hsv_intermediate[3]),
-    .internal_out(source_data_exposed_modal[4]),
-    .data_out(throwaway[4])
-  );*/
+  // SHIFT_EXPOSED #(.DATA_WIDTH(24), .NO_STAGES(16)) shift_exposed_modal_row5 (
+  //   .clk(clk),
+  //   .rst_n(reset_n),
+  //   .valid_in(source_valid),
+  //   .data_in(hsv_intermediate[3]),
+  //   .internal_out(source_data_exposed_modal[4]),
+  //   .data_out(throwaway[4])
+  // );
 
   
   logic [7:0] count_t1; 
@@ -624,7 +563,7 @@ module EEE_IMGPROC #(
         if (source_data_exposed_modal[j][i] == {8'd0, 8'd255, 8'd0}) begin
           count_t5 = count_t5 + 1; 
         end
-        if (source_data_exposed_modal[j][i] ==  {8'd0, 8'd255, 8'd128} ) begin
+        if (source_data_exposed_modal[j][i] ==  {8'd0, 8'd255, 8'd140} ) begin
           count_t6 = count_t6 + 1; 
         end
         if (source_data_exposed_modal[j][i] == {8'd0, 8'd0, 8'd0} ) begin
@@ -674,9 +613,9 @@ module EEE_IMGPROC #(
     end
 
     else if(count_t5 > count_t1 && 
+       count_t5 > count_t2 && 
        count_t5 > count_t3 && 
-       count_t5 > count_t4 && 
-       count_t5 > count_t5 &&
+       count_t5 > count_t4 &&
        count_t5 > count_t6 &&
        count_t5 > count_t7) begin
       modal_data_out = {8'd0, 8'd255, 8'd0};
@@ -712,9 +651,167 @@ module EEE_IMGPROC #(
     
 //__________________________________end Modal Kernel ___________________________
 
- 
+
+
+
+
+//----------------- bounding box code--------------------------------
+
+//dealy sop and eop signals by 52 cycles
+SHIFT_REGGAE #(.DATA_WIDTH(4), .NO_STAGES(52)) shift_reg_sop_eop_invalid (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({sop, eop, in_valid, packet_video}),
+    .data_out({sop_d52, eop_d52, in_valid_d52, packet_video_d52})
+  );
+  logic sop_d52, eop_d52, in_valid_d52, packet_video_d52; //delayed start and end of packet and in_valid
+
+//Delay the x,y coordinates calculated by Stott by 52 cycles
+SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({x, y}),
+    .data_out({x_d52, y_d52})
+  );
+
+
+  //delayed x,y coordinates
+  logic [10:0] x_d52,y_d52;
+  //current bounderies of red_object
+  logic [10:0] x_left_red, x_right_red;
+  //current bounderies of yellow_object
+  logic [10:0] x_left_yellow, x_right_yellow;
+  //current bounderies of pink_object
+  logic [10:0] x_left_pink, x_right_pink;
+  //current bounderies of blue_object
+  logic [10:0] x_left_blue, x_right_blue;
+  //current bounderies of green_object
+  logic [10:0] x_left_green, x_right_green;
+  //current bounderies of teal_object
+  logic [10:0] x_left_teal, x_right_teal;
+
+  always_ff @(posedge clk) begin 
+    if(sop_d52 & in_valid_d52) begin
+      //on receiving new frame set left limit to far right
+      //and right limit to far left (horseshoe theory)
+      
+      //for red
+      x_left_red <= IMAGE_W- 11'd1;
+      x_right_red <= 11'd0;
+      //for yellow
+      x_left_yellow <= IMAGE_W- 11'd1;
+      x_right_yellow <= 11'd0;
+      //for pink
+      x_left_pink <= IMAGE_W- 11'd1;
+      x_right_pink <= 11'd0;
+      //for blue
+      x_left_blue <= IMAGE_W- 11'd1;
+      x_right_blue <= 11'd0;
+      //for green
+      x_left_green <= IMAGE_W- 11'd1;
+      x_right_green <= 11'd0;
+      //for teal
+      x_left_teal <= IMAGE_W- 11'd1;
+      x_right_teal <= 11'd0;
+      
+    end
+    else if (y_d52 >= 240) begin
+      if(modal_data_out == {8'd255,8'd0,8'd0}) begin
+        //red
+        if(x_d52 < x_left_red) x_left_red <= x_d52;
+        if(x_d52 > x_right_red) x_right_red <= x_d52;
+      end
+      else if(modal_data_out == {8'd255, 8'd255, 8'd0}) begin
+        //yellow
+        if(x_d52 < x_left_yellow) x_left_yellow <= x_d52;
+        if(x_d52 > x_right_yellow) x_right_yellow <= x_d52;
+      end
+      else if(modal_data_out == {8'd168, 8'd50, 8'd153}) begin
+        //pink
+        if(x_d52 < x_left_pink) x_left_pink <= x_d52;
+        if(x_d52 > x_right_pink) x_right_pink <= x_d52;
+      end
+      else if(modal_data_out == {8'd0, 8'd0, 8'd255}) begin
+        //blue
+        if(x_d52 < x_left_blue) x_left_blue <= x_d52;
+        if(x_d52 > x_right_blue) x_right_blue <= x_d52;
+      end
+      else if(modal_data_out == {8'd0, 8'd255, 8'd0}) begin
+        //green
+        if(x_d52 < x_left_green) x_left_green <= x_d52;
+        if(x_d52 > x_right_green) x_right_green <= x_d52;
+      end
+      else if(modal_data_out == {8'd0, 8'd255, 8'd140}) begin
+        //teal
+        if(x_d52 < x_left_teal) x_left_teal <= x_d52;
+        if(x_d52 > x_right_teal) x_right_teal <= x_d52;
+      end    
+    end 
+  end 
+
+
+  //We need to keep a latched version of x_left_red and x_right_red upon FINISHING A FRAME
+  logic [10:0] x_left_r_frame, x_right_r_frame, x_left_p_frame, x_right_p_frame, x_left_b_frame, x_right_b_frame, x_left_y_frame, x_right_y_frame, x_left_g_frame, x_right_g_frame, x_left_t_frame, x_right_t_frame; 
+  always_ff @(posedge clk) begin 
+    if(eop_d52 & in_valid_d52 & packet_video_d52) begin //Need packet video to ensure that we only modify non-video packets
+      //red
+      x_left_r_frame <= x_left_red;
+      x_right_r_frame <= x_right_red;
+      //yellow
+      x_left_y_frame <= x_left_yellow;
+      x_right_y_frame <= x_right_yellow; 
+      //pink
+      x_left_p_frame <= x_left_pink;
+      x_right_p_frame <= x_right_pink; 
+      //blue
+      x_left_b_frame <= x_left_blue;
+      x_right_b_frame <= x_right_blue; 
+      //green
+      x_left_g_frame <= x_left_green;
+      x_right_g_frame <= x_right_green;
+      //teal
+      x_left_t_frame <= x_left_teal;
+      x_right_t_frame <= x_right_teal;  
+    end 
+    
+  end 
+  
+  logic [23:0] bounding_boxed_data;
+  
+  always_ff @(posedge clk) begin 
+    if (source_valid) begin
+      if(x_d52 == x_left_r_frame || x_d52 == x_right_r_frame) begin
+        bounding_boxed_data <= {24'hFFFFFF}; //white borders
+      end 
+      else if (x_d52 == x_left_y_frame || x_d52 == x_right_y_frame) begin 
+        bounding_boxed_data <= {24'h883022}; //brown borders
+      end 
+      else if (x_d52 == x_left_p_frame || x_d52 == x_right_p_frame) begin 
+        bounding_boxed_data <= {24'h2596be}; //blue borders
+      end 
+      else if (x_d52 == x_left_b_frame || x_d52 == x_right_b_frame) begin 
+        bounding_boxed_data <= {24'hffe0a0}; //beige borders
+      end 
+      else if (x_d52 == x_left_g_frame || x_d52 == x_right_g_frame) begin 
+        bounding_boxed_data <= {24'h8A7DFF}; //violet borders
+      end 
+      else if (x_d52 == x_left_t_frame || x_d52 == x_right_t_frame) begin 
+        bounding_boxed_data <= {24'hFFAC24}; //orange borders
+      end 
+      else begin
+        bounding_boxed_data <= modal_data_out;
+      end
+    end
+  end
+
+  
+  //if left or right frame, white otherwise use the hue output
+  // assign bounding_boxed_data = (x_d52 == x_left_r_frame | x_d52 == x_right_r_frame) ? {8'd255, 8'd255, 8'd255} : modal_data_out;
+//---------------------------end bounding box code---------------------
   // assign source_data = found_eop_or_sop ? centre_pixel : {out_pixel_r_s4[13:6], out_pixel_g_s4[13:6], out_pixel_b_s4[13:6]};
-  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : modal_data_out;
+  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : bounding_boxed_data;
   //assign source_data = found_eop_or_sop ? row_1_data[6][25:2] : gaus_blur_pixel;
   // assign source_sop = row_1_data[6][1];
   // assign source_eop = row_1_data[6][0];
@@ -725,22 +822,6 @@ module EEE_IMGPROC #(
   assign source_eop = fallback_data_d36[0];
 
   // assign source_data = row_3_data[2][25:2];
-
-  SPI_Slave #(.CLK_POL(1), .CLK_PHA(1)) spi_slave_1 (
-    .clk_in(clk),
-    .rst_n_in(reset_n),
-
-    // Signals to interface with rest of FPGA
-    .TX_valid_in(1'b1),
-    .TX_byte_in(8'b10111001),
-    
-    // External SPI Interface signals
-    .SPI_Clk_in(SPI_Clk),
-    .SPI_MISO_out(SPI_MISO),
-    .SPI_MOSI_in(SPI_MOSI),
-    .SPI_CS_n_in(SPI_CS_n)    // active low
-  );
-
 
   /////////////////////////////////
   /// Memory-mapped port		 /////

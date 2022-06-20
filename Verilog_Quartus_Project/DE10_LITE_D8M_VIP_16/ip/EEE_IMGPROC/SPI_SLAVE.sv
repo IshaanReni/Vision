@@ -9,8 +9,8 @@ module SPI_Slave #(
 
     // Signals to interface with rest of FPGA
     input logic TX_valid_in,
-    input logic [7:0] TX_byte_in,
-
+    input logic [31:0] TX_byte_in,
+    output logic ready_out,
 
     // External SPI Interface signals
     input  logic SPI_Clk_in,
@@ -21,10 +21,13 @@ module SPI_Slave #(
 
   logic SPI_Clk_Polar;
   assign SPI_Clk_Polarised = CLK_POL ? ~SPI_Clk_in : SPI_Clk_in;
+  logic ready;
+  assign ready_out = ready;
 
-  logic [2:0] TX_bit_count;
+  logic [7:0] TX_bit_count;
   logic TX_done;
-  logic [7:0] TX_byte;
+  logic [31:0] TX_byte;
+  logic transmit_rdy;
 
   /*
   always_ff @(posedge SPI_Clk_Polarised or posedge SPI_CS_n_in) begin
@@ -91,27 +94,32 @@ module SPI_Slave #(
   // Transmit data bit by bit to master
   always_ff @(posedge SPI_Clk_Polarised or posedge SPI_CS_n_in) begin
     if (SPI_CS_n_in) begin
-      TX_bit_count <= 7;
-      SPI_MISO_bit <= TX_byte[7];
+      TX_bit_count <= 31;
+      SPI_MISO_bit <= TX_byte[31];
     end else begin
       TX_bit_count <= TX_bit_count - 1;
       SPI_MISO_bit <= TX_byte[TX_bit_count];
     end
   end
 
+  logic prev_SPI_CS_n_in;
   // Save TX data from FPGA. Keeps registed TX byte in 
   // this module to get serialized and sent back to master.
-  always_ff @(posedge clk_in or negedge rst_n_in) begin
+  always_ff @(posedge clk_in) begin
+    prev_SPI_CS_n_in <= SPI_CS_n_in;
     if (~rst_n_in) begin
-      TX_byte <= 8'h00;
-    end else begin
-      if (TX_valid_in) begin
-        TX_byte <= TX_byte_in;
-      end
+      TX_byte <= 32'h00;
+    end else if (TX_valid_in & ready) begin
+      TX_byte <= TX_byte_in;
+      ready   <= 1'b0;
+    end else if (!prev_SPI_CS_n_in && SPI_CS_n_in) begin
+      ready <= 1'b1;
     end
+
+
   end
 
-  assign SPI_MISO_out = preload_MISO ? TX_byte[7] : SPI_MISO_bit;
+  assign SPI_MISO_out = preload_MISO ? TX_byte[31] : SPI_MISO_bit;
 
 endmodule
 
