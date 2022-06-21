@@ -74,6 +74,24 @@ extern module SPI_Slave #(
     input  logic SPI_CS_n_in    // active low
 );
 
+extern module SPI_BUFFER #(
+    parameter CAPACITY   = 9,
+    parameter DATA_WIDTH = 32
+
+) (
+    //control signals
+    input  logic clk,
+    input  logic rst_n,
+    input  logic valid_in,
+    input  logic ready_in,
+    output logic valid_out,
+    output logic ready_out,
+
+    //data signals 
+    input  logic [DATA_WIDTH-1:0] data_in,
+    output logic [DATA_WIDTH-1:0] data_out
+);
+
 module EEE_IMGPROC #(
     parameter IMAGE_W = 11'd640,
     parameter IMAGE_H = 11'd480,
@@ -392,15 +410,87 @@ module EEE_IMGPROC #(
     end
   end
 
-  logic [23:0] sobel_bounding_box;
-  assign sobel_bounding_box = ((x_d6 == building_xmax_latch) | 
-                              (x_d6 == building_xmin_latch)) ? 
-                              24'hFF0000 : {sobel_thresholded, sobel_thresholded, sobel_thresholded};
+  // 6. Identify columns of the obstacles at a certain row.
+  // Just as 5. this does not delay the main sobel data.
 
+  logic [7:0] sobel_col_data [4:0];
+  logic [7:0] sobel_throwaway_2;
 
-  // 6. Delay to match other image processing pipelines
+  // source_threshold is d6, final element in this is d6 + NO STAGES
+  SHIFT_EXPOSED #(.DATA_WIDTH(8), .NO_STAGES(5)) sobel_col_identify (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in(sobel_thresholded),
+    .internal_out(sobel_col_data),
+    .data_out(sobel_throwaway_2)
+  );
+
+  // For drawing lines at each detected collumn, get delayed versions of x, y and control signals
+  logic [10:0] x_d11, y_d11;
+  logic sop_d11, eop_d11, in_valid_d11, packet_video_d11;
+
+  SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(11)) delay_x_y_11 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({x,y}),
+    .data_out({x_d11, y_d11})
+  );
+  
+  SHIFT_REGGAE #(.DATA_WIDTH(4), .NO_STAGES(11)) delay_signals_11 (
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(source_valid),
+    .data_in({sop, eop, in_valid, packet_video}),
+    .data_out({sop_d11, eop_d11, in_valid_d11, packet_video_d11})
+  );
+
+  logic obstacle_cols [639:0];
+
+  always_ff @(posedge clk) begin 
+    if(sop_d11 & in_valid_d11) begin
+      for (integer i = 0; i < 640; i = i + 1) begin
+        obstacle_cols[i] <= 1'b0;
+      end
+    end 
+    else if(y_d11 == 359 && x_d11 > 60 && x_d11 < 580) begin
+      if( (sobel_col_data[0] == 8'h0) &&
+          (sobel_col_data[1] == 8'h0) && 
+          (sobel_col_data[2] == 8'h0) &&
+          (sobel_col_data[3] == 8'h0) &&
+          (sobel_col_data[4] != 8'h0)) begin
+            obstacle_cols[x_d11] <= 1'b1;
+          end
+    end
+  end 
+
+  logic obstacle_cols_latched [639:0]; 
+  
+  always_ff @(posedge clk) begin
+    if (eop_d6 & in_valid_d6 & packet_video_d6) begin
+      obstacle_cols_latched <= obstacle_cols;
+    end
+  end
+
+  
+  // 7. Delay to match other image processing pipelines
   // Name is a bit of a misnomer - d52 refers to delay of 52
   // of input, not since performing sobel
+  logic [23:0] sobel_bounding_box;
+  
+  always_comb begin
+    if((x_d6 == building_xmax_latch) | (x_d6 == building_xmin_latch)) begin
+      sobel_bounding_box = 24'hFF0000;
+    end else if(obstacle_cols_latched[x_d6] == 1'b1) begin
+      sobel_bounding_box = 24'h00FF00;
+    end else begin
+      sobel_bounding_box = {sobel_thresholded, sobel_thresholded, sobel_thresholded};
+    end
+
+  end
+  
+  
   logic [23:0] sobel_d52;
   SHIFT_REGGAE #(.DATA_WIDTH(24), .NO_STAGES(46)) sobel_delay (
     .clk(clk),
@@ -410,7 +500,7 @@ module EEE_IMGPROC #(
     .data_out(sobel_d52)
   );
 
-  
+
   // _________________ Building Detection End __________________
    
   SHIFT_EXPOSED #(.DATA_WIDTH(26), .NO_STAGES(16)) shift_exposed_1 (
@@ -434,23 +524,7 @@ module EEE_IMGPROC #(
     end
   end
 
-  logic spi_ready;
-
-  SPI_Slave #(.CLK_POL(1), .CLK_PHA(1)) spi_slave_1 (
-    .clk_in(clk),
-    .rst_n_in(reset_n),
-
-    // Signals to interface with rest of FPGA
-    .TX_valid_in(1'b1),
-    .TX_byte_in({5'b0, x, 5'b0, y}),
-		.ready_out(spi_ready),
-    
-    // External SPI Interface signals
-    .SPI_Clk_in(SPI_Clk),
-    .SPI_MISO_out(SPI_MISO),
-    .SPI_MOSI_in(SPI_MOSI),
-    .SPI_CS_n_in(SPI_CS_n)    // active low
-  );
+  
 
   
   logic [25:0] fallback_data_d36;
@@ -929,9 +1003,11 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
   
   //if left or right frame, white otherwise use the hue output
   // assign bounding_boxed_data = (x_d52 == x_left_r_frame | x_d52 == x_right_r_frame) ? {8'd255, 8'd255, 8'd255} : modal_data_out;
-//---------------------------end bounding box code---------------------
+  //__________________________________end bounding box code__________________________________
   
   
+
+  // ___________________________ Communication with peripherals ____________________________
   //assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : bounding_boxed_data;
   
   assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : sobel_d52;
@@ -939,6 +1015,93 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
   //assign source_data = centre_pixel_d20[25:2];
   assign source_sop = fallback_data_d36[1];
   assign source_eop = fallback_data_d36[0];
+
+
+  
+  logic [2:0] spi_state;
+  parameter SPI_IDLE = 3'd0;
+  parameter SPI_TRANSMIT_COLS = 3'd1;
+
+  logic [10:0] cols_transmitted;
+
+  logic [31:0] spi_slave_data_in;
+  logic spi_slave_ready;
+
+  initial begin
+    spi_state = SPI_IDLE;
+  end 
+
+  always_ff @(posedge clk) begin
+    if (eop_d52 & in_valid_d52 & packet_video_d52) begin
+      // end of frame reached, tell ESP we are about to send 
+      spi_state <= SPI_TRANSMIT_COLS;
+      spi_slave_data_in <= 32'hFFFF00;
+      cols_transmitted <= 11'h0;
+    end else if(spi_slave_ready) begin
+      // SPI is ready to recieve, we can transmit data and proporgate the state machine
+
+      if (spi_state == SPI_TRANSMIT_COLS) begin
+        
+        if(cols_transmitted == 0) begin
+          // Start off with a header telling ESP what we are
+          // about to send
+          spi_slave_data_in <= 32'hFFFF00;
+          cols_transmitted <= cols_transmitted + 1;
+        end else if(cols_transmitted >= 641) begin 
+          // We have sent all collumns. Go to next state
+          spi_state <= SPI_IDLE;
+          spi_slave_data_in <= 32'hAA0000;
+        end else begin
+          cols_transmitted <= cols_transmitted + 30;
+          for(integer i = 0; i < 30; i = i + 1) begin
+            spi_slave_data_in[i] <= obstacle_cols_latched[cols_transmitted + i - 1];
+          end
+          spi_slave_data_in[30] <= 1'b0;
+          spi_slave_data_in[31] <= 1'b1;
+          
+        end
+      end
+    end 
+  end
+  
+
+  /*
+  logic spi_buffer_valid, spi_buffer_ready;
+  
+  
+
+  SPI_BUFFER #(.CAPACITY(64), .DATA_WIDTH(32)) spi_buffer_1 (
+    //control signals
+    .clk(clk),
+    .rst_n(reset_n),
+    .valid_in(1'b1),
+    .ready_in(spi_slave_ready),
+    .valid_out(spi_buffer_valid),
+    .ready_out(spi_buffer_ready),
+
+    //data signals 
+    .data_in({5'b0, x, 5'b0, y}),
+    .data_out(spi_slave_data_in)
+  );
+  */
+  
+
+
+  SPI_Slave #(.CLK_POL(1), .CLK_PHA(1)) spi_slave_1 (
+    .clk_in(clk),
+    .rst_n_in(reset_n),
+
+    // Signals to interface with rest of FPGA
+    .TX_valid_in(1'b1),
+    .TX_byte_in(spi_slave_data_in),
+		.ready_out(spi_slave_ready),
+    
+    // External SPI Interface signals
+    .SPI_Clk_in(SPI_Clk),
+    .SPI_MISO_out(SPI_MISO),
+    .SPI_MOSI_in(SPI_MOSI),
+    .SPI_CS_n_in(SPI_CS_n)    // active low
+  );
 
   // assign source_data = row_3_data[2][25:2];
 
