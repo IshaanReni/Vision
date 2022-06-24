@@ -1,0 +1,22 @@
+{
+	"system" : {
+		"platform" : "linux64",
+		"os_name" : "Manjaro Linux",
+		"os_version" : ""
+	},
+	"error" : {
+		"executable" : "quartus_map",
+		"comment" : "not_applicable",
+		"error_message" : "The required design file db/ip/Qsys/submodules/Qsys_nios2_gen2_cpu_debug_slave_wrapper.v is missing",
+		"source_file" : "/quartus/sld/sci/sci_opencore_spec_reader.cpp",
+		"line" : "1402",
+		"stack_trace" : "\t0x7fdfda6666f2: sld_sci + 0x666f2 (_ZN24SCI_OPENCORE_FILE_PARSER10parse_fileEPKcS1_b + 0xe66)\n\t0x7fdfda666bb0: sld_sci + 0x66bb0 (_ZN11SCI_OSR_PPEC1EPKcS1_S1_b + 0x28e)\n\t0x7fdfe895c3ac: synth_sgn + 0x15c3ac (_ZN13SGN_EXTRACTOR19register_ocp_entityEmSs8FIO_PATHPKc + 0x20c)\n\t0x7fdfe895d0b0: synth_sgn + 0x15d0b0 (_ZN13SGN_EXTRACTOR19register_ocp_entityEmP10HDB_ENTITY + 0x120)\n\t0x7fdfe898edfd: synth_sgn + 0x18edfd (_ZN13SGN_EXTRACTOR36recurse_into_newly_extracted_netlistEP10HDB_ENTITYP17HDB_INSTANCE_NAMEmP16SGN_WRAPPER_INFO + 0x6d)\n\t0x7fdfe898e3fc: synth_sgn + 0x18e3fc (_ZN13SGN_EXTRACTOR20recursive_extractionEP17HDB_INSTANCE_NAMEP16SGN_WRAPPER_INFOPKc + 0x2dc)\n\t0x7fdfe898f2d6: synth_sgn + 0x18f2d6 (_ZN13SGN_EXTRACTOR36recurse_into_newly_extracted_netlistEP10HDB_ENTITYP17HDB_INSTANCE_NAMEmP16SGN_WRAPPER_INFO + 0x546)\n\t0x7fdfe898e3fc: synth_sgn + 0x18e3fc (_ZN13SGN_EXTRACTOR20recursive_extractionEP17HDB_INSTANCE_NAMEP16SGN_WRAPPER_INFOPKc + 0x2dc)\n\t0x7fdfe898f2d6: synth_sgn + 0x18f2d6 (_ZN13SGN_EXTRACTOR36recurse_into_newly_extracted_netlistEP10HDB_ENTITYP17HDB_INSTANCE_NAMEmP16SGN_WRAPPER_INFO + 0x546)\n\t0x7fdfe898e3fc: synth_sgn + 0x18e3fc (_ZN13SGN_EXTRACTOR20recursive_extractionEP17HDB_INSTANCE_NAMEP16SGN_WRAPPER_INFOPKc + 0x2dc)\n\t0x7fdfe898f2d6: synth_sgn + 0x18f2d6 (_ZN13SGN_EXTRACTOR36recurse_into_newly_extracted_netlistEP10HDB_ENTITYP17HDB_INSTANCE_NAMEmP16SGN_WRAPPER_INFO + 0x546)\n\t0x7fdfe898e3fc: synth_sgn + 0x18e3fc (_ZN13SGN_EXTRACTOR20recursive_extractionEP17HDB_INSTANCE_NAMEP16SGN_WRAPPER_INFOPKc + 0x2dc)\n\t0x7fdfe898f2d6: synth_sgn + 0x18f2d6 (_ZN13SGN_EXTRACTOR36recurse_into_newly_extracted_netlistEP10HDB_ENTITYP17HDB_INSTANCE_NAMEmP16SGN_WRAPPER_INFO + 0x546)\n\t0x7fdfe898e3fc: synth_sgn + 0x18e3fc (_ZN13SGN_EXTRACTOR20recursive_extractionEP17HDB_INSTANCE_NAMEP16SGN_WRAPPER_INFOPKc + 0x2dc)\n\t0x7fdfe898f2d6: synth_sgn + 0x18f2d6 (_ZN13SGN_EXTRACTOR36recurse_into_newly_extracted_netlistEP10HDB_ENTITYP17HDB_INSTANCE_NAMEmP16SGN_WRAPPER_INFO + 0x546)\n\t0x7fdfe898e3fc: synth_sgn + 0x18e3fc (_ZN13SGN_EXTRACTOR20recursive_extractionEP17HDB_INSTANCE_NAMEP16SGN_WRAPPER_INFOPKc + 0x2dc)\n\t0x7fdfe89945e3: synth_sgn + 0x1945e3 (_ZN13SGN_EXTRACTOR7extractEv + 0x3a3)\n\t0x7fdfe89a4f70: synth_sgn + 0x1a4f70 (_Z12sgn_qic_fullP10CMP_FACADERSt6vectorISsSaISsEERS1_IdSaIdEE + 0x440)\n\t   0x41c3b9: quartus_map + 0x1c3b9 (_Z16qsyn_execute_sgnP10CMP_FACADERSt6vectorISsSaISsEERKSsP14THR_NAMED_PIPES8_ + 0x159)\n\t   0x437d61: quartus_map + 0x37d61 (_ZN14QSYN_FRAMEWORK12execute_coreEP14THR_NAMED_PIPES1_ + 0x231)\n\t   0x43bcec: quartus_map + 0x3bcec (_ZN14QSYN_FRAMEWORK7executeEv + 0xc4c)\n\t0x7fdfcac1c75b: comp_qexe + 0x1c75b (_Z18qexe_standard_mainP14QEXE_FRAMEWORKPPK22QEXE_OPTION_DEFINITIONiPPKc + 0x888)\n\t   0x43025c: quartus_map + 0x3025c (_Z9qsyn_mainiPPKc + 0x13c)\n\t0x7fdf9ec40720: ccl_msg + 0x40720 (_Z15msg_main_threadPv + 0x10)\n\t0x7fdf99e0602c: ccl_thr + 0x602c (thr_final_wrapper + 0xc)\n\t0x7fdf9ec407df: ccl_msg + 0x407df (_Z18msg_thread_wrapperPFPvS_ES_ + 0x62)\n\t0x7fdf9aa0a559: ccl_mem + 0xa559 (_Z18mem_thread_wrapperPFPvS_ES_ + 0x99)\n\t0x7fdf9a608f92: ccl_err + 0x8f92 (_Z18err_thread_wrapperPFPvS_ES_ + 0x27)\n\t0x7fdf99e063f2: ccl_thr + 0x63f2 (thr_thread_wrapper + 0x15)\n\t0x7fdf9ec427e2: ccl_msg + 0x427e2 (_Z12msg_exe_mainiPPKcPFiiS1_E + 0xa3)\n\t0x7fdf93c1d290: c.so.6 + 0x29290\n\t0x7fdf93c1d34a: c.so.6 + 0x2934a (__libc_start_main + 0x8a)\n\t   0x415545: quartus_map + 0x15545\n",
+		"subsystem" : "SCI"
+	},
+	"quartus" : {
+		"quartus_bits" : "64",
+		"version" : "18.1.0",
+		"build" : "625",
+		"edition" : "Lite Edition"
+	}
+}

@@ -911,7 +911,7 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
       x_right_teal <= 11'd0;
       
     end
-    else if (y_d52 >= 240) begin
+    else if (y_d52 >= 240 && x_d52 >= 40 && x_d52 < 600) begin
       if(modal_data_out == {8'd255,8'd0,8'd0}) begin
         //red
         if(x_d52 < x_left_red) x_left_red <= x_d52;
@@ -977,22 +977,22 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
   always_ff @(posedge clk) begin 
     if (source_valid) begin
       if(x_d52 == x_left_r_frame || x_d52 == x_right_r_frame) begin
-        bounding_boxed_data <= {24'hFFFFFF}; //<= {24'hFF0000}; //white borders 
+        bounding_boxed_data <= {24'hFF0000}; //white borders 
       end 
       else if (x_d52 == x_left_y_frame || x_d52 == x_right_y_frame) begin 
-        bounding_boxed_data <= {24'h883022}; //<= {24'hFFFF00}; //brown borders
+        bounding_boxed_data <= {24'hFFFF00}; //brown borders
       end 
       else if (x_d52 == x_left_p_frame || x_d52 == x_right_p_frame) begin 
-        bounding_boxed_data <= {24'h2596be}; //<= {24'hA93399}; //blue borders
+        bounding_boxed_data <= {24'hA93399}; //blue borders
       end 
       else if (x_d52 == x_left_b_frame || x_d52 == x_right_b_frame) begin 
-        bounding_boxed_data <= {24'hffe0a0}; //<= {24'h0000FF}; //beige borders
+        bounding_boxed_data <= {24'h0000FF}; //beige borders
       end 
       else if (x_d52 == x_left_g_frame || x_d52 == x_right_g_frame) begin 
-        bounding_boxed_data <= {24'h8A7DFF}; //<= {24'h00FF00}; //violet borders
+        bounding_boxed_data <= {24'h00FF00}; //violet borders
       end 
       else if (x_d52 == x_left_t_frame || x_d52 == x_right_t_frame) begin 
-        bounding_boxed_data <= {24'hFFAC24}; //<= {24'h00FF8D}; //orange borders
+        bounding_boxed_data <= {24'h00FF8D}; //orange borders
       end 
       else begin
         bounding_boxed_data <= modal_data_out;
@@ -1009,8 +1009,10 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
 
   // ___________________________ Communication with peripherals ____________________________
   //assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : bounding_boxed_data;
-  
-  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : sobel_d52;
+
+  logic [23:0] final_out_pixel;
+  assign final_out_pixel = (sobel_d52 == 24'b0) ? bounding_boxed_data : sobel_d52;
+  assign source_data = found_eop_or_sop_d36 ? fallback_data_d36[25:2] : final_out_pixel;
 
   //assign source_data = centre_pixel_d20[25:2];
   assign source_sop = fallback_data_d36[1];
