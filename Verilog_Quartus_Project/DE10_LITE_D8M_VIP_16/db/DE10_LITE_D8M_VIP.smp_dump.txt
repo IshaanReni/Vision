@@ -84,9 +84,16 @@ mSetup_ST.0001 1 0 1
 mSetup_ST.0010 1 1 0 
 
 State Machine - |DE10_LITE_D8M_VIP|Qsys:u0|EEE_IMGPROC:eee_imgproc_0|spi_state
-Name spi_state.SPI_IDLE 
-spi_state.SPI_TRANSMIT_COLS 0 
-spi_state.SPI_IDLE 1 
+Name spi_state.SPI_GREEN_BB spi_state.SPI_YELLOW_BB spi_state.SPI_PINK_BB spi_state.SPI_BLUE_BB spi_state.SPI_RED_BB spi_state.SPI_TRANSMIT_COLS spi_state.SPI_READY_TO_TRANS spi_state.SPI_IDLE spi_state.SPI_TEAL_BB 
+spi_state.SPI_IDLE 0 0 0 0 0 0 0 0 0 
+spi_state.SPI_READY_TO_TRANS 0 0 0 0 0 0 1 1 0 
+spi_state.SPI_TRANSMIT_COLS 0 0 0 0 0 1 0 1 0 
+spi_state.SPI_RED_BB 0 0 0 0 1 0 0 1 0 
+spi_state.SPI_BLUE_BB 0 0 0 1 0 0 0 1 0 
+spi_state.SPI_PINK_BB 0 0 1 0 0 0 0 1 0 
+spi_state.SPI_YELLOW_BB 0 1 0 0 0 0 0 1 0 
+spi_state.SPI_GREEN_BB 1 0 0 0 0 0 0 1 0 
+spi_state.SPI_TEAL_BB 0 0 0 0 0 0 0 1 1 
 
 State Machine - |DE10_LITE_D8M_VIP|Qsys:u0|Qsys_nios2_gen2:nios2_gen2|Qsys_nios2_gen2_cpu:cpu|Qsys_nios2_gen2_cpu_nios2_oci:the_Qsys_nios2_gen2_cpu_nios2_oci|Qsys_nios2_gen2_cpu_debug_slave_wrapper:the_Qsys_nios2_gen2_cpu_debug_slave_wrapper|Qsys_nios2_gen2_cpu_debug_slave_tck:the_Qsys_nios2_gen2_cpu_debug_slave_tck|DRsize
 Name DRsize.101 DRsize.100 DRsize.011 DRsize.010 DRsize.001 DRsize.000 

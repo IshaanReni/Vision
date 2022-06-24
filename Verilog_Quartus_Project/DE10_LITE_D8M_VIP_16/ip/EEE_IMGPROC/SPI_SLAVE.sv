@@ -109,10 +109,11 @@ module SPI_Slave #(
     prev_SPI_CS_n_in <= SPI_CS_n_in;
     if (~rst_n_in) begin
       TX_byte <= 32'h00;
+      ready   <= 1'b1;
     end else if (TX_valid_in & ready) begin
       TX_byte <= TX_byte_in;
       ready   <= 1'b0;
-    end else if (!prev_SPI_CS_n_in && SPI_CS_n_in) begin
+    end else if ((!prev_SPI_CS_n_in) && SPI_CS_n_in) begin
       ready <= 1'b1;
     end
 

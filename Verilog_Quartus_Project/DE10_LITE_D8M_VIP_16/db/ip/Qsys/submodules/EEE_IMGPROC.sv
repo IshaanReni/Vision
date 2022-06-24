@@ -274,12 +274,12 @@ module EEE_IMGPROC #(
   );
 
   //Streaming registers to buffer video signal
-  // feeds into the ring buffer
-  //Streaming registers to buffer video signal
+  logic stream_reg_1_ready;
+
   STREAM_REG #(.DATA_WIDTH(26)) in_reg (
     .clk(clk),
     .rst_n(reset_n),
-    .ready_out(sink_ready),
+    .ready_out(stream_reg_1_ready),
     .valid_out(in_valid),
     .data_out({red,green,blue,sop,eop}),
     .ready_in(out_ready),
@@ -317,7 +317,7 @@ module EEE_IMGPROC #(
   logic [7:0] building_grayscaled;
 
   always_ff @(posedge clk) begin
-    //Grey = red/4 + green/2 + blue/4 <- Makes grayscale image - is this from stotts code earlier?
+    //Grey = red/4 + green/2 + blue/4 <- Makes grayscale image - is this from stotts code earlier? yes
     if(source_valid) begin
       building_grayscaled <= source_data_intermediate_step1[23:18] + source_data_intermediate_step1[15:9] + source_data_intermediate_step1[7:2]; 
     end
@@ -1018,24 +1018,193 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
 
 
   
-  logic [2:0] spi_state;
-  parameter SPI_IDLE = 3'd0;
-  parameter SPI_TRANSMIT_COLS = 3'd1;
+  logic [3:0] spi_state;
+  parameter SPI_IDLE = 4'd0;
+  parameter SPI_READY_TO_TRANS = 4'd1;
+  parameter SPI_TRANSMIT_COLS = 4'd2;
+  parameter SPI_RED_BB = 4'd3;
+  parameter SPI_BLUE_BB = 4'd4;
+  parameter SPI_PINK_BB = 4'd5;
+  parameter SPI_YELLOW_BB = 4'd6;
+  parameter SPI_GREEN_BB = 4'd7;
+  parameter SPI_TEAL_BB = 4'd8;
 
   logic [10:0] cols_transmitted;
 
   logic [31:0] spi_slave_data_in;
   logic spi_slave_ready;
+  logic end_of_frame_d52;
 
   initial begin
     spi_state = SPI_IDLE;
   end 
 
+  assign sink_ready = stream_reg_1_ready;
+  assign end_of_frame_d52 = eop_d52 & in_valid_d52 & packet_video_d52;
+
   always_ff @(posedge clk) begin
+    case (spi_state)
+      SPI_IDLE: begin
+        //spi_slave_data_in <= {16'hCCCC, 12'b0, spi_slave_ready, eop_d52, in_valid_d52,  packet_video_d52};
+		    spi_slave_data_in <= {SPI_IDLE, 28'h0};
+
+
+        if(end_of_frame_d52) begin
+          // if reached end of frame, switch to transmitting data
+          //spi_slave_data_in <= 32'hBBBB0000;
+          spi_state <= SPI_READY_TO_TRANS;
+        end
+      end
+
+      SPI_READY_TO_TRANS: begin
+        spi_slave_data_in <= {SPI_READY_TO_TRANS, 28'h0};
+        if(spi_slave_ready) begin
+          spi_state <= SPI_TRANSMIT_COLS;
+          cols_transmitted <= 0;
+        end
+      end
+
+      SPI_TRANSMIT_COLS: begin
+        
+		    for(integer i = 0; i < 28; i = i + 1) begin
+          spi_slave_data_in[i] <= obstacle_cols_latched[cols_transmitted + i - 1];
+        end
+
+		    spi_slave_data_in[31:28] <= SPI_TRANSMIT_COLS;
+
+        if(spi_slave_ready) begin
+          
+          if(cols_transmitted >= 640) begin
+            // We have transmitted all columns, go back to idle
+            spi_state <= SPI_RED_BB;
+            spi_slave_data_in <= {SPI_TRANSMIT_COLS, 28'h9999000};
+          end else begin
+            // We have more columns to transmit, transmit!
+            spi_state <= SPI_TRANSMIT_COLS;
+            cols_transmitted <= cols_transmitted + 30;
+          end
+      	end
+	    end
+
+      SPI_RED_BB: begin
+        // 32 - 4 - 22 = 6
+				spi_slave_data_in <= {SPI_RED_BB, 1'b0, x_left_r_frame, 5'b0, x_right_r_frame};
+
+        if(spi_slave_ready) begin
+          spi_state <= SPI_BLUE_BB; 
+        end else begin
+          spi_state <= SPI_RED_BB;
+        end
+      end
+
+      SPI_BLUE_BB: begin
+        spi_slave_data_in <= {SPI_BLUE_BB, 1'b0, x_left_b_frame, 5'b0, x_right_b_frame};
+
+        if(spi_slave_ready) begin
+          spi_state <= SPI_PINK_BB; 
+        end else begin
+          spi_state <= SPI_BLUE_BB;
+        end
+      end
+
+			SPI_PINK_BB: begin
+        spi_slave_data_in <= {SPI_PINK_BB, 1'b0, x_left_p_frame, 5'b0, x_right_p_frame};
+
+        if(spi_slave_ready) begin
+          spi_state <= SPI_YELLOW_BB; 
+        end else begin
+          spi_state <= SPI_PINK_BB;
+        end
+      end
+
+			SPI_YELLOW_BB: begin
+        spi_slave_data_in <= {SPI_YELLOW_BB, 1'b0, x_left_y_frame, 5'b0, x_right_y_frame};
+
+        if(spi_slave_ready) begin
+          spi_state <= SPI_GREEN_BB; 
+        end else begin
+          spi_state <= SPI_YELLOW_BB;
+        end
+      end
+
+			SPI_GREEN_BB: begin
+        spi_slave_data_in <= {SPI_GREEN_BB, 1'b0, x_left_g_frame, 5'b0, x_right_g_frame};
+
+        if(spi_slave_ready) begin
+          spi_state <= SPI_TEAL_BB; 
+        end else begin
+          spi_state <= SPI_GREEN_BB;
+        end
+      end
+
+			SPI_TEAL_BB: begin
+        spi_slave_data_in <= {SPI_TEAL_BB, 1'b0, x_left_t_frame, 5'b0, x_right_t_frame};
+
+        if(spi_slave_ready) begin
+          spi_state <= SPI_IDLE; 
+        end else begin
+          spi_state <= SPI_TEAL_BB;
+        end
+      end
+
+      default: begin
+        // State not recognised, return to idle state.
+        spi_state <= SPI_IDLE;
+        spi_slave_data_in <= 32'hFFFF0000;
+      end
+    endcase
+
+	end
+
+	/*
+    if (eop_d52 & in_valid_d52 & packet_video_d52) begin
+      
+	  // End of frame encountered, we wish to transmit the columns detected
+	  // by our edge detection algorithm.
+	  spi_state <= SPI_TRANSMIT_COLS;
+      cols_transmitted <= 0;
+	  // To indicate start of transmission send off BB's to ESP
+      spi_slave_data_in <= 32'hBBBB0000; //an arbitrary debug value
+    end
+	*/
+
+	
+
+
+	/*
+
+    // Only if the SPI is ready proporgate the messages
+    if(spi_slave_ready) begin
+      
+		// 
+		
+
+
+	  if(cols_transmitted >= 640) begin 
+        // We have sent all collumns. Go to next state
+        spi_state <= SPI_IDLE;
+        cols_transmitted <= 32'h0;
+        spi_slave_data_in <= 32'hAAAA0000;
+      end else begin
+        cols_transmitted <= cols_transmitted + 30;
+        
+        for(integer i = 0; i < 30; i = i + 1) begin
+          spi_slave_data_in[i] <= obstacle_cols_latched[cols_transmitted + i - 1];
+        end
+        
+        spi_slave_data_in[31:30] <= {2'b11};
+      end 
+    end
+	*/
+    
+
+    /*
     if (eop_d52 & in_valid_d52 & packet_video_d52) begin
       // end of frame reached, tell ESP we are about to send 
+      
       spi_state <= SPI_TRANSMIT_COLS;
-      spi_slave_data_in <= 32'hFFFF00;
+      
+      spi_slave_data_in <= 32'hFFFF0000;
       cols_transmitted <= 11'h0;
     end else if(spi_slave_ready) begin
       // SPI is ready to recieve, we can transmit data and proporgate the state machine
@@ -1045,24 +1214,31 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
         if(cols_transmitted == 0) begin
           // Start off with a header telling ESP what we are
           // about to send
-          spi_slave_data_in <= 32'hFFFF00;
+          spi_slave_data_in <= 32'hBBBB0000;
           cols_transmitted <= cols_transmitted + 1;
         end else if(cols_transmitted >= 641) begin 
           // We have sent all collumns. Go to next state
           spi_state <= SPI_IDLE;
-          spi_slave_data_in <= 32'hAA0000;
+          cols_transmitted <= 32'h0;
+          spi_slave_data_in <= 32'hAAAA0000;
         end else begin
           cols_transmitted <= cols_transmitted + 30;
-          for(integer i = 0; i < 30; i = i + 1) begin
-            spi_slave_data_in[i] <= obstacle_cols_latched[cols_transmitted + i - 1];
-          end
-          spi_slave_data_in[30] <= 1'b0;
-          spi_slave_data_in[31] <= 1'b1;
           
-        end
+          
+          // for(integer i = 0; i < 30; i = i + 1) begin
+          //   spi_slave_data_in[i] <= obstacle_cols_latched[cols_transmitted + i - 1];
+          // end
+          
+          
+          spi_slave_data_in <= {4'h9, 17'b0 , cols_transmitted};
+          
+        end 
+      end else if(spi_state == SPI_IDLE) begin
+        spi_slave_data_in <= {5'b0, x_d52, 5'b0, y_d52};
       end
-    end 
   end
+  */
+  // end
   
 
   /*
@@ -1094,7 +1270,7 @@ SHIFT_REGGAE #(.DATA_WIDTH(22), .NO_STAGES(52)) shift_reg_x_y (
     // Signals to interface with rest of FPGA
     .TX_valid_in(1'b1),
     .TX_byte_in(spi_slave_data_in),
-		.ready_out(spi_slave_ready),
+	  .ready_out(spi_slave_ready),
     
     // External SPI Interface signals
     .SPI_Clk_in(SPI_Clk),
