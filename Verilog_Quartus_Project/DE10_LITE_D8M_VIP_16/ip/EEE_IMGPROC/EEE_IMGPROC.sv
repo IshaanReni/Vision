@@ -642,11 +642,11 @@ module EEE_IMGPROC #(
     begin
       hsv_thresholded = {8'd0, 8'd0, 8'd255}; //in gimp - picked up as low value (10-20%) teal NOT BLUE
     end
-    else if (hsv_d20[23:16] < 78 && hsv_d20[23:16] > 71 && hsv_d20[7:0] < 200 && hsv_d20[15:8] > 81) // light green
+    else if (hsv_d20[23:16] < 78 && hsv_d20[23:16] > 71 && hsv_d20[7:0] < 200)// && hsv_d20[15:8] > 130) // light green
     begin
       hsv_thresholded = {8'd0, 8'd255, 8'd0};
     end
-    else if (hsv_d20[23:16] < 100 && hsv_d20[23:16] > 78 && hsv_d20[7:0] > 51 && hsv_d20[7:0] < 102) // teal
+    else if (hsv_d20[23:16] < 100 && hsv_d20[23:16] > 78 && hsv_d20[7:0] > 51 && hsv_d20[7:0] < 102 && hsv_d20[15:8] < 130) // teal
     begin
       hsv_thresholded = {8'd0, 8'd255, 8'd140};
     end
