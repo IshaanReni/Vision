@@ -594,27 +594,59 @@ module EEE_IMGPROC #(
 
   logic [23:0] hsv_thresholded;
 
+  // always_comb begin
+  //   if ((hsv_d20[23:16] < 20 && hsv_d20[23:16] > 8) && hsv_d20[7:0] > 57) begin // red
+  //     hsv_thresholded = {8'd255, 8'd0, 8'd0};
+  //     //15 to 5 (to be checked) - Hue. 186 for value (apparently)
+  //   end
+  //   else if ((hsv_d20[23:16] < 55 && hsv_d20[23:16] > 35) && (hsv_d20[7:0] > 160 && hsv_d20[7:0] < 210) && (hsv_d20[15:8] > 130 && hsv_d20[15:8] < 200))// top half yellow
+  //   begin
+  //     hsv_thresholded = {8'd255, 8'd255, 8'd0};
+  //   end
+  //   else if ((hsv_d20[23:16] > 250 || hsv_d20[23:16] < 10) && (hsv_d20[7:0] > 140)) //&& (hsv_d20[15:8] > 163 && hsv_d20[15:8] < 199 )) // pink
+  //   begin
+  //     hsv_thresholded = {8'd168, 8'd50, 8'd153};
+  //   end
+  //   else if ((hsv_d20[23:16] < 175 && hsv_d20[23:16] > 130)) //&& (hsv_d20[7:0] > 25 && hsv_d20[7:0] < 50)) // && hsv_d20[15:8] > 100) // Dark blue
+  //   begin
+  //     hsv_thresholded = {8'd0, 8'd0, 8'd255};
+  //   end
+  //   else if (hsv_d20[23:16] < 85 && hsv_d20[23:16] > 60/*&& hsv_d20[7:0] > 130) */&& hsv_d20[15:8] < 200 && hsv_d20[15:8] > 120) // light green
+  //   begin
+  //     hsv_thresholded = {8'd0, 8'd255, 8'd0};
+  //   end
+  //   else if (hsv_d20[23:16] < 110 && hsv_d20[23:16] > 90)//&& hsv_d20[7:0] > 120) // teal
+  //   begin
+  //     hsv_thresholded = {8'd0, 8'd255, 8'd140};
+  //   end
+  //   else
+  //   begin
+  //     hsv_thresholded = {8'd0, 8'd0, 8'd0};
+  //   end
+  // end
+
   always_comb begin
-    if ((hsv_d20[23:16] < 15 && hsv_d20[23:16] > 9) && hsv_d20[7:0] > 57) begin // red
+    if ((hsv_d20[23:16] < 16 && hsv_d20[23:16] > 8) && hsv_d20[7:0] > 57) begin // red
       hsv_thresholded = {8'd255, 8'd0, 8'd0};
+      //15 to 5 (to be checked) - Hue. 186 for value (apparently)
     end
-    else if ((hsv_d20[23:16] < 55 && hsv_d20[23:16] > 35) && (hsv_d20[7:0] > 160 && hsv_d20[7:0] < 210) && (hsv_d20[15:8] > 130 && hsv_d20[15:8] < 200))// top half yellow
+    else if ((hsv_d20[23:16] < 43 && hsv_d20[23:16] > 35) && (hsv_d20[7:0] < 250 && hsv_d20[7:0] > 120))// top half yellow
     begin
       hsv_thresholded = {8'd255, 8'd255, 8'd0};
     end
-    else if (hsv_d20[23:16] > 250 || hsv_d20[23:16] < 6) // pink
+    else if ((hsv_d20[23:16] > 250 || hsv_d20[23:16] < 10) && (hsv_d20[7:0] > 140)) //&& (hsv_d20[15:8] > 163 && hsv_d20[15:8] < 199 )) // pink
     begin
       hsv_thresholded = {8'd168, 8'd50, 8'd153};
     end
-    else if ((hsv_d20[23:16] < 170 && hsv_d20[23:16] > 130)) //&& (hsv_d20[7:0] > 25 && hsv_d20[7:0] < 50)) // && hsv_d20[15:8] > 100) // Dark blue
+    else if ((hsv_d20[23:16] < 170 && hsv_d20[23:16] > 120) && (hsv_d20[7:0] < 102)) // && hsv_d20[15:8] > 100) // Dark blue
     begin
-      hsv_thresholded = {8'd0, 8'd0, 8'd255};
+      hsv_thresholded = {8'd0, 8'd0, 8'd255}; //in gimp - picked up as low value (10-20%) teal NOT BLUE
     end
-    else if (hsv_d20[23:16] < 85 && hsv_d20[23:16] > 60/*&& hsv_d20[7:0] > 130) */&& hsv_d20[15:8] < 200 && hsv_d20[15:8] > 120) // light green
+    else if (hsv_d20[23:16] < 78 && hsv_d20[23:16] > 71 && hsv_d20[7:0] < 200 && hsv_d20[15:8] > 81) // light green
     begin
       hsv_thresholded = {8'd0, 8'd255, 8'd0};
     end
-    else if (hsv_d20[23:16] < 120 && hsv_d20[23:16] > 90)//&& hsv_d20[7:0] > 120) // teal
+    else if (hsv_d20[23:16] < 100 && hsv_d20[23:16] > 78 && hsv_d20[7:0] > 51 && hsv_d20[7:0] < 102) // teal
     begin
       hsv_thresholded = {8'd0, 8'd255, 8'd140};
     end
